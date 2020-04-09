@@ -7,18 +7,20 @@
   
   <title>Slf4j MDC 实现日志追踪 | 我的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="背景随着项目的越来越大，应用处理用户请求越来越多的时候，查日志是个头疼的事，因为你要去海量日志里追踪某个用户的相关日志记录时，非常麻烦；刚开始用线程名称找，线程池的线程很快就被复用，还是很难区分，MDC就可以解决这个问题。 什么是MDCMDC（Mapped Diagnostic Context，映射调试上下文） 概括一下：  MDC是一个与当前线程绑定的哈希表，可以往其中添加键值对 MDC中包含的">
+  <meta name="description" content="背景随着项目的越来越大，应用处理用户请求越来越多的时候，查日志是个头疼的事，因为你要去海量日志里追踪某个用户的相关日志记录时，非常麻烦；刚开始用线程名称找，线程池的线程很快就被复用，还是很难区分，MDC就可以解决这个问题。 什么是MDCMDC（Mapped Diagnostic Context，映射调试上下文） 概括一下：  MDC是一个与当前线程绑定的哈希表，可以往其中添加键值对 MDC中包含">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Slf4j MDC 实现日志追踪">
 <meta property="og:url" content="https://sunshaohua0221.github.io/2020/04/09/log-mdc/index.html">
 <meta property="og:site_name" content="我的博客">
-<meta property="og:description" content="背景随着项目的越来越大，应用处理用户请求越来越多的时候，查日志是个头疼的事，因为你要去海量日志里追踪某个用户的相关日志记录时，非常麻烦；刚开始用线程名称找，线程池的线程很快就被复用，还是很难区分，MDC就可以解决这个问题。 什么是MDCMDC（Mapped Diagnostic Context，映射调试上下文） 概括一下：  MDC是一个与当前线程绑定的哈希表，可以往其中添加键值对 MDC中包含的">
+<meta property="og:description" content="背景随着项目的越来越大，应用处理用户请求越来越多的时候，查日志是个头疼的事，因为你要去海量日志里追踪某个用户的相关日志记录时，非常麻烦；刚开始用线程名称找，线程池的线程很快就被复用，还是很难区分，MDC就可以解决这个问题。 什么是MDCMDC（Mapped Diagnostic Context，映射调试上下文） 概括一下：  MDC是一个与当前线程绑定的哈希表，可以往其中添加键值对 MDC中包含">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://sunshaohua0221.github.io/2020/04/09/log-mdc/log.jpeg">
 <meta property="article:published_time" content="2020-04-09T13:25:27.797Z">
-<meta property="article:modified_time" content="2020-04-09T13:28:01.325Z">
+<meta property="article:modified_time" content="2020-04-09T14:19:25.827Z">
 <meta property="article:author" content="ssh">
 <meta property="article:tag" content="技术、生活">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sunshaohua0221.github.io/2020/04/09/log-mdc/log.jpeg">
   
     <link rel="alternate" href="/atom.xml" title="我的博客" type="application/atom+xml">
   
@@ -93,7 +95,8 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>随着项目的越来越大，应用处理用户请求越来越多的时候，查日志是个头疼的事，因为你要去海量日志里追踪某个用户的相关日志记录时，非常麻烦；<br>刚开始用线程名称找，线程池的线程很快就被复用，还是很难区分，<code>MDC</code>就可以解决这个问题。</p>
+        <p><img src="log.jpeg" alt=""></p>
+<h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>随着项目的越来越大，应用处理用户请求越来越多的时候，查日志是个头疼的事，因为你要去海量日志里追踪某个用户的相关日志记录时，非常麻烦；<br>刚开始用线程名称找，线程池的线程很快就被复用，还是很难区分，<code>MDC</code>就可以解决这个问题。</p>
 <h3 id="什么是MDC"><a href="#什么是MDC" class="headerlink" title="什么是MDC"></a>什么是MDC</h3><p><code>MDC（Mapped Diagnostic Context，映射调试上下文）</code></p>
 <p><strong>概括一下：</strong></p>
 <ol>
@@ -145,7 +148,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/09/log-mdc/" data-id="ck8sueysu00058wl97ay644i2" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/09/log-mdc/" data-id="ck8sulghu00053cl98cpwfxo7" class="article-share-link">Share</a>
       
       
     </footer>
