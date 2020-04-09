@@ -7,16 +7,16 @@
   
   <title>APM-Pinpoint | 我的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="架构图 单机模式安装准备安装包：  Hbase hbase-2.1.5-bin.tar.gz hbase-create.hbase 下载地址：http:&#x2F;&#x2F;apache.fayea.com&#x2F;hbase&#x2F;wget http:&#x2F;&#x2F;apache.fayea.com&#x2F;hbase&#x2F;2.1.5&#x2F;hbase-2.1.5-bin.tar.gzhttps:&#x2F;&#x2F;github.com&#x2F;naver&#x2F;pinpoint&#x2F;tr">
+  <meta name="description" content="架构图 单机模式安装准备安装包：  Hbase hbase-2.1.5-bin.tar.gz hbase-create.hbase下载地址：http:&#x2F;&#x2F;apache.fayea.com&#x2F;hbase&#x2F;wget http:&#x2F;&#x2F;apache.fayea.com&#x2F;hbase&#x2F;2.1.5&#x2F;hbase-2.1.5-bin.tar.gzhttps:&#x2F;&#x2F;github.com&#x2F;naver&#x2F;pinpoint&#x2F;tre">
 <meta property="og:type" content="article">
 <meta property="og:title" content="APM-Pinpoint">
 <meta property="og:url" content="https://sunshaohua0221.github.io/2020/04/09/APM-Pinpoint/index.html">
 <meta property="og:site_name" content="我的博客">
-<meta property="og:description" content="架构图 单机模式安装准备安装包：  Hbase hbase-2.1.5-bin.tar.gz hbase-create.hbase 下载地址：http:&#x2F;&#x2F;apache.fayea.com&#x2F;hbase&#x2F;wget http:&#x2F;&#x2F;apache.fayea.com&#x2F;hbase&#x2F;2.1.5&#x2F;hbase-2.1.5-bin.tar.gzhttps:&#x2F;&#x2F;github.com&#x2F;naver&#x2F;pinpoint&#x2F;tr">
+<meta property="og:description" content="架构图 单机模式安装准备安装包：  Hbase hbase-2.1.5-bin.tar.gz hbase-create.hbase下载地址：http:&#x2F;&#x2F;apache.fayea.com&#x2F;hbase&#x2F;wget http:&#x2F;&#x2F;apache.fayea.com&#x2F;hbase&#x2F;2.1.5&#x2F;hbase-2.1.5-bin.tar.gzhttps:&#x2F;&#x2F;github.com&#x2F;naver&#x2F;pinpoint&#x2F;tre">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://blog.wurimo.com:8000/upload/2019/7/pinpoint-0e99f9479531406cb207f1cd9b96a7e3.png">
 <meta property="article:published_time" content="2020-04-09T13:33:51.562Z">
-<meta property="article:modified_time" content="2020-04-09T13:34:20.273Z">
+<meta property="article:modified_time" content="2020-04-09T13:47:39.437Z">
 <meta property="article:author" content="ssh">
 <meta property="article:tag" content="技术、生活">
 <meta name="twitter:card" content="summary">
@@ -100,19 +100,13 @@
 <ul>
 <li>Hbase<ul>
 <li>hbase-2.1.5-bin.tar.gz</li>
-<li>hbase-create.hbase<blockquote>
-<p>下载地址：<a href="http://apache.fayea.com/hbase/" target="_blank" rel="noopener">http://apache.fayea.com/hbase/</a><br>wget <a href="http://apache.fayea.com/hbase/2.1.5/hbase-2.1.5-bin.tar.gz" target="_blank" rel="noopener">http://apache.fayea.com/hbase/2.1.5/hbase-2.1.5-bin.tar.gz</a><br><a href="https://github.com/naver/pinpoint/tree/master/hbase/scripts/hbase-create.hbase" target="_blank" rel="noopener">https://github.com/naver/pinpoint/tree/master/hbase/scripts/hbase-create.hbase</a></p>
-</blockquote>
-</li>
+<li>hbase-create.hbase<br>下载地址：<a href="http://apache.fayea.com/hbase/" target="_blank" rel="noopener">http://apache.fayea.com/hbase/</a><br>wget <a href="http://apache.fayea.com/hbase/2.1.5/hbase-2.1.5-bin.tar.gz" target="_blank" rel="noopener">http://apache.fayea.com/hbase/2.1.5/hbase-2.1.5-bin.tar.gz</a><br><a href="https://github.com/naver/pinpoint/tree/master/hbase/scripts/hbase-create.hbase" target="_blank" rel="noopener">https://github.com/naver/pinpoint/tree/master/hbase/scripts/hbase-create.hbase</a>  </li>
 </ul>
 </li>
 <li>pinpoint<ul>
 <li>pinpoint-collector-1.8.4.war </li>
 <li>pinpoint-web-1.8.4.war</li>
-<li>pinpoint-agent-1.8.4.tar.gz<blockquote>
-<p>下载地址：<a href="https://github.com/naver/pinpoint/releases" target="_blank" rel="noopener">https://github.com/naver/pinpoint/releases</a></p>
-</blockquote>
-</li>
+<li>pinpoint-agent-1.8.4.tar.gz<br>下载地址：<a href="https://github.com/naver/pinpoint/releases" target="_blank" rel="noopener">https://github.com/naver/pinpoint/releases</a>  </li>
 </ul>
 </li>
 </ul>
@@ -120,9 +114,7 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar xf hbase-2.1.5-bin.tar.gz</span><br></pre></td></tr></table></figure>
 <p>2、启动</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd hbase-2.1.5/bin</span><br><span class="line">./start-hbase.sh</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>需要jdk8版本，手动指定jdk配置：<br>cd hbase-2.1.5/conf<br>vim hbase-env.sh<br>增加export JAVA_HOME=/export/software/jdk1.8.0_20/<br>保存后启动</p>
-</blockquote>
+<p>需要jdk8版本，手动指定jdk配置：<br>cd hbase-2.1.5/conf<br>vim hbase-env.sh<br>增加export JAVA_HOME=/export/software/jdk1.8.0_20/<br>保存后启动  </p>
 <p>3、初始化脚本</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./hbase shell /home/ssh/pinpoint/hbase-create.hbase</span><br></pre></td></tr></table></figure>
 <p>4、web访问<br><a href="http://127.0.0.1:16010/" target="_blank" rel="noopener">http://127.0.0.1:16010/</a></p>
@@ -131,9 +123,7 @@
 
 <h3 id="安装pinpoint-web"><a href="#安装pinpoint-web" class="headerlink" title="安装pinpoint-web"></a>安装pinpoint-web</h3><p>解压war包到tomcat下（端口号28080）</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">unzip pinpoint-web-1.8.4.war -d /home/ssh/pinpoint/tomcat-web/webapps/ROOT</span><br><span class="line">cd /home/ssh/pinpoint/tomcat-web/bin</span><br><span class="line">./startup.sh</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>注意修改tomcat端口号</p>
-</blockquote>
+<p>注意修改tomcat端口号  </p>
 <p>web访问：<a href="http://127.0.0.1:28080/" target="_blank" rel="noopener">http://127.0.0.1:28080/</a></p>
 <h3 id="安装pinpoint-agent"><a href="#安装pinpoint-agent" class="headerlink" title="安装pinpoint-agent"></a>安装pinpoint-agent</h3><ul>
 <li><p>tomcat启动的应用<br>在tomcat bin下的catalina.sh增加配置</p>
@@ -150,7 +140,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/09/APM-Pinpoint/" data-id="ck8stbl8e00007sl94fcze02w" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/09/APM-Pinpoint/" data-id="ck8stgqxw0000ecl98u8qbjqn" class="article-share-link">Share</a>
       
       
     </footer>
