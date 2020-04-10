@@ -93,13 +93,15 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="分布式主键重复问题"><a href="#分布式主键重复问题" class="headerlink" title="分布式主键重复问题"></a>分布式主键重复问题</h3><h4 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h4><p>邮件告警双写失败，新库中新增metering和last_billing_record违反唯一主键约束</p>
-<h4 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h4><p>因为涉及到分库分表，数据是分散存放的，为了避免分表中的主键不重复，所以使用分布式主键算法生成主键，目前使用的是Sharding内置的ShowFlake(Twitter开源的)算法<br><code>SnowFlake</code>算法生成ID的结构如下图：<br><img src="snowflake.jpg" alt=""><br>其中<code>工作机器id(workerId)</code>是用来区分不同的机器而设计，上线时，未设置这个参数，默认为0，也就是线上8台服务的<code>workerId</code>都为0，这样就会出现某几台服务器在同一时间(毫秒)写同一张表，按照原理图可以得出时间戳一样，工作机器id一样，序列号一样，所以就出现了多台服务器同一时间用同一个主键id写表，报了违反唯一主键约束的错误  </p>
+        <h3 id="分布式主键重复问题"><a href="#分布式主键重复问题" class="headerlink" title="分布式主键重复问题"></a>分布式主键重复问题</h3><p>最近项目中在使用数据库中间件，采用<code>ShardingSphere</code>中的<code>Sharding-JDBC</code>，总结下最近出现的问题</p>
+<p><a href="https://shardingsphere.apache.org/" target="_blank" rel="noopener">ShardingSphere官网</a></p>
+<h4 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h4><p>告警双写失败，库中新增metering和last_billing_record违反唯一主键约束</p>
+<h4 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h4><p>因为涉及到分库分表，数据是分散存放的，为了避免分表中的主键不重复，所以使用分布式主键算法生成主键，目前使用的是<code>Sharding</code>内置的<code>SnowFlake(Twitter开源的)</code>算法<br><code>SnowFlake</code>算法生成ID的结构如下图：<br><img src="snowflake.jpg" alt=""><br>其中<code>工作机器id(workerId)</code>是用来区分不同的机器而设计，上线时，未设置这个参数，默认为0，也就是线上8台服务的<code>workerId</code>都为0，这样就会出现某几台服务器在同一时间(毫秒)写同一张表，按照原理图可以得出时间戳一样，工作机器id一样，序列号一样，所以就出现了多台服务器同一时间用同一个主键id写表，报了违反唯一主键约束的错误  </p>
 <p>基于计费的业务特殊性，0-半点之间会跑分布式任务，所以很容易造成多台服务器同一时间写同一张表的情况  </p>
 <h4 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h4><p>为每台服务器设置单独的<code>workerId</code>，<code>workerId</code>取值范围<code>0-1023</code>  </p>
-<p><code>Spring Sharding</code>配置文件是支持注入<code>worker.id</code>值的，但只能在配置文件配置，不能动态生成，最终会部署到8台服务器上，读的还是一个值，咨询过sharding创始人，也没有扩展接口可以重写workerId的值  </p>
-<p>起初想过通过云翼的外挂配置文件important.properties设置<code>workerId</code>值，<code>spring</code>配置文件再读取important.properties设置的值，不行，因为云翼上是按照az外挂的，每个az有两台服务器，那这两台服务器读取的还是一个值，还是会出现问题  </p>
-<p>最后是通过实现<code>Spring IOC</code>容器给我们提供的一个扩展接口<code>BeanPostProcessor</code>实现的，<code>BeanPostProcessor</code>提供了一个<code>postProcessBeforeInitialization</code>方法，也就是在bean初始化前可以修改worker.id的值，这样就可以为所欲为了，最终是用redis为每个服务器ip生成自增的序列值，存到redis里，每次启动时根据键ip读取redis的值，以后扩容机器接着申请即可  </p>
+<p><code>Spring Sharding</code>配置文件是支持注入<code>worker.id</code>值的，但只能在配置文件配置，不能动态生成，最终会部署到8台服务器上，读的还是一个值，咨询过<code>Sharding</code>创始人，也没有扩展接口可以重写<code>workerId</code>的值  </p>
+<p>起初想过通过云翼的外挂配置文件<code>important.properties</code>设置<code>workerId</code>值，<code>Spring</code>配置文件再读取<code>important.properties</code>设置的值，不行，因为云翼上是按照<code>az</code>外挂的，每个<code>az</code>有两台服务器，那这两台服务器读取的还是一个值，还是会出现问题  </p>
+<p>最后是通过实现<code>Spring IOC</code>容器给我们提供的一个扩展接口<code>BeanPostProcessor</code>实现的，<code>BeanPostProcessor</code>提供了一个<code>postProcessBeforeInitialization</code>方法，也就是在bean初始化前可以修改<code>worker.id</code>的值，这样就可以为所欲为了，最终是用<code>redis</code>为每个服务器ip生成自增的序列值，存到<code>redis</code>里，每次启动时根据键ip读取<code>redis</code>的值，以后扩容机器接着申请即可  </p>
 <h3 id="时钟回拨问题"><a href="#时钟回拨问题" class="headerlink" title="时钟回拨问题"></a>时钟回拨问题</h3><h4 id="问题描述-1"><a href="#问题描述-1" class="headerlink" title="问题描述"></a>问题描述</h4><p>邮件告警双写失败，Cause: java.lang.IllegalStateException:<code>Clock is moving backwards</code>, last time is %d milliseconds, current time is %d milliseconds [1584000400088, 1584000399959]</p>
 <h4 id="问题分析-1"><a href="#问题分析-1" class="headerlink" title="问题分析"></a>问题分析</h4><p>错误信息中<code>Clock is moving backwards</code>，是由于时钟回退导致，当前生成id的时间早于最后一次生成id的时间</p>
 <p><code>SnowFlake</code>生成规则依赖时间戳，这样由于时间校准，以及其他因素，可能导致服务器时间回退（时间向前快进不会有问题），如果恰巧回退前生成过一些id，而时间回退后，生成的id就有可能重复。官方对于此并没有给出解决方案，而是简单的抛错处理，这样会造成在时间被追回之前的这段时间服务不可用</p>
@@ -109,26 +111,26 @@
 </ol>
 <p><code>Sharding</code>提供了一个扩展接口<code>ShardingKeyGenerator</code>，可以自己实现一套分布式id生成算法，这里只是在内置的<code>SnowFlake</code>基础上改进了时钟回拨导致服务不可用的问题</p>
 <p><code>SnowFlake</code>算法给<code>workerId</code>预留了10位，即<code>workerId</code>的取值范围为[0, 1023]，事实上实际生产环境不大可能需要部署1024个服务  </p>
-<p>所以采用备用<code>workerId</code>的方式，举例：将<code>workerId</code>取值范围缩小为[0, 511]，[512, 1023]这个范围的<code>workerId</code>当做备用workerId。<code>workerId</code>为0的备用<code>workerId</code>是512，<code>workerId</code>为1的备用<code>workerId</code>是513，以此类推……  </p>
+<p>所以采用备用<code>workerId</code>的方式，举例：将<code>workerId</code>取值范围缩小为[0, 511]，[512, 1023]这个范围的<code>workerId</code>当做备用<code>workerId</code>。<code>workerId</code>为0的备用<code>workerId</code>是512，<code>workerId</code>为1的备用<code>workerId</code>是513，以此类推……  </p>
 <p>备用<code>workerId</code>数量越多, 可靠性越高, 但是可部署的服务就越少  </p>
 <p>目前计费是设置了7个备份，最多能部署128个节点，足够用了</p>
-<p>这样改后，虽然解决了不可用问题，但频繁的时钟回退导致主键不具备递增特性，根据MySql聚集索引的特性，如果主不是递增，会导致索引数据结构(B+Tree)频繁的进行分裂和平衡，随着数据量越大，性能损耗越严重</p>
+<p>这样改后，虽然解决了不可用问题，但频繁的时钟回退导致主键不具备递增特性，根据<code>MySql</code>聚集索引的特性，如果主不是递增，会导致索引数据结构(<code>B+Tree</code>)频繁的进行分裂和平衡，随着数据量越大，性能损耗越严重</p>
 <ol start="2">
 <li>硬件方面</li>
 </ol>
 <p>10.160.10.50容器迁移到了时钟正常的物理机上</p>
-<h3 id="多线程并发时路由不准确问题"><a href="#多线程并发时路由不准确问题" class="headerlink" title="多线程并发时路由不准确问题"></a>多线程并发时路由不准确问题</h3><h4 id="问题描述-2"><a href="#问题描述-2" class="headerlink" title="问题描述"></a>问题描述</h4><p>邮件告警双写失败，更新metering或者last_billing_record条数为0，未更新成功</p>
+<h3 id="多线程并发时路由不准确问题"><a href="#多线程并发时路由不准确问题" class="headerlink" title="多线程并发时路由不准确问题"></a>多线程并发时路由不准确问题</h3><h4 id="问题描述-2"><a href="#问题描述-2" class="headerlink" title="问题描述"></a>问题描述</h4><p>告警双写失败，更新metering或者last_billing_record条数为0，未更新成功</p>
 <h4 id="问题分析-2"><a href="#问题分析-2" class="headerlink" title="问题分析"></a>问题分析</h4><p>通过查日志发现，同一台服务器上的两个线程操作同一张表时，路由会混乱，a线程会使用b线程的路由分片值  </p>
 <p>a线程做数据迁移，迁移的时间2019-03-14 - 2019-03-31  </p>
-<p>b线程处理kafka消息，生成用量数据，时间是2020-03-17  </p>
+<p>b线程处理Kafka消息，生成用量数据，时间是2020-03-17  </p>
 <p>两个线程并发时，a线程会使用b线程的路由分片值，这样就导致a线程先用路由分片值2019-03-17插入表metering_1903成功，再用路由值2020-03-17更新表metering_2003的状态，两个表不一致，导致更新不到数据  </p>
 <p>Spring注入的路由实现类是单例的，为了方便取值，路由实现类将路由分片值定义成了实例变量，如果单例中使用实例变量，多线程不安全  </p>
-<h4 id="解决方案-2"><a href="#解决方案-2" class="headerlink" title="解决方案"></a>解决方案</h4><p>删除实例变量，路由值通过方法参数传递，或者spring注入实例设置为多例</p>
+<h4 id="解决方案-2"><a href="#解决方案-2" class="headerlink" title="解决方案"></a>解决方案</h4><p>删除实例变量，路由值通过方法参数传递，或者Spring注入实例设置为多例</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/10/Sharding-JDBC/" data-id="ck8tevn80000118l96e5a7o18" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/10/Sharding-JDBC/" data-id="ck8tfmvh1000270l91pui3i0j" class="article-share-link">Share</a>
       
       
     </footer>
@@ -176,7 +178,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/09/redis%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/" data-id="ck8tevn8c000518l9cj55bnic" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/09/redis%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/" data-id="ck8tfmvh5000570l9dljx1dpe" class="article-share-link">Share</a>
       
       
     </footer>
@@ -227,7 +229,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/09/Windows%E5%89%AA%E8%B4%B4%E6%9D%BF%E5%A2%9E%E5%BC%BA%E8%BD%AF%E4%BB%B6-ClipX/" data-id="ck8tevn84000218l91ocjf7yv" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/09/Windows%E5%89%AA%E8%B4%B4%E6%9D%BF%E5%A2%9E%E5%BC%BA%E8%BD%AF%E4%BB%B6-ClipX/" data-id="ck8tfmvh2000370l91ylk8yqv" class="article-share-link">Share</a>
       
       
     </footer>
@@ -269,7 +271,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/09/APM-Skywalking/" data-id="ck8tevn7o000018l9b9n531hl" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/09/APM-Skywalking/" data-id="ck8tfmvgz000170l99iqf0yqj" class="article-share-link">Share</a>
       
       
     </footer>
@@ -346,7 +348,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/09/APM-Pinpoint/" data-id="ck8tevn8a000418l98xcq5taj" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/09/APM-Pinpoint/" data-id="ck8tfmvgn000070l92hci0ig0" class="article-share-link">Share</a>
       
       
     </footer>
@@ -590,7 +592,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/09/Hibernate-Validator/" data-id="ck8tevn9j000718l935vk98bc" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/09/Hibernate-Validator/" data-id="ck8tfmvhz000770l9coedabdu" class="article-share-link">Share</a>
       
       
     </footer>
@@ -675,7 +677,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/09/log-mdc/" data-id="ck8tevn8r000618l9e3oq5lka" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/09/log-mdc/" data-id="ck8tfmvhf000670l9ddyrauwo" class="article-share-link">Share</a>
       
       
     </footer>
@@ -724,7 +726,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/08/hello-world/" data-id="ck8tevn88000318l9fbwy49m4" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/08/hello-world/" data-id="ck8tfmvh4000470l98by31j0f" class="article-share-link">Share</a>
       
       
     </footer>
