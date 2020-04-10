@@ -7,16 +7,16 @@
   
   <title>Sharding JDBC生产问题 | 我的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="分布式主键重复问题最近项目中在使用数据库中间件，采用ShardingSphere中的Sharding-JDBC，总结下最近出现的问题 ShardingSphere官网 问题描述告警双写失败，库中新增metering和last_billing_record违反唯一主键约束 问题分析因为涉及到分库分表，数据是分散存放的，为了避免分表中的主键不重复，所以使用分布式主键算法生成主键，目前使用的是Shard">
+  <meta name="description" content="最近项目中在使用数据库中间件，采用ShardingSphere中的Sharding-JDBC，总结下最近出现的问题 ShardingSphere官网 分布式主键重复问题问题描述告警双写失败，库中新增metering和last_billing_record违反唯一主键约束 问题分析因为涉及到分库分表，数据是分散存放的，为了避免分表中的主键不重复，所以使用分布式主键算法生成主键，目前使用的是Shard">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Sharding JDBC生产问题">
 <meta property="og:url" content="https://sunshaohua0221.github.io/2020/04/10/Sharding-JDBC/index.html">
 <meta property="og:site_name" content="我的博客">
-<meta property="og:description" content="分布式主键重复问题最近项目中在使用数据库中间件，采用ShardingSphere中的Sharding-JDBC，总结下最近出现的问题 ShardingSphere官网 问题描述告警双写失败，库中新增metering和last_billing_record违反唯一主键约束 问题分析因为涉及到分库分表，数据是分散存放的，为了避免分表中的主键不重复，所以使用分布式主键算法生成主键，目前使用的是Shard">
+<meta property="og:description" content="最近项目中在使用数据库中间件，采用ShardingSphere中的Sharding-JDBC，总结下最近出现的问题 ShardingSphere官网 分布式主键重复问题问题描述告警双写失败，库中新增metering和last_billing_record违反唯一主键约束 问题分析因为涉及到分库分表，数据是分散存放的，为了避免分表中的主键不重复，所以使用分布式主键算法生成主键，目前使用的是Shard">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://sunshaohua0221.github.io/2020/04/10/Sharding-JDBC/snowflake.jpg">
 <meta property="article:published_time" content="2020-04-09T23:29:16.637Z">
-<meta property="article:modified_time" content="2020-04-10T00:08:25.859Z">
+<meta property="article:modified_time" content="2020-04-10T00:14:36.866Z">
 <meta property="article:author" content="ssh">
 <meta property="article:tag" content="技术、生活">
 <meta name="twitter:card" content="summary">
@@ -95,9 +95,9 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="分布式主键重复问题"><a href="#分布式主键重复问题" class="headerlink" title="分布式主键重复问题"></a>分布式主键重复问题</h3><p>最近项目中在使用数据库中间件，采用<code>ShardingSphere</code>中的<code>Sharding-JDBC</code>，总结下最近出现的问题</p>
+        <p>最近项目中在使用数据库中间件，采用<code>ShardingSphere</code>中的<code>Sharding-JDBC</code>，总结下最近出现的问题</p>
 <p><a href="https://shardingsphere.apache.org/" target="_blank" rel="noopener">ShardingSphere官网</a></p>
-<h4 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h4><p>告警双写失败，库中新增metering和last_billing_record违反唯一主键约束</p>
+<h3 id="分布式主键重复问题"><a href="#分布式主键重复问题" class="headerlink" title="分布式主键重复问题"></a>分布式主键重复问题</h3><h4 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h4><p>告警双写失败，库中新增metering和last_billing_record违反唯一主键约束</p>
 <h4 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h4><p>因为涉及到分库分表，数据是分散存放的，为了避免分表中的主键不重复，所以使用分布式主键算法生成主键，目前使用的是<code>Sharding</code>内置的<code>SnowFlake(Twitter开源的)</code>算法<br><code>SnowFlake</code>算法生成ID的结构如下图：<br><img src="snowflake.jpg" alt=""><br>其中<code>工作机器id(workerId)</code>是用来区分不同的机器而设计，上线时，未设置这个参数，默认为0，也就是线上8台服务的<code>workerId</code>都为0，这样就会出现某几台服务器在同一时间(毫秒)写同一张表，按照原理图可以得出时间戳一样，工作机器id一样，序列号一样，所以就出现了多台服务器同一时间用同一个主键id写表，报了违反唯一主键约束的错误  </p>
 <p>基于计费的业务特殊性，0-半点之间会跑分布式任务，所以很容易造成多台服务器同一时间写同一张表的情况  </p>
 <h4 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h4><p>为每台服务器设置单独的<code>workerId</code>，<code>workerId</code>取值范围<code>0-1023</code>  </p>
@@ -132,7 +132,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/10/Sharding-JDBC/" data-id="ck8tfmvh1000270l91pui3i0j" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/10/Sharding-JDBC/" data-id="ck8tfuybq00026ol90zhbbu5j" class="article-share-link">Share</a>
       
       
     </footer>
