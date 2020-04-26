@@ -71,6 +71,53 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-一次系统启动失败经历" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/04/26/%E4%B8%80%E6%AC%A1%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5%E7%BB%8F%E5%8E%86/" class="article-date">
+  <time datetime="2020-04-26T14:09:33.966Z" itemprop="datePublished">2020-04-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/04/26/%E4%B8%80%E6%AC%A1%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5%E7%BB%8F%E5%8E%86/">一次系统启动失败经历</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>最近遇到一个很头疼的问题，在一次合代码后，系统启不来了，确切的说，本地可以起来，生成容器镜像后启不来，报了一大堆创建Spring bean异常，本地能启动，镜像启不来，这是不是很怀疑人生，通过各种排除法手段合并代码、删除代码，但就是不行，第二天又重新倒腾了一下（merge），好了，也不知道为啥就好了。    </p>
+<p>接着又有新需求了，从master上拉新的分支，吭哧吭哧干完了，编译、打包、生成镜像、部署、启动，完，又出现那个熟悉的异常了，我始终都相信代码不会说谎，绝不会是偶然，所以我决定好好找找原因。    </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">此处是异常信息</span><br></pre></td></tr></table></figure>
+
+<p>观察异常信息后，都是创建bean的错误，前提是所有的bean都被扫描到了，有一个现象是本地虽然能起来，但日志里也有WARN信息，信息也是关于创建bean的，决定升级下Spring试试，从4.3.2-&gt;5.2.5，完事后镜像启动，还是报错；</p>
+<p>再观察异常信息后，发现最后都是以<code>sharding-JDBC</code>相关的持久层mapper结束的，所以从<code>sharding-JDBC</code>数据源的<code>xml</code>开始，把原来的配置文件备份下，重新搞一个新的，并且跟官方的<code>shardingsphere-example</code>对比，写完后，再镜像启动，还是报错；</p>
+<p>再看<code>shardingsphere-example</code>后，持久层是用<code>@Mapper</code>注解，项目工程是用<code>@Repository</code>注解，难道是这个问题吗？到了这个份上，可能你觉得什么都有可能是错的，那就试一下吧，项目功能改成<code>@Mapper</code>，咦？没有这个注解，项目工程的<code>mybatis</code>包版本是3.2.5，版本低，还没有这个注解，那就升下级，升级到3.4.2，顺便把<code>mybatis-spring</code>也升下级，1.2.1-&gt;1.3.0，完事后镜像启动，好了，很鸡冻。</p>
+<p>此时由恍惚变得清醒了点，其实跟注解是<code>@Mapper</code>没啥关系，主要还是很<code>mybatis</code>、<code>mybatis-spring</code>版本低有关，重新把<code>@Mapper</code>换成<code>@Repository</code>后，镜像启动，也没毛病。</p>
+<p>所以最终还是<code>mybatis</code>、<code>mybatis-spring</code>的版本和<code>spring</code>的版本不匹配导致，至于在本地启动可以，在镜像启动不行，这个问题还是无解，可能是跟环境有关</p>
+<p><img src="mybatis-1.3.0.png" alt=""></p>
+<p><img src="mybatis-1.3.0-depend.png" alt=""></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://sunshaohua0221.github.io/2020/04/26/%E4%B8%80%E6%AC%A1%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5%E7%BB%8F%E5%8E%86/" data-id="ck9h75ir50005v4l9gdi858vp" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Sharding-JDBC" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/04/10/Sharding-JDBC/" class="article-date">
@@ -122,15 +169,15 @@
 <h3 id="多线程并发时路由不准确问题"><a href="#多线程并发时路由不准确问题" class="headerlink" title="多线程并发时路由不准确问题"></a>多线程并发时路由不准确问题</h3><h4 id="问题描述-2"><a href="#问题描述-2" class="headerlink" title="问题描述"></a>问题描述</h4><p>告警双写失败，更新metering或者last_billing_record条数为0，未更新成功</p>
 <h4 id="问题分析-2"><a href="#问题分析-2" class="headerlink" title="问题分析"></a>问题分析</h4><p>通过查日志发现，同一台服务器上的两个线程操作同一张表时，路由会混乱，a线程会使用b线程的路由分片值  </p>
 <p>a线程做数据迁移，迁移的时间2019-03-14 - 2019-03-31  </p>
-<p>b线程处理Kafka消息，生成用量数据，时间是2020-03-17  </p>
+<p>b线程处理<code>Kafka</code>消息，生成用量数据，时间是2020-03-17  </p>
 <p>两个线程并发时，a线程会使用b线程的路由分片值，这样就导致a线程先用路由分片值2019-03-17插入表metering_1903成功，再用路由值2020-03-17更新表metering_2003的状态，两个表不一致，导致更新不到数据  </p>
-<p>Spring注入的路由实现类是单例的，为了方便取值，路由实现类将路由分片值定义成了实例变量，如果单例中使用实例变量，多线程不安全  </p>
-<h4 id="解决方案-2"><a href="#解决方案-2" class="headerlink" title="解决方案"></a>解决方案</h4><p>删除实例变量，路由值通过方法参数传递，或者Spring注入实例设置为多例</p>
+<p><code>Spring</code>注入的路由实现类是单例的，为了方便取值，路由实现类将路由分片值定义成了实例变量，如果单例中使用实例变量，多线程不安全  </p>
+<h4 id="解决方案-2"><a href="#解决方案-2" class="headerlink" title="解决方案"></a>解决方案</h4><p>删除实例变量，路由值通过方法参数传递，或者<code>Spring</code>注入实例设置为多例</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/10/Sharding-JDBC/" data-id="ck8tfuybq00026ol90zhbbu5j" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/10/Sharding-JDBC/" data-id="ck9h75iqx0001v4l96tmk92ts" class="article-share-link">Share</a>
       
       
     </footer>
@@ -178,7 +225,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/09/redis%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/" data-id="ck8tfuybt00056ol9ansehord" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/09/redis%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/" data-id="ck9h75ir40004v4l9dct273o8" class="article-share-link">Share</a>
       
       
     </footer>
@@ -229,7 +276,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/09/Windows%E5%89%AA%E8%B4%B4%E6%9D%BF%E5%A2%9E%E5%BC%BA%E8%BD%AF%E4%BB%B6-ClipX/" data-id="ck8tfuybr00036ol95r8hbti1" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/09/Windows%E5%89%AA%E8%B4%B4%E6%9D%BF%E5%A2%9E%E5%BC%BA%E8%BD%AF%E4%BB%B6-ClipX/" data-id="ck9h75ir00002v4l9ce7hgm9x" class="article-share-link">Share</a>
       
       
     </footer>
@@ -271,7 +318,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/09/APM-Skywalking/" data-id="ck8tfuybf00006ol99im02lih" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/09/APM-Skywalking/" data-id="ck9h75ir70006v4l9eidj8inb" class="article-share-link">Share</a>
       
       
     </footer>
@@ -348,7 +395,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/09/APM-Pinpoint/" data-id="ck8tfuybo00016ol96p68haw0" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/09/APM-Pinpoint/" data-id="ck9h75iql0000v4l9ew9yb8iy" class="article-share-link">Share</a>
       
       
     </footer>
@@ -592,7 +639,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/09/Hibernate-Validator/" data-id="ck8tfuyce00076ol9528agyjq" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/09/Hibernate-Validator/" data-id="ck9h75is60008v4l9fobj6cf7" class="article-share-link">Share</a>
       
       
     </footer>
@@ -677,7 +724,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/09/log-mdc/" data-id="ck8tfuycb00066ol93hqdc2yd" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/09/log-mdc/" data-id="ck9h75irn0007v4l99eww3075" class="article-share-link">Share</a>
       
       
     </footer>
@@ -726,7 +773,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/08/hello-world/" data-id="ck8tfuybs00046ol9emlo1m45" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/08/hello-world/" data-id="ck9h75ir20003v4l9an4f8s46" class="article-share-link">Share</a>
       
       
     </footer>
@@ -767,6 +814,10 @@
       <ul>
         
           <li>
+            <a href="/2020/04/26/%E4%B8%80%E6%AC%A1%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5%E7%BB%8F%E5%8E%86/">一次系统启动失败经历</a>
+          </li>
+        
+          <li>
             <a href="/2020/04/10/Sharding-JDBC/">Sharding JDBC生产问题</a>
           </li>
         
@@ -780,10 +831,6 @@
         
           <li>
             <a href="/2020/04/09/APM-Skywalking/">APM-Skywalking</a>
-          </li>
-        
-          <li>
-            <a href="/2020/04/09/APM-Pinpoint/">APM-Pinpoint</a>
           </li>
         
       </ul>
