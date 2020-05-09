@@ -17,7 +17,7 @@
 <meta property="og:image" content="https://sunshaohua0221.github.io/2020/04/26/%E4%B8%80%E6%AC%A1%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5%E7%BB%8F%E5%8E%86/mybatis-1.3.0.png">
 <meta property="og:image" content="https://sunshaohua0221.github.io/2020/04/26/%E4%B8%80%E6%AC%A1%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5%E7%BB%8F%E5%8E%86/mybatis-1.3.0-depend.png">
 <meta property="article:published_time" content="2020-04-26T14:09:33.966Z">
-<meta property="article:modified_time" content="2020-04-26T15:16:18.884Z">
+<meta property="article:modified_time" content="2020-05-09T02:01:58.709Z">
 <meta property="article:author" content="ssh">
 <meta property="article:tag" content="技术、生活">
 <meta name="twitter:card" content="summary">
@@ -98,7 +98,7 @@
       
         <p>最近遇到一个很头疼的问题，在一次合代码后，系统启不来了，确切的说，本地可以起来，生成容器镜像后启不来，报了一大堆创建Spring bean异常，本地能启动，镜像启不来，这是不是很怀疑人生，通过各种排除法手段合并代码、删除代码，但就是不行，第二天又重新倒腾了一下（merge），好了，也不知道为啥就好了。    </p>
 <p>接着又有新需求了，从master上拉新的分支，吭哧吭哧干完了，编译、打包、生成镜像、部署、启动，完，又出现那个熟悉的异常了，我始终都相信代码不会说谎，绝不会是偶然，所以我决定好好找找原因。    </p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">此处是异常信息</span><br></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Related cause: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'meteringLastBillingRecordMapper' defined in URL [jar:file:/export/Packages/jcloud-newbilling/feature-settlement-info-add-fee-20200423-c4b21536-0423144327/webapps/ROOT/WEB-INF/lib/billing-dao-1.0-SNAPSHOT.jar!/com/jcloud/billing/mapper_metering/MeteringLastBillingRecordMapper.class]: Cannot resolve reference to bean 'meteringSqlSessionFactory' while setting bean property 'sqlSessionFactory'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'meteringSqlSessionFactory': FactoryBean threw exception on object creation; nested exception is java.lang.IllegalArgumentException: Property 'dataSource' is required</span><br><span class="line"></span><br><span class="line">Related cause: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'meteringOverViewMapper' defined in URL [jar:file:/export/Packages/jcloud-newbilling/feature-settlement-info-add-fee-20200423-c4b21536-0423144327/webapps/ROOT/WEB-INF/lib/billing-dao-1.0-SNAPSHOT.jar!/com/jcloud/billing/mapper_metering/MeteringOverViewMapper.class]: Cannot resolve reference to bean 'meteringSqlSessionFactory' while setting bean property 'sqlSessionFactory'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'meteringSqlSessionFactory': FactoryBean threw exception on object creation; nested exception is java.lang.IllegalArgumentException: Property 'dataSource' is required</span><br></pre></td></tr></table></figure>
 
 <p>观察异常信息后，都是创建bean的错误，前提是所有的bean都被扫描到了，有一个现象是本地虽然能起来，但日志里也有WARN信息，信息也是关于创建bean的，决定升级下Spring试试，从4.3.2-&gt;5.2.5，完事后镜像启动，还是报错；</p>
 <p>再观察异常信息后，发现最后都是以<code>sharding-JDBC</code>相关的持久层mapper结束的，所以从<code>sharding-JDBC</code>数据源的<code>xml</code>开始，把原来的配置文件备份下，重新搞一个新的，并且跟官方的<code>shardingsphere-example</code>对比，写完后，再镜像启动，还是报错；</p>
@@ -111,7 +111,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/26/%E4%B8%80%E6%AC%A1%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5%E7%BB%8F%E5%8E%86/" data-id="ck9h75ir50005v4l9gdi858vp" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/26/%E4%B8%80%E6%AC%A1%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5%E7%BB%8F%E5%8E%86/" data-id="ck9yzhm1h0004e4l9g08h4roi" class="article-share-link">Share</a>
       
       
     </footer>
