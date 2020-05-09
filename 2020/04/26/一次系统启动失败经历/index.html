@@ -17,7 +17,7 @@
 <meta property="og:image" content="https://sunshaohua0221.github.io/2020/04/26/%E4%B8%80%E6%AC%A1%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5%E7%BB%8F%E5%8E%86/mybatis-1.3.0.png">
 <meta property="og:image" content="https://sunshaohua0221.github.io/2020/04/26/%E4%B8%80%E6%AC%A1%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5%E7%BB%8F%E5%8E%86/mybatis-1.3.0-depend.png">
 <meta property="article:published_time" content="2020-04-26T14:09:33.966Z">
-<meta property="article:modified_time" content="2020-05-09T02:01:58.709Z">
+<meta property="article:modified_time" content="2020-05-09T02:11:21.965Z">
 <meta property="article:author" content="ssh">
 <meta property="article:tag" content="技术、生活">
 <meta name="twitter:card" content="summary">
@@ -102,7 +102,7 @@
 
 <p>观察异常信息后，都是创建bean的错误，前提是所有的bean都被扫描到了，有一个现象是本地虽然能起来，但日志里也有WARN信息，信息也是关于创建bean的，决定升级下Spring试试，从4.3.2-&gt;5.2.5，完事后镜像启动，还是报错；</p>
 <p>再观察异常信息后，发现最后都是以<code>sharding-JDBC</code>相关的持久层mapper结束的，所以从<code>sharding-JDBC</code>数据源的<code>xml</code>开始，把原来的配置文件备份下，重新搞一个新的，并且跟官方的<code>shardingsphere-example</code>对比，写完后，再镜像启动，还是报错；</p>
-<p>再看<code>shardingsphere-example</code>后，持久层是用<code>@Mapper</code>注解，项目工程是用<code>@Repository</code>注解，难道是这个问题吗？到了这个份上，可能你觉得什么都有可能是错的，那就试一下吧，项目功能改成<code>@Mapper</code>，咦？没有这个注解，项目工程的<code>mybatis</code>包版本是3.2.5，版本低，还没有这个注解，那就升下级，升级到3.4.2，顺便把<code>mybatis-spring</code>也升下级，1.2.1-&gt;1.3.0，完事后镜像启动，好了，很鸡冻。</p>
+<p>再看<code>shardingsphere-example</code>后，持久层是用<code>@Mapper</code>注解，项目工程是用<code>@Repository</code>注解，难道是这个问题吗？到了这个份上，可能你觉得什么都有可能是错的，那就试一下吧，持久层注解改成<code>@Mapper</code>，咦？没有这个注解，项目工程的<code>mybatis</code>包版本是3.2.5，版本低，还没有这个注解，那就升下级，升级到3.4.2，顺便把<code>mybatis-spring</code>也升下级，1.2.1-&gt;1.3.0，完事后镜像启动，好了，很鸡冻。</p>
 <p>此时由恍惚变得清醒了点，其实跟注解是<code>@Mapper</code>没啥关系，主要还是很<code>mybatis</code>、<code>mybatis-spring</code>版本低有关，重新把<code>@Mapper</code>换成<code>@Repository</code>后，镜像启动，也没毛病。</p>
 <p>所以最终还是<code>mybatis</code>、<code>mybatis-spring</code>的版本和<code>spring</code>的版本不匹配导致，至于在本地启动可以，在镜像启动不行，这个问题还是无解，可能是跟环境有关</p>
 <p><img src="mybatis-1.3.0.png" alt=""></p>
@@ -111,7 +111,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/26/%E4%B8%80%E6%AC%A1%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5%E7%BB%8F%E5%8E%86/" data-id="ck9yzhm1h0004e4l9g08h4roi" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/26/%E4%B8%80%E6%AC%A1%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5%E7%BB%8F%E5%8E%86/" data-id="ck9z0ph1e0007bwl9bn2z6l26" class="article-share-link">Share</a>
       
       
     </footer>
@@ -119,6 +119,15 @@
   
     
 <nav id="article-nav">
+  
+    <a href="/2020/05/09/Spring%E4%BA%8B%E5%8A%A1%E4%BC%A0%E6%92%AD%E6%9C%BA%E5%88%B6%E5%AE%9E%E6%88%98/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Spring事务传播机制实战
+        
+      </div>
+    </a>
   
   
     <a href="/2020/04/10/Sharding-JDBC/" id="article-nav-older" class="article-nav-link-wrap">
@@ -147,7 +156,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a></li></ul>
     </div>
   </div>
 
@@ -158,6 +167,10 @@
     <h3 class="widget-title">最新文章</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2020/05/09/Spring%E4%BA%8B%E5%8A%A1%E4%BC%A0%E6%92%AD%E6%9C%BA%E5%88%B6%E5%AE%9E%E6%88%98/">Spring事务传播机制实战</a>
+          </li>
         
           <li>
             <a href="/2020/04/26/%E4%B8%80%E6%AC%A1%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5%E7%BB%8F%E5%8E%86/">一次系统启动失败经历</a>
@@ -173,10 +186,6 @@
         
           <li>
             <a href="/2020/04/09/Windows%E5%89%AA%E8%B4%B4%E6%9D%BF%E5%A2%9E%E5%BC%BA%E8%BD%AF%E4%BB%B6-ClipX/">Windows剪贴板增强软件-ClipX</a>
-          </li>
-        
-          <li>
-            <a href="/2020/04/09/APM-Skywalking/">APM-Skywalking</a>
           </li>
         
       </ul>
