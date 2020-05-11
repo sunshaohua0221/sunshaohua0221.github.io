@@ -93,12 +93,74 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>前段时间项目中做了一次大升级，其中包括数据库分库，由于分了库，原来的单库事务就变成了跨库事务，所以用到了分布式事务，引入了阿里开源的<code>seata</code>；由于业务的特殊性，是属于定点执行任务，在某一时间集中处理，所以在压力测试时，<code>seata-server</code>端由于事务并发量大导致<code>seata-server</code>的表有死锁问题，一直重试。显然不可接受，所以决定暂时舍弃<code>seata</code>，还是采用<code>Spring</code>的事务来实现跨库事务</p>
+        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>前段时间项目中做了一次大升级，其中包括数据库分库，由于分了库，原来的单库事务就变成了跨库事务，所以用到了分布式事务，引入了阿里开源的<code>seata</code>；由于业务的特殊性，是属于定点执行任务，在某一时间集中处理业务，所以在压力测试时，<code>seata-server</code>端由于事务并发量大导致<code>seata-server</code>的表有死锁问题，一直重试。显然不可接受，所以决定暂时舍弃<code>seata</code>，还是采用<code>Spring</code>的事务来实现跨库事务。虽然也达到了目的，但如果跨太多个库，还是不建议用<code>Spring</code>事务来解决，可能会造成数据不一致的情况。</p>
+<h2 id="Spring事务失效的原因-事务生效的条件"><a href="#Spring事务失效的原因-事务生效的条件" class="headerlink" title="Spring事务失效的原因(事务生效的条件)"></a>Spring事务失效的原因(事务生效的条件)</h2><ul>
+<li><p>没有被<code>Spring</code>管理，类没有加注解<code>@Service</code>或者其他</p>
+</li>
+<li><p>方法不是<code>public</code>的，<code>@Transactional</code>作用于public方法上才会生效，如果方法不是<code>public</code>，能编译过能正常运行，但事务不生效，经常发生</p>
+</li>
+<li><p>类自身调用，同一个类的方法A调用方法B，方法B上有事务注解，事务不会生效，因为自身调用没用经过Spring代理类，默认只有在外部调用时才会生效，经常发生</p>
+</li>
+<li><p>异常被吃了，或者异常类型错误，Spring事务默认回滚的是<code>RuntimeException</code>，如果想触发其他异常回滚需要在注解上配置一下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Transactional</span>(rollbackFor = Exception<span class="class">.<span class="keyword">class</span>)</span></span><br></pre></td></tr></table></figure>
+
+<p>这个配置仅限于 <code>Throwable</code> 异常类及其子类</p>
+</li>
+</ul>
+<h2 id="为什么会有传播机制"><a href="#为什么会有传播机制" class="headerlink" title="为什么会有传播机制"></a>为什么会有传播机制</h2><p><code>Spring</code>对事务的控制，是使用<code>aop</code>切面实现的，我们不用关心事务的开始、提交、回滚，只需要在方法上加上注解<code>@Transactional</code>即可，那这时候就有问题了：</p>
+<ul>
+<li>场景1：serviceA方法调用serviceB方法，但两个方法都有事务，这个时候如果serviceB方法异常，是让serviceB方法提交，还是两个一起回滚；</li>
+<li>场景2：serviceA方法调用serviceB方法，只有serviceA方法加了事务，serviceB方法是否也要加入serviceA方法的事务，如果serviceB方法异常，是否回滚serviceA；</li>
+<li>场景3：serviceA方法调用serviceB方法，两者都有事务，serviceB正常执行完，但serviceA异常，是否需要回滚serviceB；</li>
+</ul>
+<h2 id="传播机制类型"><a href="#传播机制类型" class="headerlink" title="传播机制类型"></a>传播机制类型</h2><h3 id="PROPAGATION-REQUIRED-默认"><a href="#PROPAGATION-REQUIRED-默认" class="headerlink" title="PROPAGATION_REQUIRED(默认)"></a>PROPAGATION_REQUIRED(默认)</h3><ul>
+<li>支持当前事务，如果当前没有事务，则新建事务</li>
+<li>如果当前存在事务，则加入当前事务，合并为一个事务</li>
+</ul>
+<h3 id="REQUIRES-NEW"><a href="#REQUIRES-NEW" class="headerlink" title="REQUIRES_NEW"></a>REQUIRES_NEW</h3><ul>
+<li>新建事务，如果当前存在事务，则把当前事务挂起</li>
+<li>这个类型，是独立提交事务，不受调用者的事务影响，父级异常，也不影响提交</li>
+</ul>
+<h3 id="NESTED"><a href="#NESTED" class="headerlink" title="NESTED"></a>NESTED</h3><ul>
+<li>如果当前存在事务，它将成为父级事务的一个子事务，方法结束后并没有提交，只有等父级事务结束才提交</li>
+<li>如果当前没有事务，则新建事务</li>
+<li>如果它异常，父级可以捕获它的异常而不进行回滚，正常提交</li>
+<li>但如果父级异常，它必回滚，这就是和<code>REQUIRES_NEW</code>的区别</li>
+</ul>
+<h3 id="SUPPORTS"><a href="#SUPPORTS" class="headerlink" title="SUPPORTS"></a>SUPPORTS</h3><ul>
+<li>如果当前存在事务，则加入事务</li>
+<li>如果当前不存在事务，则以非事务方式运行，这个和没写没有区别</li>
+</ul>
+<h3 id="NOT-SUPPORTED"><a href="#NOT-SUPPORTED" class="headerlink" title="NOT_SUPPORTED"></a>NOT_SUPPORTED</h3><ul>
+<li>以非事务方式运行</li>
+<li>如果当前存在事务，则把当前事务挂起</li>
+</ul>
+<h3 id="MANDATORY"><a href="#MANDATORY" class="headerlink" title="MANDATORY"></a>MANDATORY</h3><ul>
+<li>如果当前存在事务，则运行在当前事务中</li>
+<li>如果当前不存在事务，则抛出异常，也即父级方法必须有事务</li>
+</ul>
+<h3 id="NEVER"><a href="#NEVER" class="headerlink" title="NEVER"></a>NEVER</h3><ul>
+<li>以非事务方式运行，如果当前存在事务，则抛出异常，即父级方法必须无事务</li>
+</ul>
+<h2 id="实现跨库事务"><a href="#实现跨库事务" class="headerlink" title="实现跨库事务"></a>实现跨库事务</h2><p><strong>前提</strong>：事务都是跟着数据库连接走的，一个@Transactional只能控制一个数据库的事务，所以一个事务方法内操作多个库的话，只有一个库事务启作用</p>
+<p><strong>有两个注意点：</strong></p>
+<ul>
+<li>一个事务里涉及到多个库，一定要使用嵌套方法调用，每个方法都加<code>@Transactional</code>，每个方法操作一个库，比如A调B，B调C，C调D，这样每个方法（事务）都会等下一个方法（事务）处理完才能提交，如果有一个方法（事务）异常，则全部回滚</li>
+<li>不能A调完B再调C，这样B方法执行完，如果没有异常直接提交了，那A方法后边的逻辑异常了，B是不会回滚的，所以第二点需要注意的是，嵌套调用时，调用方法后不能有任何逻辑，否则，主方法异常后，子方法不能回滚</li>
+</ul>
+<p><strong>场景1：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Transactional</span>(<span class="string">"库A"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">serviceA</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="comment">//库A-表1</span></span><br><span class="line">    <span class="comment">//库A-表2</span></span><br><span class="line">    <span class="comment">//库B-表1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果跨两个库，可以不用嵌套事务，一个事务就可以，因为库A的事务等执行完整个方法才提交，所以库B成功，则库A也提交，库B失败，则库A也回滚，但库B后边不能有任何逻辑，参考第二注意点</p>
+<p><strong>场景2：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Transactional</span>(<span class="string">"库A"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">serviceA</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="comment">//库A-表1</span></span><br><span class="line">    <span class="comment">//库A-表2</span></span><br><span class="line">    serviceB();</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">@Transactional</span>(<span class="string">"库B"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">serviceB</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="comment">//库B-表1</span></span><br><span class="line">    serviceC();</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">@Transactional</span>(<span class="string">"库C"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">serviceC</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="comment">//库C-表1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>涉及3个以上的库，嵌套调用，如果serviceB异常，serviceA还没提交，还在等serviceB执行，捕捉到serviceB异常后，回滚，同理serviceC异常，serviceA等serviceB，serviceB等serviceC，捕获到异常后都回滚。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/05/09/Spring%E4%BA%8B%E5%8A%A1%E4%BC%A0%E6%92%AD%E6%9C%BA%E5%88%B6%E5%AE%9E%E6%88%98/" data-id="ck9z0ph190003bwl906dw4eda" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/05/09/Spring%E4%BA%8B%E5%8A%A1%E4%BC%A0%E6%92%AD%E6%9C%BA%E5%88%B6%E5%AE%9E%E6%88%98/" data-id="cka2dzvrr0001ekl9czhl00ta" class="article-share-link">Share</a>
       
       
     </footer>
@@ -145,7 +207,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/26/%E4%B8%80%E6%AC%A1%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5%E7%BB%8F%E5%8E%86/" data-id="ck9z0ph1e0007bwl9bn2z6l26" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/26/%E4%B8%80%E6%AC%A1%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5%E7%BB%8F%E5%8E%86/" data-id="cka2dzvrz0007ekl96tfjguhw" class="article-share-link">Share</a>
       
       
     </footer>
@@ -214,7 +276,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/10/Sharding-JDBC/" data-id="ck9z0ph180002bwl9hb1ddcgf" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/10/Sharding-JDBC/" data-id="cka2dzvrt0002ekl9eptc1voy" class="article-share-link">Share</a>
       
       
     </footer>
@@ -262,7 +324,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/09/redis%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/" data-id="ck9z0ph1d0006bwl9ckeq89kc" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/09/redis%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/" data-id="cka2dzvry0006ekl943ik6qa5" class="article-share-link">Share</a>
       
       
     </footer>
@@ -313,7 +375,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/09/Windows%E5%89%AA%E8%B4%B4%E6%9D%BF%E5%A2%9E%E5%BC%BA%E8%BD%AF%E4%BB%B6-ClipX/" data-id="ck9z0ph1a0004bwl9943q0rp3" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/09/Windows%E5%89%AA%E8%B4%B4%E6%9D%BF%E5%A2%9E%E5%BC%BA%E8%BD%AF%E4%BB%B6-ClipX/" data-id="cka2dzvrw0004ekl9hw8idhv2" class="article-share-link">Share</a>
       
       
     </footer>
@@ -355,7 +417,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/09/APM-Skywalking/" data-id="ck9z0ph140001bwl9giv81wif" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/09/APM-Skywalking/" data-id="cka2dzvrv0003ekl9g4s6d14b" class="article-share-link">Share</a>
       
       
     </footer>
@@ -432,7 +494,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/09/APM-Pinpoint/" data-id="ck9z0ph0u0000bwl91rm7hdgq" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/09/APM-Pinpoint/" data-id="cka2dzvrh0000ekl99crk4aqq" class="article-share-link">Share</a>
       
       
     </footer>
@@ -676,7 +738,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/09/Hibernate-Validator/" data-id="ck9z0ph280009bwl9amph6ka2" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/09/Hibernate-Validator/" data-id="cka2dzvt20009ekl96f597tyj" class="article-share-link">Share</a>
       
       
     </footer>
@@ -761,7 +823,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/09/log-mdc/" data-id="ck9z0ph1l0008bwl9adp605f8" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/09/log-mdc/" data-id="cka2dzvsg0008ekl9byueaqfu" class="article-share-link">Share</a>
       
       
     </footer>
@@ -810,7 +872,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/08/hello-world/" data-id="ck9z0ph1c0005bwl9c4llhaj2" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/08/hello-world/" data-id="cka2dzvrx0005ekl9hmvz6ws1" class="article-share-link">Share</a>
       
       
     </footer>
