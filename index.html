@@ -103,8 +103,10 @@
 <p>点进方法后，发现调的是这个：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Returns the string representation of the &#123;<span class="doctag">@code</span> char&#125; array</span></span><br><span class="line"><span class="comment"> * argument. The contents of the character array are copied; subsequent</span></span><br><span class="line"><span class="comment"> * modification of the character array does not affect the returned</span></span><br><span class="line"><span class="comment"> * string.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span>   data     the character array.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span>  a &#123;<span class="doctag">@code</span> String&#125; that contains the characters of the</span></span><br><span class="line"><span class="comment"> *          character array.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">valueOf</span><span class="params">(<span class="keyword">char</span> data[])</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> String(data);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p><strong>为什么会走到这里，而不是<code>String.valueOf(Object obj)</code>？</strong></p>
-<p>看下<code>String</code>类库，有如下几种<code>valueOf</code>方法：</p>
+<p>这是两个问题：</p>
+<h3 id="1、String-valueOf-Object-obj-，如果obj为null，则返回”null”"><a href="#1、String-valueOf-Object-obj-，如果obj为null，则返回”null”" class="headerlink" title="1、String.valueOf(Object obj)，如果obj为null，则返回”null”"></a><strong>1、<code>String.valueOf(Object obj)</code>，如果obj为null，则返回”null”</strong></h3><p>这没什么好说的，使用这个方法时，只需要特别注意一下返回值的判断，不是<code>if(str == null)</code>，而是<code>if(str.equals(&quot;null&quot;))</code></p>
+<p>另外一点也体现出看源码的重要性，<strong>所以以后再调用任何<code>API</code>时都养成看源码的好习惯</strong></p>
+<h3 id="2、String-valueOf-null-为什么会走到String-valueOf-char-data-，而不是String-valueOf-Object-obj-？"><a href="#2、String-valueOf-null-为什么会走到String-valueOf-char-data-，而不是String-valueOf-Object-obj-？" class="headerlink" title="2、String.valueOf(null)为什么会走到String valueOf(char data[])，而不是String.valueOf(Object obj)？"></a><strong>2、<code>String.valueOf(null)</code>为什么会走到<code>String valueOf(char data[])</code>，而不是<code>String.valueOf(Object obj)</code>？</strong></h3><p>看下<code>String</code>类库，有如下几种<code>valueOf</code>方法：</p>
 <p><img src="StringValueOf.png" alt=""></p>
 <p>其中红色框中都是基本类型，<code>null</code>不是基本类型，能接受<code>String.valueOf(null)</code>的只有蓝色框中的方法，因为<code>char[]</code>比<code>Object</code>更精确，所以选择了<code>String.valueOf(char[])</code></p>
 <blockquote>
@@ -114,7 +116,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/07/10/String.valueOf%E6%85%8E%E7%94%A8/" data-id="ckcfovcx30003aol914f9h3di" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/07/10/String.valueOf%E6%85%8E%E7%94%A8/" data-id="ckcfts9g40004eol98z080niq" class="article-share-link">Share</a>
       
       
     </footer>
@@ -219,7 +221,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/05/09/Spring%E4%BA%8B%E5%8A%A1%E4%BC%A0%E6%92%AD%E6%9C%BA%E5%88%B6%E5%AE%9E%E6%88%98/" data-id="ckcfovcx70005aol99rsfgee0" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/05/09/Spring%E4%BA%8B%E5%8A%A1%E4%BC%A0%E6%92%AD%E6%9C%BA%E5%88%B6%E5%AE%9E%E6%88%98/" data-id="ckcfts9g30003eol94gsb8par" class="article-share-link">Share</a>
       
       
     </footer>
@@ -266,7 +268,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/26/%E4%B8%80%E6%AC%A1%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5%E7%BB%8F%E5%8E%86/" data-id="ckcfovcxb0007aol92q4gheio" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/26/%E4%B8%80%E6%AC%A1%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5%E7%BB%8F%E5%8E%86/" data-id="ckcfts9gb0008eol9fbzr340j" class="article-share-link">Share</a>
       
       
     </footer>
@@ -335,7 +337,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/10/Sharding-JDBC/" data-id="ckcfovcx10002aol95i4d42sw" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/10/Sharding-JDBC/" data-id="ckcfts9g10002eol9018z9x0c" class="article-share-link">Share</a>
       
       
     </footer>
@@ -383,7 +385,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/09/redis%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/" data-id="ckcfovcx90006aol98lth4lnn" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/09/redis%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/" data-id="ckcfts9g90007eol97da0b7i7" class="article-share-link">Share</a>
       
       
     </footer>
@@ -434,7 +436,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/09/Windows%E5%89%AA%E8%B4%B4%E6%9D%BF%E5%A2%9E%E5%BC%BA%E8%BD%AF%E4%BB%B6-ClipX/" data-id="ckcfovcx60004aol9faow1f95" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/09/Windows%E5%89%AA%E8%B4%B4%E6%9D%BF%E5%A2%9E%E5%BC%BA%E8%BD%AF%E4%BB%B6-ClipX/" data-id="ckcfts9g50005eol95z0p9a3r" class="article-share-link">Share</a>
       
       
     </footer>
@@ -476,7 +478,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/09/APM-Skywalking/" data-id="ckcfovcwz0001aol9arcdgms3" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/09/APM-Skywalking/" data-id="ckcfts9fy0001eol9fuia2nkx" class="article-share-link">Share</a>
       
       
     </footer>
@@ -553,7 +555,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/09/APM-Pinpoint/" data-id="ckcfovcwn0000aol9a5z5cmql" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/09/APM-Pinpoint/" data-id="ckcfts9fn0000eol9ey0p7iic" class="article-share-link">Share</a>
       
       
     </footer>
@@ -797,7 +799,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/09/Hibernate-Validator/" data-id="ckcfovcxy000aaol9fyp15mqn" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/09/Hibernate-Validator/" data-id="ckcfts9h2000aeol99hf5bw9j" class="article-share-link">Share</a>
       
       
     </footer>
@@ -882,7 +884,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/09/log-mdc/" data-id="ckcfovcxj0008aol97tx31z8t" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/09/log-mdc/" data-id="ckcfts9gl0009eol9ebssbjrx" class="article-share-link">Share</a>
       
       
     </footer>
