@@ -71,6 +71,59 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-String.valueOf慎用" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/07/10/String.valueOf%E6%85%8E%E7%94%A8/" class="article-date">
+  <time datetime="2020-07-10T03:16:54.183Z" itemprop="datePublished">2020-07-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/07/10/String.valueOf%E6%85%8E%E7%94%A8/">String.valueOf慎用</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><code>Java API</code>中<code>String.valueOf(Object obj)</code>方法，当传入的参数为一个引用，并且引用为null时，方法会返回字符串<code>&quot;null&quot;</code>，这样就会引发一些你意向不到的”血案”</p>
+<p><code>jdk1.8.0_181</code>中<code>String.valueOf(Object obj)</code>源码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Returns the string representation of the &#123;<span class="doctag">@code</span> Object&#125; argument.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span>   obj   an &#123;<span class="doctag">@code</span> Object&#125;.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span>  if the argument is &#123;<span class="doctag">@code</span> null&#125;, then a string equal to</span></span><br><span class="line"><span class="comment"> *          &#123;<span class="doctag">@code</span> "null"&#125;; otherwise, the value of</span></span><br><span class="line"><span class="comment"> *          &#123;<span class="doctag">@code</span> obj.toString()&#125; is returned.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@see</span>     java.lang.Object#toString()</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">valueOf</span><span class="params">(Object obj)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (obj == <span class="keyword">null</span>) ? <span class="string">"null"</span> : obj.toString();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>但当你用main方法验证时，又出现了<code>NPE</code>，What？</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    System.out.println(String.valueOf(<span class="keyword">null</span>));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Caused by: java.lang.NullPointerException</span><br><span class="line">	at java.lang.String.&lt;init&gt;(String.java:<span class="number">166</span>)</span><br><span class="line">	at java.lang.String.valueOf(String.java:<span class="number">3008</span>)</span><br><span class="line">	at com.jcloud.billing.operation.Test.main(Test.java:<span class="number">21</span>)</span><br><span class="line">	... <span class="number">5</span> more</span><br></pre></td></tr></table></figure>
+
+<p>点进方法后，发现调的是这个：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Returns the string representation of the &#123;<span class="doctag">@code</span> char&#125; array</span></span><br><span class="line"><span class="comment"> * argument. The contents of the character array are copied; subsequent</span></span><br><span class="line"><span class="comment"> * modification of the character array does not affect the returned</span></span><br><span class="line"><span class="comment"> * string.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span>   data     the character array.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span>  a &#123;<span class="doctag">@code</span> String&#125; that contains the characters of the</span></span><br><span class="line"><span class="comment"> *          character array.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">valueOf</span><span class="params">(<span class="keyword">char</span> data[])</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> String(data);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>为什么会走到这里，而不是<code>String.valueOf(Object obj)</code>？</strong></p>
+<p>看下<code>String</code>类库，有如下几种<code>valueOf</code>方法：</p>
+<p><img src="StringValueOf.png" alt=""></p>
+<p>其中红色框中都是基本类型，<code>null</code>不是基本类型，能接受<code>String.valueOf(null)</code>的只有蓝色框中的方法，因为<code>char[]</code>比<code>Object</code>更精确，所以选择了<code>String.valueOf(char[])</code></p>
+<blockquote>
+<p>何谓精确：这两个都能接受<code>null</code>的参数，这种情况下，<code>java</code>的重载会选取其中更精确的一个，所谓精确，比如有重载方法A和B，如果方法A入参是方法B入参的子集，则A比B更精确，换句话说就是char[]是Object的子集，毕竟Object是老大，当直接传<code>null</code>时会选择<code>String.valueOf(char[])</code></p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://sunshaohua0221.github.io/2020/07/10/String.valueOf%E6%85%8E%E7%94%A8/" data-id="ckcfovcx30003aol914f9h3di" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Spring事务传播机制实战" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/05/09/Spring%E4%BA%8B%E5%8A%A1%E4%BC%A0%E6%92%AD%E6%9C%BA%E5%88%B6%E5%AE%9E%E6%88%98/" class="article-date">
@@ -166,7 +219,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/05/09/Spring%E4%BA%8B%E5%8A%A1%E4%BC%A0%E6%92%AD%E6%9C%BA%E5%88%B6%E5%AE%9E%E6%88%98/" data-id="cka40ro220003aol9h934fg9h" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/05/09/Spring%E4%BA%8B%E5%8A%A1%E4%BC%A0%E6%92%AD%E6%9C%BA%E5%88%B6%E5%AE%9E%E6%88%98/" data-id="ckcfovcx70005aol99rsfgee0" class="article-share-link">Share</a>
       
       
     </footer>
@@ -213,7 +266,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/26/%E4%B8%80%E6%AC%A1%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5%E7%BB%8F%E5%8E%86/" data-id="cka40ro260007aol98nn9esd4" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/26/%E4%B8%80%E6%AC%A1%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5%E7%BB%8F%E5%8E%86/" data-id="ckcfovcxb0007aol92q4gheio" class="article-share-link">Share</a>
       
       
     </footer>
@@ -282,7 +335,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/10/Sharding-JDBC/" data-id="cka40ro200002aol9061zdmqv" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/10/Sharding-JDBC/" data-id="ckcfovcx10002aol95i4d42sw" class="article-share-link">Share</a>
       
       
     </footer>
@@ -330,7 +383,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/09/redis%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/" data-id="cka40ro250006aol990io0jmr" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/09/redis%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/" data-id="ckcfovcx90006aol98lth4lnn" class="article-share-link">Share</a>
       
       
     </footer>
@@ -381,7 +434,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/09/Windows%E5%89%AA%E8%B4%B4%E6%9D%BF%E5%A2%9E%E5%BC%BA%E8%BD%AF%E4%BB%B6-ClipX/" data-id="cka40ro230004aol91ojdgeyz" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/09/Windows%E5%89%AA%E8%B4%B4%E6%9D%BF%E5%A2%9E%E5%BC%BA%E8%BD%AF%E4%BB%B6-ClipX/" data-id="ckcfovcx60004aol9faow1f95" class="article-share-link">Share</a>
       
       
     </footer>
@@ -423,7 +476,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/09/APM-Skywalking/" data-id="cka40ro1y0001aol9399a1bjn" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/09/APM-Skywalking/" data-id="ckcfovcwz0001aol9arcdgms3" class="article-share-link">Share</a>
       
       
     </footer>
@@ -500,7 +553,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/09/APM-Pinpoint/" data-id="cka40ro1o0000aol9ff4k6o7n" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/09/APM-Pinpoint/" data-id="ckcfovcwn0000aol9a5z5cmql" class="article-share-link">Share</a>
       
       
     </footer>
@@ -744,7 +797,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/09/Hibernate-Validator/" data-id="cka40ro2u0009aol930fl5bca" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/09/Hibernate-Validator/" data-id="ckcfovcxy000aaol9fyp15mqn" class="article-share-link">Share</a>
       
       
     </footer>
@@ -829,56 +882,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/09/log-mdc/" data-id="cka40ro2d0008aol9989y35b8" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/04/08/hello-world/" class="article-date">
-  <time datetime="2020-04-07T22:50:17.973Z" itemprop="datePublished">2020-04-08</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/04/08/hello-world/">Hello World</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/08/hello-world/" data-id="cka40ro240005aol9axakdmej" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/09/log-mdc/" data-id="ckcfovcxj0008aol97tx31z8t" class="article-share-link">Share</a>
       
       
     </footer>
@@ -889,6 +893,11 @@
 
   
 
+
+  <nav id="page-nav">
+    
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">下一页 &amp;raquo;</a>
+  </nav>
 
 </section>
         
@@ -906,7 +915,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a></li></ul>
     </div>
   </div>
 
@@ -917,6 +926,10 @@
     <h3 class="widget-title">最新文章</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2020/07/10/String.valueOf%E6%85%8E%E7%94%A8/">String.valueOf慎用</a>
+          </li>
         
           <li>
             <a href="/2020/05/09/Spring%E4%BA%8B%E5%8A%A1%E4%BC%A0%E6%92%AD%E6%9C%BA%E5%88%B6%E5%AE%9E%E6%88%98/">Spring事务传播机制实战</a>
@@ -932,10 +945,6 @@
         
           <li>
             <a href="/2020/04/09/redis%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/">redis分布式锁</a>
-          </li>
-        
-          <li>
-            <a href="/2020/04/09/Windows%E5%89%AA%E8%B4%B4%E6%9D%BF%E5%A2%9E%E5%BC%BA%E8%BD%AF%E4%BB%B6-ClipX/">Windows剪贴板增强软件-ClipX</a>
           </li>
         
       </ul>
