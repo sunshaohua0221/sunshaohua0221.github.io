@@ -93,7 +93,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h3 id="Explain诊断"><a href="#Explain诊断" class="headerlink" title="Explain诊断"></a>Explain诊断</h3><p>Explain各参数的含义如下：</p>
+        <h2 id="Explain诊断"><a href="#Explain诊断" class="headerlink" title="Explain诊断"></a>Explain诊断</h2><p>Explain各参数的含义如下：</p>
 <table>
 <thead>
 <tr>
@@ -107,7 +107,7 @@
 </tr>
 <tr>
 <td>select_key</td>
-<td>显示本行是简单或者复杂select，如果查询有任何复杂的子查询，则最外层标记为PRIMARY（DERIVED、UNION、UNION RESUIT）</td>
+<td>显示本行是简单或者复杂select，如果查询有任何复杂的子查询，则最外层标记为PRIMARY（DERIVED、UNION、UNION RESULT）</td>
 </tr>
 <tr>
 <td>table</td>
@@ -142,11 +142,44 @@
 <td>额外信息，如using index、filesort等</td>
 </tr>
 </tbody></table>
+<h3 id="select-type常见类型及其含义"><a href="#select-type常见类型及其含义" class="headerlink" title="select_type常见类型及其含义"></a>select_type常见类型及其含义</h3><ul>
+<li><strong>SIMPLE</strong>：不包含子查询或者UNION操作的查询</li>
+<li><strong>PRIMARY</strong>：查询中如果包含任何子查询，那么最外层的查询被标记为PRIMARY</li>
+<li><strong>SUBQUERY</strong>：子查询中第一个SELECT</li>
+<li><strong>DEPENDENT SUBQUERY</strong>：子查询中的第一个SELECT，取决于外部查询</li>
+<li><strong>UNION</strong>：UNION操作的第二个或者之后的查询</li>
+<li><strong>DEPENDENT UNION</strong>：UNION操作的第二个或者之后的查询，取决于外部查询</li>
+<li><strong>UNION RESULT</strong>：UNION产生的结果集</li>
+<li><strong>DERIVED</strong>：出现在FROM子句中子查询</li>
+</ul>
+<h3 id="type常见类型及其含义"><a href="#type常见类型及其含义" class="headerlink" title="type常见类型及其含义"></a>type常见类型及其含义</h3><ul>
+<li><strong>system</strong>：这是const类型的一个特例，只会出现在待查询的表只有一行数据的情况下</li>
+<li><code>consts</code>：常出现在主键或唯一索引与常量值进行比较的场景下，此时查询性能最优</li>
+<li><strong>eq_ref</strong>：当连接使用的是完整的索引并且是PRIMARY KEY或UNIQUE NOT NULL INDEX时使用它</li>
+<li><code>ref</code>：当连接使用的是前缀索引或连接条件不是PRIMARY KEY或UNIQUE INDEX时则使用它</li>
+<li><strong>ref_or_null</strong>：类似于ref的查询，但是附加了对NULL值列的查询</li>
+<li><strong>index_merge</strong>：该连接类型表示使用了索引进行合并优化</li>
+<li>rang：使用索引进行范围扫描，常见于between、&gt;、&lt;这样的查询条件</li>
+<li><code>index</code>：索引连接类型与ALL相同，只是扫描的是索引树，通常出现在索引是该查询的覆盖索引的情况</li>
+<li><strong>ALL</strong>：全表扫描，效率最差的查找方式</li>
+</ul>
+<blockquote>
+<p>阿里编码规范要求：<strong>至少要达到range级别，要求是ref级别，如果可以是consts最好</strong></p>
+</blockquote>
+<h3 id="key列"><a href="#key列" class="headerlink" title="key列"></a>key列</h3><p>实际在查询中是否使用到索引标志字段</p>
+<h3 id="Extra列"><a href="#Extra列" class="headerlink" title="Extra列"></a>Extra列</h3><p>Extea列主要用于显示额外信息，常见信息及含义如下：</p>
+<ul>
+<li><strong>Using where</strong>：MySQL服务器会在存储引擎检索行后再进行过滤</li>
+<li><strong>Using filesort</strong>：通常出现在GROUP BY或GROUP BY语句中，且排序或分组没有基于索引，此时需要使用文件在内存中排序，因为使用索引排序的性能好于使用文件排序，所以出现这种情况就可以考虑通过添加索引进行优化</li>
+<li><strong>Using index</strong>：使用了覆盖索引进行查询，此时不需要访问表，从索引中就可以获取到所需要的全部数据</li>
+<li><strong>Using index condition</strong>：查找使用了索引，但需要回表查询数据</li>
+<li><strong>Using temporary</strong>：标识需要使用临时表来处理查询，常出现GROUP BY或者GROUP BY语句中</li>
+</ul>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/07/17/SQL%E4%BC%98%E5%8C%96/" data-id="ckcq5otvq0000zwl9fgsacsgd" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/07/17/SQL%E4%BC%98%E5%8C%96/" data-id="ckcq791ei00024kl98zbxasj6" class="article-share-link">Share</a>
       
       
     </footer>
@@ -201,7 +234,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/07/10/String.valueOf%E6%85%8E%E7%94%A8/" data-id="ckcq5otvz0001zwl96jr3hht3" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/07/10/String.valueOf%E6%85%8E%E7%94%A8/" data-id="ckcq791en00054kl9ep147es3" class="article-share-link">Share</a>
       
       
     </footer>
@@ -306,7 +339,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/05/09/Spring%E4%BA%8B%E5%8A%A1%E4%BC%A0%E6%92%AD%E6%9C%BA%E5%88%B6%E5%AE%9E%E6%88%98/" data-id="ckcq5otw90007zwl96avogz5s" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/05/09/Spring%E4%BA%8B%E5%8A%A1%E4%BC%A0%E6%92%AD%E6%9C%BA%E5%88%B6%E5%AE%9E%E6%88%98/" data-id="ckcq791ek00044kl95rdady2i" class="article-share-link">Share</a>
       
       
     </footer>
@@ -353,7 +386,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/26/%E4%B8%80%E6%AC%A1%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5%E7%BB%8F%E5%8E%86/" data-id="ckcq5otwa0008zwl94d60fzra" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/26/%E4%B8%80%E6%AC%A1%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5%E7%BB%8F%E5%8E%86/" data-id="ckcq791et00094kl9gdz15d3p" class="article-share-link">Share</a>
       
       
     </footer>
@@ -422,7 +455,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/10/Sharding-JDBC/" data-id="ckcq5otwc0009zwl9f8124ki2" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/10/Sharding-JDBC/" data-id="ckcq791ej00034kl94e384u07" class="article-share-link">Share</a>
       
       
     </footer>
@@ -470,7 +503,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/09/redis%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/" data-id="ckcq5otw60004zwl96vhihcly" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/09/redis%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/" data-id="ckcq791es00084kl9c9id1g7b" class="article-share-link">Share</a>
       
       
     </footer>
@@ -521,7 +554,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/09/Windows%E5%89%AA%E8%B4%B4%E6%9D%BF%E5%A2%9E%E5%BC%BA%E8%BD%AF%E4%BB%B6-ClipX/" data-id="ckcq5otw50003zwl9ezy3e5uv" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/09/Windows%E5%89%AA%E8%B4%B4%E6%9D%BF%E5%A2%9E%E5%BC%BA%E8%BD%AF%E4%BB%B6-ClipX/" data-id="ckcq791ep00064kl9cqwi34lq" class="article-share-link">Share</a>
       
       
     </footer>
@@ -563,7 +596,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/09/APM-Skywalking/" data-id="ckcq5otw30002zwl9ewjq564d" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/09/APM-Skywalking/" data-id="ckcq791e200004kl95p736jqy" class="article-share-link">Share</a>
       
       
     </footer>
@@ -640,7 +673,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/09/APM-Pinpoint/" data-id="ckcq5otw70005zwl9e3102j14" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/09/APM-Pinpoint/" data-id="ckcq791ef00014kl966phfc94" class="article-share-link">Share</a>
       
       
     </footer>
@@ -884,7 +917,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/09/Hibernate-Validator/" data-id="ckcq5otxd000bzwl93psehpv0" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/09/Hibernate-Validator/" data-id="ckcq791fh000b4kl9d1bz5ckh" class="article-share-link">Share</a>
       
       
     </footer>
