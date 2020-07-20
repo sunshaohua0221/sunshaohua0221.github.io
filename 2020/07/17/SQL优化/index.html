@@ -15,7 +15,7 @@
 <meta property="og:description" content="Explain诊断Explain各参数的含义如下：    列名 说明    id 执行编号，标识select所属的行，如果语句中没有子查询或者关联查询，只有唯一的select，执行编号显示1，否则，内层的select语句一般会顺序编号，对应于其在原始语句的位置   select_key 显示本行是简单或者复杂select，如果查询有任何复杂的子查询，则最外层标记为PRIMARY（DERIVED、U">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-07-17T09:59:50.590Z">
-<meta property="article:modified_time" content="2020-07-17T12:29:10.646Z">
+<meta property="article:modified_time" content="2020-07-20T12:51:21.554Z">
 <meta property="article:author" content="ssh">
 <meta property="article:tag" content="技术、生活">
 <meta name="twitter:card" content="summary">
@@ -175,11 +175,21 @@
 <li><strong>Using index condition</strong>：查找使用了索引，但需要回表查询数据</li>
 <li><strong>Using temporary</strong>：标识需要使用临时表来处理查询，常出现GROUP BY或者GROUP BY语句中</li>
 </ul>
+<h2 id="SQL优化"><a href="#SQL优化" class="headerlink" title="SQL优化"></a>SQL优化</h2><h3 id="深度分页"><a href="#深度分页" class="headerlink" title="深度分页"></a>深度分页</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 反例</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> <span class="keyword">table</span> <span class="keyword">where</span> 条件 <span class="keyword">limit</span> <span class="number">1000000</span>, <span class="number">10</span></span><br></pre></td></tr></table></figure>
+
+<p>MySQL并不是跳过offset行，而是取offset+N行，然后返回放弃前offset行，返回N行，那当offset特别大的时候，效率就特别低下</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 正例</span></span><br><span class="line"><span class="keyword">select</span> a.* <span class="keyword">from</span> <span class="keyword">table</span> a, (<span class="keyword">select</span> <span class="keyword">id</span> <span class="keyword">from</span> <span class="keyword">table</span> <span class="keyword">where</span> 条件 <span class="keyword">limit</span> <span class="number">1000000</span>, <span class="number">10</span>) b <span class="keyword">where</span> a.id = b.id</span><br></pre></td></tr></table></figure>
+
+<p>该方案的核心逻辑即<code>聚簇索引</code>，再不通过<code>回表</code>的情况下，快速拿到指定偏移量数据主键的id，然后利用<code>聚簇索引</code>进行回表查询，此时总量仅为10条，效率很高</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 其他思路</span></span><br><span class="line"><span class="comment">-- id是连续的</span></span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">from</span> <span class="keyword">table</span> <span class="keyword">WHERE</span> <span class="keyword">id</span> <span class="keyword">between</span> <span class="number">1000000</span> <span class="keyword">and</span> <span class="number">1000010</span>;</span><br><span class="line"><span class="comment">-- id不连续</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> <span class="keyword">table</span> <span class="keyword">where</span> <span class="keyword">id</span> &gt;= (<span class="keyword">select</span> <span class="keyword">id</span> <span class="keyword">from</span> <span class="keyword">table</span> <span class="keyword">WHERE</span> 条件 <span class="keyword">limit</span> <span class="number">1000000</span>,<span class="number">1</span>) <span class="keyword">limit</span> <span class="number">10</span></span><br><span class="line"><span class="comment">-- 属性lastBatchMaxId则存放了本次查询结果集中的最大id，同时它也是下一批查询的起始id，直到返回空列表才退出死循环，适合大量数据导出等操作，</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> <span class="keyword">table</span> <span class="keyword">where</span> <span class="keyword">id</span> &gt; <span class="comment">#&#123;lastBatchMaxId&#125; order by id asc limit 10</span></span><br></pre></td></tr></table></figure>
+
+
+
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/07/17/SQL%E4%BC%98%E5%8C%96/" data-id="ckcq791ei00024kl98zbxasj6" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/07/17/SQL%E4%BC%98%E5%8C%96/" data-id="ckcuidimd000164l95kvpcamk" class="article-share-link">Share</a>
       
       
     </footer>
