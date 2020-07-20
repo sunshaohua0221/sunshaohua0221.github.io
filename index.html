@@ -181,7 +181,7 @@
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 正例</span></span><br><span class="line"><span class="keyword">select</span> a.* <span class="keyword">from</span> <span class="keyword">table</span> a, (<span class="keyword">select</span> <span class="keyword">id</span> <span class="keyword">from</span> <span class="keyword">table</span> <span class="keyword">where</span> 条件 <span class="keyword">limit</span> <span class="number">1000000</span>, <span class="number">10</span>) b <span class="keyword">where</span> a.id = b.id</span><br></pre></td></tr></table></figure>
 
 <p>该方案的核心逻辑即<code>聚簇索引</code>，再不通过<code>回表</code>的情况下，快速拿到指定偏移量数据主键的id，然后利用<code>聚簇索引</code>进行回表查询，此时总量仅为10条，效率很高</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 其他思路</span></span><br><span class="line"><span class="comment">-- id是连续的</span></span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">from</span> <span class="keyword">table</span> <span class="keyword">WHERE</span> <span class="keyword">id</span> <span class="keyword">between</span> <span class="number">1000000</span> <span class="keyword">and</span> <span class="number">1000010</span>;</span><br><span class="line"><span class="comment">-- id不连续</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> <span class="keyword">table</span> <span class="keyword">where</span> <span class="keyword">id</span> &gt;= (<span class="keyword">select</span> <span class="keyword">id</span> <span class="keyword">from</span> <span class="keyword">table</span> <span class="keyword">WHERE</span> 条件 <span class="keyword">limit</span> <span class="number">1000000</span>,<span class="number">1</span>) <span class="keyword">limit</span> <span class="number">10</span></span><br><span class="line"><span class="comment">-- 属性lastBatchMaxId则存放了本次查询结果集中的最大id，同时它也是下一批查询的起始id，直到返回空列表才退出死循环，适合大量数据导出等操作，</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> <span class="keyword">table</span> <span class="keyword">where</span> <span class="keyword">id</span> &gt; <span class="comment">#&#123;lastBatchMaxId&#125; order by id asc limit 10</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 其他思路</span></span><br><span class="line"><span class="comment">-- id是连续的</span></span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">from</span> <span class="keyword">table</span> <span class="keyword">WHERE</span> <span class="keyword">id</span> <span class="keyword">between</span> <span class="number">1000000</span> <span class="keyword">and</span> <span class="number">1000010</span>;</span><br><span class="line"><span class="comment">-- id不连续</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> <span class="keyword">table</span> <span class="keyword">where</span> <span class="keyword">id</span> &gt;= (<span class="keyword">select</span> <span class="keyword">id</span> <span class="keyword">from</span> <span class="keyword">table</span> <span class="keyword">WHERE</span> 条件 <span class="keyword">limit</span> <span class="number">1000000</span>,<span class="number">1</span>) <span class="keyword">limit</span> <span class="number">10</span></span><br><span class="line"><span class="comment">-- 滚动查询，属性lastBatchMaxId存放了本次查询结果集中的最大id，开始于0，同时它也是下一批查询的起始id，直到返回空列表才退出死循环，适合大量数据导出等操作，</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> <span class="keyword">table</span> <span class="keyword">where</span> <span class="keyword">id</span> &gt; <span class="comment">#&#123;lastBatchMaxId&#125; order by id asc limit 10</span></span><br><span class="line"><span class="comment">-- order by id desc怎么滚动查询？？？</span></span><br><span class="line"><span class="comment">-- 第一次id起始为0，后面属性lastBatchMaxId存放了本次查询结果集中的最小id，是下一批查询的起始id，直到返回空列表才退出死循环</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> <span class="keyword">table</span> <span class="keyword">where</span> <span class="keyword">id</span> &gt; <span class="number">0</span> <span class="keyword">order</span> <span class="keyword">by</span> <span class="keyword">id</span> <span class="keyword">desc</span> <span class="keyword">limit</span> <span class="number">10</span></span><br><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> <span class="keyword">table</span> <span class="keyword">where</span> <span class="keyword">id</span> &lt; <span class="comment">#&#123;lastBatchMaxId&#125; order by id desc limit 10</span></span><br></pre></td></tr></table></figure>
 
 
 
@@ -189,7 +189,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/07/17/SQL%E4%BC%98%E5%8C%96/" data-id="ckcuidimd000164l95kvpcamk" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/07/17/SQL%E4%BC%98%E5%8C%96/" data-id="ckcujck6z00024sl9d7q73p7t" class="article-share-link">Share</a>
       
       
     </footer>
@@ -244,7 +244,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/07/10/String.valueOf%E6%85%8E%E7%94%A8/" data-id="ckcuidinx000a64l9f2do1qeg" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/07/10/String.valueOf%E6%85%8E%E7%94%A8/" data-id="ckcujck7200054sl995si5w4r" class="article-share-link">Share</a>
       
       
     </footer>
@@ -349,7 +349,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/05/09/Spring%E4%BA%8B%E5%8A%A1%E4%BC%A0%E6%92%AD%E6%9C%BA%E5%88%B6%E5%AE%9E%E6%88%98/" data-id="ckcuidimh000464l9ey9577ed" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/05/09/Spring%E4%BA%8B%E5%8A%A1%E4%BC%A0%E6%92%AD%E6%9C%BA%E5%88%B6%E5%AE%9E%E6%88%98/" data-id="ckcujck7100044sl91zs86c4n" class="article-share-link">Share</a>
       
       
     </footer>
@@ -396,7 +396,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/26/%E4%B8%80%E6%AC%A1%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5%E7%BB%8F%E5%8E%86/" data-id="ckcuidimp000864l9bvds1jsd" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/26/%E4%B8%80%E6%AC%A1%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5%E7%BB%8F%E5%8E%86/" data-id="ckcujck7a00094sl95kweh3kq" class="article-share-link">Share</a>
       
       
     </footer>
@@ -465,7 +465,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/10/Sharding-JDBC/" data-id="ckcuidimg000364l9c03g5849" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/10/Sharding-JDBC/" data-id="ckcujck7000034sl91skler4j" class="article-share-link">Share</a>
       
       
     </footer>
@@ -513,7 +513,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/09/redis%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/" data-id="ckcuidiml000664l93l7dcr9r" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/09/redis%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/" data-id="ckcujck7800084sl968pahs2q" class="article-share-link">Share</a>
       
       
     </footer>
@@ -564,7 +564,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/09/Windows%E5%89%AA%E8%B4%B4%E6%9D%BF%E5%A2%9E%E5%BC%BA%E8%BD%AF%E4%BB%B6-ClipX/" data-id="ckcuidimo000764l97d0hf4ri" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/09/Windows%E5%89%AA%E8%B4%B4%E6%9D%BF%E5%A2%9E%E5%BC%BA%E8%BD%AF%E4%BB%B6-ClipX/" data-id="ckcujck7400064sl9ffcnd7k4" class="article-share-link">Share</a>
       
       
     </footer>
@@ -606,7 +606,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/09/APM-Skywalking/" data-id="ckcuidime000264l92ouj7kt1" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/09/APM-Skywalking/" data-id="ckcujck6l00004sl90az410nu" class="article-share-link">Share</a>
       
       
     </footer>
@@ -683,7 +683,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/09/APM-Pinpoint/" data-id="ckcuidils000064l9c14zfrda" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/09/APM-Pinpoint/" data-id="ckcujck6x00014sl97xpv0pmp" class="article-share-link">Share</a>
       
       
     </footer>
@@ -927,7 +927,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/09/Hibernate-Validator/" data-id="ckcuidio0000b64l91brs189u" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/09/Hibernate-Validator/" data-id="ckcujck7y000b4sl95jgre2qh" class="article-share-link">Share</a>
       
       
     </footer>
