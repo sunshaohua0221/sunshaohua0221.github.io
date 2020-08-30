@@ -7,16 +7,20 @@
   
   <title>TiDB SQL监控及典型的优化案例 | SSH</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="TiDB读请求的执行流程SQL的一生  从客户端的Socket读取一条SQL 获取一个token 从PD获取TSO（事务的时间戳） 使用Parser将SQL parse为AST 将AST compile为执行计划 Logical Optimizer Physical  Optimizer Execute Plan   根据对应的执行计划，最底层的Executor会根据这条SQL处理的Key范围构建">
+  <meta name="description" content="TiDB读请求的执行流程SQL的一生  从客户端的Socket读取一条SQL  获取一个token  从PD获取TSO（事务的时间戳）  使用Parser将SQL parse为AST  将AST compile为执行计划     Logical Optimizer  Physical  Optimizer  Execute Plan    根据对应的执行计划，最底层的Executor会根据这条SQ">
 <meta property="og:type" content="article">
 <meta property="og:title" content="TiDB SQL监控及典型的优化案例">
 <meta property="og:url" content="https://sunshaohua0221.github.io/2020/08/30/TiDB-SQL%E7%9B%91%E6%8E%A7%E5%8F%8A%E5%85%B8%E5%9E%8B%E7%9A%84%E4%BC%98%E5%8C%96%E6%A1%88%E4%BE%8B/index.html">
 <meta property="og:site_name" content="SSH">
-<meta property="og:description" content="TiDB读请求的执行流程SQL的一生  从客户端的Socket读取一条SQL 获取一个token 从PD获取TSO（事务的时间戳） 使用Parser将SQL parse为AST 将AST compile为执行计划 Logical Optimizer Physical  Optimizer Execute Plan   根据对应的执行计划，最底层的Executor会根据这条SQL处理的Key范围构建">
+<meta property="og:description" content="TiDB读请求的执行流程SQL的一生  从客户端的Socket读取一条SQL  获取一个token  从PD获取TSO（事务的时间戳）  使用Parser将SQL parse为AST  将AST compile为执行计划     Logical Optimizer  Physical  Optimizer  Execute Plan    根据对应的执行计划，最底层的Executor会根据这条SQ">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://sunshaohua0221.github.io/2020/08/30/TiDB-SQL%E7%9B%91%E6%8E%A7%E5%8F%8A%E5%85%B8%E5%9E%8B%E7%9A%84%E4%BC%98%E5%8C%96%E6%A1%88%E4%BE%8B/tidb-computing-tidb-sql-layer.png">
+<meta property="og:image" content="https://sunshaohua0221.github.io/2020/08/30/TiDB-SQL%E7%9B%91%E6%8E%A7%E5%8F%8A%E5%85%B8%E5%9E%8B%E7%9A%84%E4%BC%98%E5%8C%96%E6%A1%88%E4%BE%8B/TiKV-read.png">
+<meta property="og:image" content="https://sunshaohua0221.github.io/2020/08/30/TiDB-SQL%E7%9B%91%E6%8E%A7%E5%8F%8A%E5%85%B8%E5%9E%8B%E7%9A%84%E4%BC%98%E5%8C%96%E6%A1%88%E4%BE%8B/Parse-Duration.png">
+<meta property="og:image" content="https://sunshaohua0221.github.io/2020/08/30/TiDB-SQL%E7%9B%91%E6%8E%A7%E5%8F%8A%E5%85%B8%E5%9E%8B%E7%9A%84%E4%BC%98%E5%8C%96%E6%A1%88%E4%BE%8B/Compile-Duration.png">
+<meta property="og:image" content="https://sunshaohua0221.github.io/2020/08/30/TiDB-SQL%E7%9B%91%E6%8E%A7%E5%8F%8A%E5%85%B8%E5%9E%8B%E7%9A%84%E4%BC%98%E5%8C%96%E6%A1%88%E4%BE%8B/Get-Token-Duration.png">
 <meta property="article:published_time" content="2020-08-30T05:22:16.306Z">
-<meta property="article:modified_time" content="2020-08-30T06:15:19.231Z">
+<meta property="article:modified_time" content="2020-08-30T13:03:32.098Z">
 <meta property="article:author" content="ssh">
 <meta property="article:tag" content="技术、生活">
 <meta name="twitter:card" content="summary">
@@ -97,25 +101,115 @@
       
         <h2 id="TiDB读请求的执行流程"><a href="#TiDB读请求的执行流程" class="headerlink" title="TiDB读请求的执行流程"></a>TiDB读请求的执行流程</h2><h3 id="SQL的一生"><a href="#SQL的一生" class="headerlink" title="SQL的一生"></a>SQL的一生</h3><p><img src="tidb-computing-tidb-sql-layer.png" alt=""></p>
 <ul>
-<li>从客户端的Socket读取一条SQL</li>
-<li>获取一个token</li>
-<li>从PD获取TSO（事务的时间戳）</li>
-<li>使用Parser将SQL parse为AST</li>
-<li>将AST compile为执行计划<ul>
-<li>Logical Optimizer</li>
-<li>Physical  Optimizer</li>
-<li>Execute Plan</li>
+<li><p>从客户端的Socket读取一条SQL</p>
+</li>
+<li><p>获取一个token</p>
+</li>
+<li><p>从PD获取TSO（事务的时间戳）</p>
+</li>
+<li><p>使用Parser将SQL parse为AST</p>
+</li>
+<li><p>将AST compile为执行计划   </p>
+<ul>
+<li><p>Logical Optimizer</p>
+</li>
+<li><p>Physical  Optimizer</p>
+</li>
+<li><p>Execute Plan</p>
+</li>
 </ul>
 </li>
-<li>根据对应的执行计划，最底层的Executor会根据这条SQL处理的Key范围构建出多个要下发到TiKV的请求，并通过distsql的API将这些请求分发到TiKV</li>
-<li>TiKV对结果做一些处理（包括filter,limit等）后，将中间结果集反馈给TiDB</li>
-<li>TiDB进行一些表关联、聚合运算最终返回给Client</li>
+<li><p>根据对应的执行计划，最底层的Executor会根据这条SQL处理的Key范围构建出多个要下发到TiKV的请求，并通过distsql的API将这些请求分发到TiKV</p>
+</li>
+<li><p>TiKV对结果做一些处理（包括filter,limit等）后，将中间结果集反馈给TiDB</p>
+</li>
+<li><p>TiDB进行一些表关联、聚合运算最终返回给Client</p>
+</li>
 </ul>
-<h2 id="slow-query慢查询定位和优化思路"><a href="#slow-query慢查询定位和优化思路" class="headerlink" title="slow query慢查询定位和优化思路"></a>slow query慢查询定位和优化思路</h2><h2 id="优化案例"><a href="#优化案例" class="headerlink" title="优化案例"></a>优化案例</h2>
+<p><img src="TiKV-read.png" alt=""></p>
+<p>TiKV收到请求后，会将请求分为两类：</p>
+<ul>
+<li>storage read pool执行引擎：负责主键和唯一索引点查</li>
+<li>coprocessor执行引擎：其余的请求</li>
+</ul>
+<h2 id="如何定位slow-query"><a href="#如何定位slow-query" class="headerlink" title="如何定位slow query"></a>如何定位slow query</h2><h3 id="slow-query产生的原因"><a href="#slow-query产生的原因" class="headerlink" title="slow query产生的原因"></a>slow query产生的原因</h3><ul>
+<li><p>按组件划分</p>
+<ul>
+<li><p>TiDB</p>
+<ul>
+<li><p>parse慢</p>
+</li>
+<li><p>complie慢，生成物理执行计划</p>
+</li>
+<li><p>get token慢，分配线程慢</p>
+</li>
+<li><p>执行计划不正确</p>
+</li>
+</ul>
+</li>
+<li><p>PD</p>
+<ul>
+<li>获取tso慢，每个SQL要获取时间戳的</li>
+</ul>
+</li>
+<li><p>TiKV</p>
+<ul>
+<li><p>需要扫描大量的key，耗时久</p>
+</li>
+<li><p>coprocessor cpu打满，资源等待</p>
+</li>
+<li><p>读热点</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="slow-query获取渠道"><a href="#slow-query获取渠道" class="headerlink" title="slow query获取渠道"></a>slow query获取渠道</h3><ul>
+<li>集群监控上的metrics信息</li>
+<li>slow-query log，对标MySQL格式，支持市场上的MySQL慢查询分析工具</li>
+<li>TiDB的慢查询SQL内存表</li>
+<li>TiKV节点日志slow-query反查</li>
+</ul>
+<h3 id="TiDB-Parse-Metrics"><a href="#TiDB-Parse-Metrics" class="headerlink" title="TiDB - Parse Metrics"></a>TiDB - Parse Metrics</h3><ul>
+<li><p>位置：TiDB-&gt;Executor-&gt;Parse Duration</p>
+</li>
+<li><p>parse慢可能原因：TiDB节点CPU压力大</p>
+</li>
+<li><p>图例：</p>
+<p><img src="Parse-Duration.png" alt=""></p>
+</li>
+</ul>
+<h3 id="TiDB-Compile-Metrics"><a href="#TiDB-Compile-Metrics" class="headerlink" title="TiDB - Compile Metrics"></a>TiDB - Compile Metrics</h3><ul>
+<li><p>位置：TiDB-&gt;Executor-&gt;Compile Duration</p>
+</li>
+<li><p>parse慢可能原因：</p>
+<ul>
+<li><p>TiDB节点CPU压力大</p>
+</li>
+<li><p>in子查询结果集多，跟参数tidb_opt_insuqquery_unfold有关(2.1)</p>
+<p>这个参数控制in子查询执行计划的处理，设置为1的情况，会默认把in的子查询结果集当做一个常量返回给上一层做where条件的过滤，compile是要生成物理执行计划的，在执行计划时in的查询已经执行了，只在2.1有开关，默认关闭，3.0后没有这个参数</p>
+</li>
+</ul>
+</li>
+<li><p>图例：</p>
+<p><img src="Compile-Duration.png" alt=""></p>
+</li>
+</ul>
+<h3 id="TiDB-Get-Token-Duration-Metrics"><a href="#TiDB-Get-Token-Duration-Metrics" class="headerlink" title="TiDB - Get Token Duration Metrics"></a>TiDB - Get Token Duration Metrics</h3><ul>
+<li><p>位置：TiDB-&gt;Server-&gt;Get Token Duration</p>
+</li>
+<li><p>parse慢可能原因：token个数不足，需要调整token-limit</p>
+</li>
+<li><p>图例：</p>
+<p><img src="Get-Token-Duration.png" alt=""></p>
+</li>
+</ul>
+<h2 id="优化案例"><a href="#优化案例" class="headerlink" title="优化案例"></a>优化案例</h2>
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/08/30/TiDB-SQL%E7%9B%91%E6%8E%A7%E5%8F%8A%E5%85%B8%E5%9E%8B%E7%9A%84%E4%BC%98%E5%8C%96%E6%A1%88%E4%BE%8B/" data-id="ckegpdqj30003dcl92ro59y8y" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/08/30/TiDB-SQL%E7%9B%91%E6%8E%A7%E5%8F%8A%E5%85%B8%E5%9E%8B%E7%9A%84%E4%BC%98%E5%8C%96%E6%A1%88%E4%BE%8B/" data-id="ckeh3uta30003mgl9eigacw03" class="article-share-link">Share</a>
       
       
     </footer>
