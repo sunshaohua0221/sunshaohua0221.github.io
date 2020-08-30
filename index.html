@@ -239,30 +239,59 @@
 <p><img src="coprocessor-cpu.png" alt=""></p>
 </li>
 </ul>
-<h3 id="慢查询排查技能-slow-query-log"><a href="#慢查询排查技能-slow-query-log" class="headerlink" title="慢查询排查技能 - slow query log"></a>慢查询排查技能 - slow query log</h3><p>#Time：2019-04-25-15:19:33.26029 +0800</p>
-<p>#Txn_start_ts：407942403346923524</p>
+<h3 id="慢查询排查技能-slow-query-log"><a href="#慢查询排查技能-slow-query-log" class="headerlink" title="慢查询排查技能 - slow query log"></a>慢查询排查技能 - slow query log</h3><p>#Time：2019-04-25-15:19:33.26029 +0800     –记录了sql执行完成的时间，不是开始的时间</p>
+<p>#Txn_start_ts：407942403346923524        –事务开始的时间戳</p>
 <p>#User：<a href="mailto:root@127.0.0.1">root@127.0.0.1</a></p>
 <p>#Conn_ID：1</p>
-<p>#Query_time：2.632671582</p>
-<p>#Process_time：0.079 Wait_time：0.009 Backoff_time：0.1 Request_count：8 Total_keys：20008 Process_keys：20000</p>
+<p>#Query_time：2.632671582          –sql整体执行时间</p>
+<p>#Process_time：0.079 Wait_time：0.009 Backoff_time：0.1 Request_count：8 Total_keys：20008 Process_keys：20000         –TiKV相关时间</p>
 <p>#DB：test</p>
-<p>#Index_ids：[1]         –TiDb</p>
+<p>#Index_ids：[1]         –TiDB，生成计划用到的索引</p>
 <p>#Is_internal：false</p>
-<p>#Digest：edb16a8f28d9c48790925fd1c868fdae3feb49bc58481dda7df228625a5ba6e1</p>
+<p>#Digest：edb16a8f28d9c48790925fd1c868fdae3feb49bc58481dda7df228625a5ba6e1         </p>
 <p>#Stats：t_wide:407941920305971202,t_slim:pseudo       –TiDB</p>
-<p>#Cop_proc_avg：0.009875 Cop_proc_p90：0.018 Cop_proc_max：0.018 Cop_proc_addr：127.0.0.1:22160</p>
+<p>#Cop_proc_avg：0.009875 Cop_proc_p90：0.018 Cop_proc_max：0.018 Cop_proc_addr：127.0.0.1:22160           –详细Cop信息</p>
 <p>#Cop_wait_avg：0.001125 Cop_wait_p90：0.002 Cop_wait_max：0.002 Cop_wait_addr：127.0.0.1:24160</p>
-<p>#Mem_max：195349          –TiDB</p>
+<p>#Mem_max：195349          –TiDB  内存使用大小</p>
 <p>select count(1) from t_slim,t_wide where t.clim.c0&gt;t.wide.c0 and t.slim.c1&gt;t.wide.c1 and t_wide.c0 &gt; 5000;</p>
 <ul>
 <li>Red color is related with TiDB</li>
 <li>Blue color is related with TiKV/Coprocessor</li>
 </ul>
+<h3 id="慢查询排查技能-内存表"><a href="#慢查询排查技能-内存表" class="headerlink" title="慢查询排查技能 - 内存表"></a>慢查询排查技能 - 内存表</h3><p>INFOMATION_SCHEMA:</p>
+<p>select * from slow_query order by query_time desc, total_keys/process_keys\G;</p>
+<p>slow_query的字段值跟slow query log是对应的</p>
+<h3 id="slow-log相关参数"><a href="#slow-log相关参数" class="headerlink" title="slow log相关参数"></a>slow log相关参数</h3><ul>
+<li><p>slow-threshold</p>
+<ul>
+<li>参数含义：输出慢sql的耗时阈值，单位ms，静态参数，需要重启TiDB SERVER生效</li>
+<li>建议值：在OLTP系统，建议设置50ms左右，OLTP系统SQL一版有以下特点：SQL短小、单次运行时间短、执行次数多；OLAP系统可以适当放大点。</li>
+</ul>
+</li>
+<li><p>query-log-max-len</p>
+<ul>
+<li>参数含义：日志记录的SQL长度，超过这个长度会截断输出，单位为字符，静态参数，需要重启TiDB SERVER生效</li>
+<li>建议值：4096</li>
+</ul>
+</li>
+<li><p>tidb_slow_query_file</p>
+<ul>
+<li><p>参数含义：日志记录的SQL长度，超过这个长度会截断输出，单位为字符，静态参数，需要重启TiDB SERVER生效</p>
+</li>
+<li><p>建议值：慢查询日志的文件名，默认值为tidb_slow.log，可以存储300M内容，动态参数，可以通过会话变量生效</p>
+</li>
+<li><p>建议值：tidb_slow.log 300M以后会重新生成一个文件，所以如果要定位某一段时间的slow log，需要设置该环境变量，TiDB通过session变量tidb_slow_query_file控制查询</p>
+<p>INFOMATION_SCHEMA.SLOW_QUERY时要读取和解析的文件，可通过修改session变量的值来查询其他慢查询日志文件的内容</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="用SQL从多个维度查询slow-log表"><a href="#用SQL从多个维度查询slow-log表" class="headerlink" title="用SQL从多个维度查询slow log表"></a>用SQL从多个维度查询slow log表</h3><p>查询INFOMATION_SCHEMA.SLOW_QUERY</p>
 <h2 id="优化案例"><a href="#优化案例" class="headerlink" title="优化案例"></a>优化案例</h2>
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/08/30/TiDB-SQL%E7%9B%91%E6%8E%A7%E5%8F%8A%E5%85%B8%E5%9E%8B%E7%9A%84%E4%BC%98%E5%8C%96%E6%A1%88%E4%BE%8B/" data-id="ckeh5d4kl0006ckl99rj2hsj7" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/08/30/TiDB-SQL%E7%9B%91%E6%8E%A7%E5%8F%8A%E5%85%B8%E5%9E%8B%E7%9A%84%E4%BC%98%E5%8C%96%E6%A1%88%E4%BE%8B/" data-id="ckehpg8de0006k8l9fjtobioo" class="article-share-link">Share</a>
       
       
     </footer>
@@ -390,7 +419,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/07/17/SQL%E4%BC%98%E5%8C%96/" data-id="ckeh5d4k90002ckl9bsedb259" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/07/17/SQL%E4%BC%98%E5%8C%96/" data-id="ckehpg8d40002k8l98fotcn86" class="article-share-link">Share</a>
       
       
     </footer>
@@ -445,7 +474,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/07/10/String.valueOf%E6%85%8E%E7%94%A8/" data-id="ckeh5d4kk0005ckl9gytiaa51" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/07/10/String.valueOf%E6%85%8E%E7%94%A8/" data-id="ckehpg8dc0005k8l91zyh6u5y" class="article-share-link">Share</a>
       
       
     </footer>
@@ -550,7 +579,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/05/09/Spring%E4%BA%8B%E5%8A%A1%E4%BC%A0%E6%92%AD%E6%9C%BA%E5%88%B6%E5%AE%9E%E6%88%98/" data-id="ckeh5d4kj0004ckl940j529f9" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/05/09/Spring%E4%BA%8B%E5%8A%A1%E4%BC%A0%E6%92%AD%E6%9C%BA%E5%88%B6%E5%AE%9E%E6%88%98/" data-id="ckehpg8db0004k8l91m773ec3" class="article-share-link">Share</a>
       
       
     </footer>
@@ -597,7 +626,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/26/%E4%B8%80%E6%AC%A1%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5%E7%BB%8F%E5%8E%86/" data-id="ckeh5d4kq000ackl9dx758gtb" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/26/%E4%B8%80%E6%AC%A1%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5%E7%BB%8F%E5%8E%86/" data-id="ckehpg8dm000ak8l9bgtv7ygq" class="article-share-link">Share</a>
       
       
     </footer>
@@ -666,7 +695,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/10/Sharding-JDBC/" data-id="ckeh5d4kf0003ckl96wcweu5a" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/10/Sharding-JDBC/" data-id="ckehpg8d90003k8l9b7phdgqw" class="article-share-link">Share</a>
       
       
     </footer>
@@ -714,7 +743,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/09/redis%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/" data-id="ckeh5d4kp0009ckl964sj5x3k" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/09/redis%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/" data-id="ckehpg8dk0009k8l9a6jd8wa8" class="article-share-link">Share</a>
       
       
     </footer>
@@ -765,7 +794,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/09/Windows%E5%89%AA%E8%B4%B4%E6%9D%BF%E5%A2%9E%E5%BC%BA%E8%BD%AF%E4%BB%B6-ClipX/" data-id="ckeh5d4kn0007ckl98aa2flp3" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/09/Windows%E5%89%AA%E8%B4%B4%E6%9D%BF%E5%A2%9E%E5%BC%BA%E8%BD%AF%E4%BB%B6-ClipX/" data-id="ckehpg8df0007k8l939w122km" class="article-share-link">Share</a>
       
       
     </footer>
@@ -807,7 +836,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/09/APM-Skywalking/" data-id="ckeh5d4k50001ckl96ll2ang3" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/09/APM-Skywalking/" data-id="ckehpg8cy0001k8l9ge9fgudg" class="article-share-link">Share</a>
       
       
     </footer>
@@ -884,7 +913,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/09/APM-Pinpoint/" data-id="ckeh5d4jr0000ckl9efot77q5" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/09/APM-Pinpoint/" data-id="ckehpg8cg0000k8l9hlom6xir" class="article-share-link">Share</a>
       
       
     </footer>
