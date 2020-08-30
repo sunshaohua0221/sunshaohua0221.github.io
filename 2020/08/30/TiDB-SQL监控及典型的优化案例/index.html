@@ -23,7 +23,7 @@
 <meta property="og:image" content="https://sunshaohua0221.github.io/2020/08/30/TiDB-SQL%E7%9B%91%E6%8E%A7%E5%8F%8A%E5%85%B8%E5%9E%8B%E7%9A%84%E4%BC%98%E5%8C%96%E6%A1%88%E4%BE%8B/99-grpc-message-duration.png">
 <meta property="og:image" content="https://sunshaohua0221.github.io/2020/08/30/TiDB-SQL%E7%9B%91%E6%8E%A7%E5%8F%8A%E5%85%B8%E5%9E%8B%E7%9A%84%E4%BC%98%E5%8C%96%E6%A1%88%E4%BE%8B/coprocessor-cpu.png">
 <meta property="article:published_time" content="2020-08-30T05:22:16.306Z">
-<meta property="article:modified_time" content="2020-08-30T13:26:14.232Z">
+<meta property="article:modified_time" content="2020-08-30T13:45:57.220Z">
 <meta property="article:author" content="ssh">
 <meta property="article:tag" content="技术、生活">
 <meta name="twitter:card" content="summary">
@@ -248,11 +248,30 @@
 <p><img src="coprocessor-cpu.png" alt=""></p>
 </li>
 </ul>
+<h3 id="慢查询排查技能-slow-query-log"><a href="#慢查询排查技能-slow-query-log" class="headerlink" title="慢查询排查技能 - slow query log"></a>慢查询排查技能 - slow query log</h3><p>#Time：2019-04-25-15:19:33.26029 +0800</p>
+<p>#Txn_start_ts：407942403346923524</p>
+<p>#User：<a href="mailto:root@127.0.0.1">root@127.0.0.1</a></p>
+<p>#Conn_ID：1</p>
+<p>#Query_time：2.632671582</p>
+<p>#Process_time：0.079 Wait_time：0.009 Backoff_time：0.1 Request_count：8 Total_keys：20008 Process_keys：20000</p>
+<p>#DB：test</p>
+<p>#Index_ids：[1]         –TiDb</p>
+<p>#Is_internal：false</p>
+<p>#Digest：edb16a8f28d9c48790925fd1c868fdae3feb49bc58481dda7df228625a5ba6e1</p>
+<p>#Stats：t_wide:407941920305971202,t_slim:pseudo       –TiDB</p>
+<p>#Cop_proc_avg：0.009875 Cop_proc_p90：0.018 Cop_proc_max：0.018 Cop_proc_addr：127.0.0.1:22160</p>
+<p>#Cop_wait_avg：0.001125 Cop_wait_p90：0.002 Cop_wait_max：0.002 Cop_wait_addr：127.0.0.1:24160</p>
+<p>#Mem_max：195349          –TiDB</p>
+<p>select count(1) from t_slim,t_wide where t.clim.c0&gt;t.wide.c0 and t.slim.c1&gt;t.wide.c1 and t_wide.c0 &gt; 5000;</p>
+<ul>
+<li>Red color is related with TiDB</li>
+<li>Blue color is related with TiKV/Coprocessor</li>
+</ul>
 <h2 id="优化案例"><a href="#优化案例" class="headerlink" title="优化案例"></a>优化案例</h2>
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/08/30/TiDB-SQL%E7%9B%91%E6%8E%A7%E5%8F%8A%E5%85%B8%E5%9E%8B%E7%9A%84%E4%BC%98%E5%8C%96%E6%A1%88%E4%BE%8B/" data-id="ckeh4nr000006nkl993aj8lf7" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/08/30/TiDB-SQL%E7%9B%91%E6%8E%A7%E5%8F%8A%E5%85%B8%E5%9E%8B%E7%9A%84%E4%BC%98%E5%8C%96%E6%A1%88%E4%BE%8B/" data-id="ckeh5d4kl0006ckl99rj2hsj7" class="article-share-link">Share</a>
       
       
     </footer>
