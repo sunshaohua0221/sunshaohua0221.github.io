@@ -287,11 +287,18 @@
 </li>
 </ul>
 <h3 id="用SQL从多个维度查询slow-log表"><a href="#用SQL从多个维度查询slow-log表" class="headerlink" title="用SQL从多个维度查询slow log表"></a>用SQL从多个维度查询slow log表</h3><p>查询INFOMATION_SCHEMA.SLOW_QUERY</p>
+<h3 id="TiKV日志反查slow-log"><a href="#TiKV日志反查slow-log" class="headerlink" title="TiKV日志反查slow log"></a>TiKV日志反查slow log</h3><p>在某个SQL执行导致的TiKV cpu异常高的场合下，使用TiKV可以快速的定位问题SQL</p>
+<p>TiKV日志中记录了slow-query的几个关键信息：</p>
+<ul>
+<li>ipv4：发出请求的TiDB地址，通过该地址可以确定SQL在哪个TiDB节点执行</li>
+<li>start_ts：事务的start_ts，通过start_ts反查slow log，快速定位问题SQL，不太适合特别频繁的查询场景，start_ts很多，很难查</li>
+<li>table_id：查询的那张表，可以通过information_schema.tables的tidb_table_id反查表名</li>
+</ul>
 <h2 id="优化案例"><a href="#优化案例" class="headerlink" title="优化案例"></a>优化案例</h2>
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/08/30/TiDB-SQL%E7%9B%91%E6%8E%A7%E5%8F%8A%E5%85%B8%E5%9E%8B%E7%9A%84%E4%BC%98%E5%8C%96%E6%A1%88%E4%BE%8B/" data-id="ckehpg8de0006k8l9fjtobioo" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/08/30/TiDB-SQL%E7%9B%91%E6%8E%A7%E5%8F%8A%E5%85%B8%E5%9E%8B%E7%9A%84%E4%BC%98%E5%8C%96%E6%A1%88%E4%BE%8B/" data-id="ckehr0m7d0006lgl932p7frub" class="article-share-link">Share</a>
       
       
     </footer>
@@ -419,7 +426,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/07/17/SQL%E4%BC%98%E5%8C%96/" data-id="ckehpg8d40002k8l98fotcn86" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/07/17/SQL%E4%BC%98%E5%8C%96/" data-id="ckehr0m760002lgl963uefwrr" class="article-share-link">Share</a>
       
       
     </footer>
@@ -474,7 +481,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/07/10/String.valueOf%E6%85%8E%E7%94%A8/" data-id="ckehpg8dc0005k8l91zyh6u5y" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/07/10/String.valueOf%E6%85%8E%E7%94%A8/" data-id="ckehr0m7b0005lgl98ze9ec8l" class="article-share-link">Share</a>
       
       
     </footer>
@@ -579,7 +586,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/05/09/Spring%E4%BA%8B%E5%8A%A1%E4%BC%A0%E6%92%AD%E6%9C%BA%E5%88%B6%E5%AE%9E%E6%88%98/" data-id="ckehpg8db0004k8l91m773ec3" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/05/09/Spring%E4%BA%8B%E5%8A%A1%E4%BC%A0%E6%92%AD%E6%9C%BA%E5%88%B6%E5%AE%9E%E6%88%98/" data-id="ckehr0m7a0004lgl93awn4etl" class="article-share-link">Share</a>
       
       
     </footer>
@@ -626,7 +633,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/26/%E4%B8%80%E6%AC%A1%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5%E7%BB%8F%E5%8E%86/" data-id="ckehpg8dm000ak8l9bgtv7ygq" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/26/%E4%B8%80%E6%AC%A1%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5%E7%BB%8F%E5%8E%86/" data-id="ckehr0m7j000algl99cgidm87" class="article-share-link">Share</a>
       
       
     </footer>
@@ -695,7 +702,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/10/Sharding-JDBC/" data-id="ckehpg8d90003k8l9b7phdgqw" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/10/Sharding-JDBC/" data-id="ckehr0m790003lgl907n6hymd" class="article-share-link">Share</a>
       
       
     </footer>
@@ -743,7 +750,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/09/redis%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/" data-id="ckehpg8dk0009k8l9a6jd8wa8" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/09/redis%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/" data-id="ckehr0m7j0009lgl9e6awbt0y" class="article-share-link">Share</a>
       
       
     </footer>
@@ -794,7 +801,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/09/Windows%E5%89%AA%E8%B4%B4%E6%9D%BF%E5%A2%9E%E5%BC%BA%E8%BD%AF%E4%BB%B6-ClipX/" data-id="ckehpg8df0007k8l939w122km" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/09/Windows%E5%89%AA%E8%B4%B4%E6%9D%BF%E5%A2%9E%E5%BC%BA%E8%BD%AF%E4%BB%B6-ClipX/" data-id="ckehr0m7f0007lgl9gzxq6bua" class="article-share-link">Share</a>
       
       
     </footer>
@@ -836,7 +843,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/09/APM-Skywalking/" data-id="ckehpg8cy0001k8l9ge9fgudg" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/09/APM-Skywalking/" data-id="ckehr0m710001lgl9hu0s4xde" class="article-share-link">Share</a>
       
       
     </footer>
@@ -913,7 +920,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/09/APM-Pinpoint/" data-id="ckehpg8cg0000k8l9hlom6xir" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/09/APM-Pinpoint/" data-id="ckehr0m6m0000lgl9coj45ml0" class="article-share-link">Share</a>
       
       
     </footer>
