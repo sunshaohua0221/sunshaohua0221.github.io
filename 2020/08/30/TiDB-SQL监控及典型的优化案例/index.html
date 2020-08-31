@@ -23,7 +23,7 @@
 <meta property="og:image" content="https://sunshaohua0221.github.io/2020/08/30/TiDB-SQL%E7%9B%91%E6%8E%A7%E5%8F%8A%E5%85%B8%E5%9E%8B%E7%9A%84%E4%BC%98%E5%8C%96%E6%A1%88%E4%BE%8B/99-grpc-message-duration.png">
 <meta property="og:image" content="https://sunshaohua0221.github.io/2020/08/30/TiDB-SQL%E7%9B%91%E6%8E%A7%E5%8F%8A%E5%85%B8%E5%9E%8B%E7%9A%84%E4%BC%98%E5%8C%96%E6%A1%88%E4%BE%8B/coprocessor-cpu.png">
 <meta property="article:published_time" content="2020-08-30T05:22:16.306Z">
-<meta property="article:modified_time" content="2020-08-30T23:42:07.999Z">
+<meta property="article:modified_time" content="2020-08-31T00:13:53.889Z">
 <meta property="article:author" content="ssh">
 <meta property="article:tag" content="技术、生活">
 <meta name="twitter:card" content="summary">
@@ -303,11 +303,43 @@
 <li>start_ts：事务的start_ts，通过start_ts反查slow log，快速定位问题SQL，不太适合特别频繁的查询场景，start_ts很多，很难查</li>
 <li>table_id：查询的那张表，可以通过information_schema.tables的tidb_table_id反查表名</li>
 </ul>
-<h2 id="优化案例"><a href="#优化案例" class="headerlink" title="优化案例"></a>优化案例</h2>
+<h3 id="使用方法总结"><a href="#使用方法总结" class="headerlink" title="使用方法总结"></a>使用方法总结</h3><ul>
+<li>通过监控的相关metrics可以获取到TiDB集群的整体运行情况，比如某些TiKV节点CPU高不高等，对于定位慢查询来说可以有一个初步的认知，用metrics来判断哪些时间段存在问题，可能存在哪些问题</li>
+<li>slow query log及slow log内存表，可以从整体上观察SQL运行情况，比如SQL执行花了多长时间，执行多少次，哪些SQL最耗时，哪些SQL占用资源最多等等</li>
+<li>但是slow log内存表还存在一定的局限性，因为每个TiDB有自己的slow log且slow log file到达300M后还会切换，所以使用起来还是有一定的局限性</li>
+<li>TiKV日志能够快速定位问题SQL，对于执行一次或几次的的大SQL来说，非常容易定位问题，但是如果单次执行快但是执行频率高的SQL来说，查看TiKV日志还是相对比较麻烦</li>
+<li>综上所述，结合的使用三个工具能比较快速定位问题SQL</li>
+</ul>
+<h2 id="AP场景加速"><a href="#AP场景加速" class="headerlink" title="AP场景加速"></a>AP场景加速</h2><h3 id="相关并发参数"><a href="#相关并发参数" class="headerlink" title="相关并发参数"></a>相关并发参数</h3><p>扫描key数量比较多</p>
+<ol>
+<li><p>tidb_distsql_scan_concurrency</p>
+<p>这个变量用来设置scan操作的并发度，对于AP类应用，最大建议值不要超过所有TiKV节点的CPU核数</p>
+</li>
+<li><p>tidb_index_serial_scan_concurrency</p>
+<p>这个变量用来设置顺序scan操作的并发度</p>
+</li>
+<li><p>tidb_index_lookup_scan_concurrency</p>
+<p>这个变量用来设置index lookup操作的并发度</p>
+</li>
+<li><p>tidb_index_lookup_join_concurrency</p>
+<p>这个变量用来设置index lookup join算法的并发度</p>
+</li>
+<li><p>tidb_hash_join_concurrency</p>
+<p>这个变量用来设置hash join算法的并发度</p>
+</li>
+</ol>
+<h2 id="SQL优化案例"><a href="#SQL优化案例" class="headerlink" title="SQL优化案例"></a>SQL优化案例</h2><p>TiDB SQL优化需要注意的点</p>
+<ul>
+<li>where col1条件or col2条件，在TiDB中无法使用多个索引即MySQL的index merge功能，会导致全表扫描，可以转换为from xxx where col1 union from xxx where col2，这样就可以同时使用col1索引和col2索引。注意：需要注意本身结果集是否有重复数据，若有重复数据union和or无法等价转换</li>
+<li>index join的被驱动表，不能有函数处理的过滤条件，类似where year(xxx)=’2020’，尽量不要在过滤条件增加对列的函数处理，（现在还不支持函数索引，4.0后会支持）</li>
+<li>其余与通用数据库SQL一样，需要注意尽量减少not in，not exits使用，尽量用表关联</li>
+<li><strong>亮点：TiDB支持null及like ‘abc%’使用索引，!=xxx在TiDB也能转换为索引范围扫描，可以转换为[-inf,xxx),(xxx,+inf]，在某些特定场景比较有意义</strong></li>
+</ul>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/08/30/TiDB-SQL%E7%9B%91%E6%8E%A7%E5%8F%8A%E5%85%B8%E5%9E%8B%E7%9A%84%E4%BC%98%E5%8C%96%E6%A1%88%E4%BE%8B/" data-id="ckehr0m7d0006lgl932p7frub" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/08/30/TiDB-SQL%E7%9B%91%E6%8E%A7%E5%8F%8A%E5%85%B8%E5%9E%8B%E7%9A%84%E4%BC%98%E5%8C%96%E6%A1%88%E4%BE%8B/" data-id="ckehrt5c0000a8kl95k4nh79l" class="article-share-link">Share</a>
       
       
     </footer>
