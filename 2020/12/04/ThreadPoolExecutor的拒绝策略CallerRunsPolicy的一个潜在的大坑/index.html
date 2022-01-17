@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>ThreadPoolExecutor的拒绝策略CallerRunsPolicy的一个潜在的大坑 | SSH</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="ThreadPoolExecutor的拒绝策略SQL的一生 从客户端的Socket读取一条SQL  获取一个token  从PD获取TSO（事务的时间戳）  使用Parser将SQL parse为AST  将AST compile为执行计划     Logical Optimizer  Physical  Optimizer  Execute Plan    根据对应的执行计划，最底层的Execu">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ThreadPoolExecutor的拒绝策略CallerRunsPolicy的一个潜在的大坑">
+<meta property="og:url" content="https://sunshaohua0221.github.io/2020/12/04/ThreadPoolExecutor%E7%9A%84%E6%8B%92%E7%BB%9D%E7%AD%96%E7%95%A5CallerRunsPolicy%E7%9A%84%E4%B8%80%E4%B8%AA%E6%BD%9C%E5%9C%A8%E7%9A%84%E5%A4%A7%E5%9D%91/index.html">
+<meta property="og:site_name" content="SSH">
+<meta property="og:description" content="ThreadPoolExecutor的拒绝策略SQL的一生 从客户端的Socket读取一条SQL  获取一个token  从PD获取TSO（事务的时间戳）  使用Parser将SQL parse为AST  将AST compile为执行计划     Logical Optimizer  Physical  Optimizer  Execute Plan    根据对应的执行计划，最底层的Execu">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://sunshaohua0221.github.io/2020/12/04/ThreadPoolExecutor%E7%9A%84%E6%8B%92%E7%BB%9D%E7%AD%96%E7%95%A5CallerRunsPolicy%E7%9A%84%E4%B8%80%E4%B8%AA%E6%BD%9C%E5%9C%A8%E7%9A%84%E5%A4%A7%E5%9D%91/TiKV-read.png">
+<meta property="og:image" content="https://sunshaohua0221.github.io/2020/12/04/ThreadPoolExecutor%E7%9A%84%E6%8B%92%E7%BB%9D%E7%AD%96%E7%95%A5CallerRunsPolicy%E7%9A%84%E4%B8%80%E4%B8%AA%E6%BD%9C%E5%9C%A8%E7%9A%84%E5%A4%A7%E5%9D%91/Parse-Duration.png">
+<meta property="og:image" content="https://sunshaohua0221.github.io/2020/12/04/ThreadPoolExecutor%E7%9A%84%E6%8B%92%E7%BB%9D%E7%AD%96%E7%95%A5CallerRunsPolicy%E7%9A%84%E4%B8%80%E4%B8%AA%E6%BD%9C%E5%9C%A8%E7%9A%84%E5%A4%A7%E5%9D%91/Compile-Duration.png">
+<meta property="og:image" content="https://sunshaohua0221.github.io/2020/12/04/ThreadPoolExecutor%E7%9A%84%E6%8B%92%E7%BB%9D%E7%AD%96%E7%95%A5CallerRunsPolicy%E7%9A%84%E4%B8%80%E4%B8%AA%E6%BD%9C%E5%9C%A8%E7%9A%84%E5%A4%A7%E5%9D%91/Get-Token-Duration.png">
+<meta property="og:image" content="https://sunshaohua0221.github.io/2020/12/04/ThreadPoolExecutor%E7%9A%84%E6%8B%92%E7%BB%9D%E7%AD%96%E7%95%A5CallerRunsPolicy%E7%9A%84%E4%B8%80%E4%B8%AA%E6%BD%9C%E5%9C%A8%E7%9A%84%E5%A4%A7%E5%9D%91/99-completed-commands-duration.png">
+<meta property="og:image" content="https://sunshaohua0221.github.io/2020/12/04/ThreadPoolExecutor%E7%9A%84%E6%8B%92%E7%BB%9D%E7%AD%96%E7%95%A5CallerRunsPolicy%E7%9A%84%E4%B8%80%E4%B8%AA%E6%BD%9C%E5%9C%A8%E7%9A%84%E5%A4%A7%E5%9D%91/99-grpc-message-duration.png">
+<meta property="og:image" content="https://sunshaohua0221.github.io/2020/12/04/ThreadPoolExecutor%E7%9A%84%E6%8B%92%E7%BB%9D%E7%AD%96%E7%95%A5CallerRunsPolicy%E7%9A%84%E4%B8%80%E4%B8%AA%E6%BD%9C%E5%9C%A8%E7%9A%84%E5%A4%A7%E5%9D%91/coprocessor-cpu.png">
+<meta property="article:published_time" content="2020-12-04T01:23:12.000Z">
+<meta property="article:modified_time" content="2020-12-04T01:23:12.000Z">
+<meta property="article:author" content="ssh">
+<meta property="article:tag" content="技术、生活">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sunshaohua0221.github.io/2020/12/04/ThreadPoolExecutor%E7%9A%84%E6%8B%92%E7%BB%9D%E7%AD%96%E7%95%A5CallerRunsPolicy%E7%9A%84%E4%B8%80%E4%B8%AA%E6%BD%9C%E5%9C%A8%E7%9A%84%E5%A4%A7%E5%9D%91/TiKV-read.png">
+  
+    <link rel="alternate" href="/atom.xml" title="SSH" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">SSH</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://sunshaohua0221.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-ThreadPoolExecutor的拒绝策略CallerRunsPolicy的一个潜在的大坑" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/12/04/ThreadPoolExecutor%E7%9A%84%E6%8B%92%E7%BB%9D%E7%AD%96%E7%95%A5CallerRunsPolicy%E7%9A%84%E4%B8%80%E4%B8%AA%E6%BD%9C%E5%9C%A8%E7%9A%84%E5%A4%A7%E5%9D%91/" class="article-date">
+  <time datetime="2020-12-04T01:23:12.000Z" itemprop="datePublished">2020-12-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      ThreadPoolExecutor的拒绝策略CallerRunsPolicy的一个潜在的大坑
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="ThreadPoolExecutor的拒绝策略"><a href="#ThreadPoolExecutor的拒绝策略" class="headerlink" title="ThreadPoolExecutor的拒绝策略"></a>ThreadPoolExecutor的拒绝策略</h2><h3 id="SQL的一生"><a href="#SQL的一生" class="headerlink" title="SQL的一生"></a>SQL的一生</h3><ul>
+<li><p>从客户端的Socket读取一条SQL</p>
+</li>
+<li><p>获取一个token</p>
+</li>
+<li><p>从PD获取TSO（事务的时间戳）</p>
+</li>
+<li><p>使用Parser将SQL parse为AST</p>
+</li>
+<li><p>将AST compile为执行计划   </p>
+<ul>
+<li><p>Logical Optimizer</p>
+</li>
+<li><p>Physical  Optimizer</p>
+</li>
+<li><p>Execute Plan</p>
+</li>
+</ul>
+</li>
+<li><p>根据对应的执行计划，最底层的Executor会根据这条SQL处理的Key范围构建出多个要下发到TiKV的请求，并通过distsql的API将这些请求分发到TiKV</p>
+</li>
+<li><p>TiKV对结果做一些处理（包括filter,limit等）后，将中间结果集反馈给TiDB</p>
+</li>
+<li><p>TiDB进行一些表关联、聚合运算最终返回给Client</p>
+</li>
+</ul>
+<p><img src="TiKV-read.png"></p>
+<p>TiKV收到请求后，会将请求分为两类：</p>
+<ul>
+<li>storage read pool执行引擎：负责主键和唯一索引点查</li>
+<li>coprocessor执行引擎：其余的请求</li>
+</ul>
+<h2 id="如何定位slow-query"><a href="#如何定位slow-query" class="headerlink" title="如何定位slow query"></a>如何定位slow query</h2><h3 id="slow-query产生的原因"><a href="#slow-query产生的原因" class="headerlink" title="slow query产生的原因"></a>slow query产生的原因</h3><ul>
+<li><p>按组件划分</p>
+<ul>
+<li><p>TiDB</p>
+<ul>
+<li><p>parse慢</p>
+</li>
+<li><p>complie慢，生成物理执行计划</p>
+</li>
+<li><p>get token慢，分配线程慢</p>
+</li>
+<li><p>执行计划不正确</p>
+</li>
+</ul>
+</li>
+<li><p>PD</p>
+<ul>
+<li>获取tso慢，每个SQL要获取时间戳的</li>
+</ul>
+</li>
+<li><p>TiKV</p>
+<ul>
+<li><p>需要扫描大量的key，耗时久</p>
+</li>
+<li><p>coprocessor cpu打满，资源等待</p>
+</li>
+<li><p>读热点</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="slow-query获取渠道"><a href="#slow-query获取渠道" class="headerlink" title="slow query获取渠道"></a>slow query获取渠道</h3><ul>
+<li>集群监控上的metrics信息</li>
+<li>slow-query log，对标MySQL格式，支持市场上的MySQL慢查询分析工具</li>
+<li>TiDB的慢查询SQL内存表</li>
+<li>TiKV节点日志slow-query反查</li>
+</ul>
+<h3 id="TiDB-Parse-Metrics"><a href="#TiDB-Parse-Metrics" class="headerlink" title="TiDB - Parse Metrics"></a>TiDB - Parse Metrics</h3><ul>
+<li><p>位置：TiDB-&gt;Executor-&gt;Parse Duration</p>
+</li>
+<li><p>parse慢可能原因：TiDB节点CPU压力大</p>
+</li>
+<li><p>图例：</p>
+<p><img src="Parse-Duration.png"></p>
+</li>
+</ul>
+<h3 id="TiDB-Compile-Metrics"><a href="#TiDB-Compile-Metrics" class="headerlink" title="TiDB - Compile Metrics"></a>TiDB - Compile Metrics</h3><ul>
+<li><p>位置：TiDB-&gt;Executor-&gt;Compile Duration</p>
+</li>
+<li><p>parse慢可能原因：</p>
+<ul>
+<li><p>TiDB节点CPU压力大</p>
+</li>
+<li><p>in子查询结果集多，跟参数tidb_opt_insuqquery_unfold有关(2.1)</p>
+<p>这个参数控制in子查询执行计划的处理，设置为1的情况，会默认把in的子查询结果集当做一个常量返回给上一层做where条件的过滤，compile是要生成物理执行计划的，在执行计划时in的查询已经执行了，只在2.1有开关，默认关闭，3.0后没有这个参数</p>
+</li>
+</ul>
+</li>
+<li><p>图例：</p>
+<p><img src="Compile-Duration.png"></p>
+</li>
+</ul>
+<h3 id="TiDB-Get-Token-Duration-Metrics"><a href="#TiDB-Get-Token-Duration-Metrics" class="headerlink" title="TiDB - Get Token Duration Metrics"></a>TiDB - Get Token Duration Metrics</h3><ul>
+<li><p>位置：TiDB-&gt;Server-&gt;Get Token Duration</p>
+</li>
+<li><p>parse慢可能原因：token个数不足，需要调整token-limit</p>
+<p>说明连接过多，token默认上限是1000，超过1000后，客户端或者前台需要等待，如果这个等待比较长，并且连接数也超过上限了，就可以适当的调整这个参数，或者加TiDB节点</p>
+</li>
+<li><p>图例：</p>
+<p><img src="Get-Token-Duration.png"></p>
+</li>
+</ul>
+<h3 id="PD-tso"><a href="#PD-tso" class="headerlink" title="PD - tso"></a>PD - tso</h3><ul>
+<li><p>位置：PD-&gt;Grpc-&gt;99% completed_cmd_duration_seconds-&gt;txn</p>
+</li>
+<li><p>可能慢的原因：</p>
+<ul>
+<li>PD Leader切换</li>
+<li>PD Leader节点异常，包括cpu、磁盘等。</li>
+</ul>
+</li>
+<li><p>图例：</p>
+<p><img src="99-completed-commands-duration.png"></p>
+</li>
+</ul>
+<h3 id="TIKV-Grpc-Duration-Metrics"><a href="#TIKV-Grpc-Duration-Metrics" class="headerlink" title="TIKV - Grpc Duration Metrics"></a>TIKV - Grpc Duration Metrics</h3><ul>
+<li><p>位置：TiKV-&gt;Grpc-&gt;Coprocessor</p>
+</li>
+<li><p>可能慢的原因：</p>
+<ul>
+<li>需要大量扫描的key，某个SQL扫了大量的key</li>
+<li>Coprocessor CPU打满，造成资源等待</li>
+</ul>
+</li>
+<li><p>图例：</p>
+<p><img src="99-grpc-message-duration.png"></p>
+</li>
+</ul>
+<h3 id="TIKV-Coprocessor-Cpu"><a href="#TIKV-Coprocessor-Cpu" class="headerlink" title="TIKV - Coprocessor Cpu"></a>TIKV - Coprocessor Cpu</h3><ul>
+<li><p>位置：TiKV-&gt;Thead Cpu-&gt;Coprocessor Cpu</p>
+</li>
+<li><p>可能慢的原因：</p>
+<ul>
+<li>大量扫描的key，将cpu资源占满</li>
+<li>读热点，造成cpu资源等待</li>
+</ul>
+</li>
+<li><p>图例：</p>
+<p><img src="coprocessor-cpu.png"></p>
+</li>
+</ul>
+<h3 id="慢查询排查技能-slow-query-log"><a href="#慢查询排查技能-slow-query-log" class="headerlink" title="慢查询排查技能 - slow query log"></a>慢查询排查技能 - slow query log</h3><p>#Time：2019-04-25-15:19:33.26029 +0800     –记录了sql执行完成的时间，不是开始的时间</p>
+<p>#Txn_start_ts：407942403346923524        –事务开始的时间戳</p>
+<p>#User：<a href="mailto:&#x72;&#x6f;&#x6f;&#116;&#64;&#49;&#x32;&#55;&#x2e;&#x30;&#x2e;&#48;&#46;&#49;">&#x72;&#x6f;&#x6f;&#116;&#64;&#49;&#x32;&#55;&#x2e;&#x30;&#x2e;&#48;&#46;&#49;</a></p>
+<p>#Conn_ID：1</p>
+<p>#Query_time：2.632671582          –sql整体执行时间</p>
+<p>#Process_time：0.079 Wait_time：0.009 Backoff_time：0.1 Request_count：8 Total_keys：20008 Process_keys：20000         –TiKV相关时间</p>
+<p>#DB：test</p>
+<p>#Index_ids：[1]         –TiDB，生成计划用到的索引</p>
+<p>#Is_internal：false</p>
+<p>#Digest：edb16a8f28d9c48790925fd1c868fdae3feb49bc58481dda7df228625a5ba6e1         </p>
+<p>#Stats：t_wide:407941920305971202,t_slim:pseudo       –TiDB</p>
+<p>#Cop_proc_avg：0.009875 Cop_proc_p90：0.018 Cop_proc_max：0.018 Cop_proc_addr：127.0.0.1:22160           –详细Cop信息</p>
+<p>#Cop_wait_avg：0.001125 Cop_wait_p90：0.002 Cop_wait_max：0.002 Cop_wait_addr：127.0.0.1:24160</p>
+<p>#Mem_max：195349          –TiDB  内存使用大小</p>
+<p>select count(1) from t_slim,t_wide where t.clim.c0&gt;t.wide.c0 and t.slim.c1&gt;t.wide.c1 and t_wide.c0 &gt; 5000;</p>
+<ul>
+<li>Red color is related with TiDB</li>
+<li>Blue color is related with TiKV/Coprocessor</li>
+</ul>
+<h3 id="慢查询排查技能-内存表"><a href="#慢查询排查技能-内存表" class="headerlink" title="慢查询排查技能 - 内存表"></a>慢查询排查技能 - 内存表</h3><p>INFOMATION_SCHEMA:</p>
+<p>select * from slow_query order by query_time desc, total_keys/process_keys\G;</p>
+<p>slow_query的字段值跟slow query log是对应的</p>
+<h3 id="slow-log相关参数"><a href="#slow-log相关参数" class="headerlink" title="slow log相关参数"></a>slow log相关参数</h3><ul>
+<li><p>slow-threshold</p>
+<ul>
+<li>参数含义：输出慢sql的耗时阈值，单位ms，静态参数，需要重启TiDB SERVER生效</li>
+<li>建议值：在OLTP系统，建议设置50ms左右，OLTP系统SQL一版有以下特点：SQL短小、单次运行时间短、执行次数多；OLAP系统可以适当放大点。</li>
+</ul>
+</li>
+<li><p>query-log-max-len</p>
+<ul>
+<li>参数含义：日志记录的SQL长度，超过这个长度会截断输出，单位为字符，静态参数，需要重启TiDB SERVER生效</li>
+<li>建议值：4096</li>
+</ul>
+</li>
+<li><p>tidb_slow_query_file</p>
+<ul>
+<li><p>参数含义：日志记录的SQL长度，超过这个长度会截断输出，单位为字符，静态参数，需要重启TiDB SERVER生效</p>
+</li>
+<li><p>建议值：慢查询日志的文件名，默认值为tidb_slow.log，可以存储300M内容，动态参数，可以通过会话变量生效</p>
+</li>
+<li><p>建议值：tidb_slow.log 300M以后会重新生成一个文件，所以如果要定位某一段时间的slow log，需要设置该环境变量，TiDB通过session变量tidb_slow_query_file控制查询</p>
+<p>INFOMATION_SCHEMA.SLOW_QUERY时要读取和解析的文件，可通过修改session变量的值来查询其他慢查询日志文件的内容</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="用SQL从多个维度查询slow-log表"><a href="#用SQL从多个维度查询slow-log表" class="headerlink" title="用SQL从多个维度查询slow log表"></a>用SQL从多个维度查询slow log表</h3><p>查询INFOMATION_SCHEMA.SLOW_QUERY</p>
+<h3 id="TiKV日志反查slow-log"><a href="#TiKV日志反查slow-log" class="headerlink" title="TiKV日志反查slow log"></a>TiKV日志反查slow log</h3><p>在某个SQL执行导致的TiKV cpu异常高的场合下，使用TiKV可以快速的定位问题SQL</p>
+<p>TiKV日志中记录了slow-query的几个关键信息：</p>
+<ul>
+<li>ipv4：发出请求的TiDB地址，通过该地址可以确定SQL在哪个TiDB节点执行</li>
+<li>start_ts：事务的start_ts，通过start_ts反查slow log，快速定位问题SQL，不太适合特别频繁的查询场景，start_ts很多，很难查</li>
+<li>table_id：查询的那张表，可以通过information_schema.tables的tidb_table_id反查表名</li>
+</ul>
+<h3 id="使用方法总结"><a href="#使用方法总结" class="headerlink" title="使用方法总结"></a>使用方法总结</h3><ul>
+<li>通过监控的相关metrics可以获取到TiDB集群的整体运行情况，比如某些TiKV节点CPU高不高等，对于定位慢查询来说可以有一个初步的认知，用metrics来判断哪些时间段存在问题，可能存在哪些问题</li>
+<li>slow query log及slow log内存表，可以从整体上观察SQL运行情况，比如SQL执行花了多长时间，执行多少次，哪些SQL最耗时，哪些SQL占用资源最多等等</li>
+<li>但是slow log内存表还存在一定的局限性，因为每个TiDB有自己的slow log且slow log file到达300M后还会切换，所以使用起来还是有一定的局限性</li>
+<li>TiKV日志能够快速定位问题SQL，对于执行一次或几次的的大SQL来说，非常容易定位问题，但是如果单次执行快但是执行频率高的SQL来说，查看TiKV日志还是相对比较麻烦</li>
+<li>综上所述，结合的使用三个工具能比较快速定位问题SQL</li>
+</ul>
+<h2 id="AP场景加速"><a href="#AP场景加速" class="headerlink" title="AP场景加速"></a>AP场景加速</h2><h3 id="相关并发参数"><a href="#相关并发参数" class="headerlink" title="相关并发参数"></a>相关并发参数</h3><p>扫描key数量比较多</p>
+<ol>
+<li><p>tidb_distsql_scan_concurrency</p>
+<p>这个变量用来设置scan操作的并发度，对于AP类应用，最大建议值不要超过所有TiKV节点的CPU核数</p>
+</li>
+<li><p>tidb_index_serial_scan_concurrency</p>
+<p>这个变量用来设置顺序scan操作的并发度</p>
+</li>
+<li><p>tidb_index_lookup_scan_concurrency</p>
+<p>这个变量用来设置index lookup操作的并发度</p>
+</li>
+<li><p>tidb_index_lookup_join_concurrency</p>
+<p>这个变量用来设置index lookup join算法的并发度</p>
+</li>
+<li><p>tidb_hash_join_concurrency</p>
+<p>这个变量用来设置hash join算法的并发度</p>
+</li>
+</ol>
+<h2 id="SQL优化案例"><a href="#SQL优化案例" class="headerlink" title="SQL优化案例"></a>SQL优化案例</h2><h3 id="TiDB-SQL优化需要注意的点"><a href="#TiDB-SQL优化需要注意的点" class="headerlink" title="TiDB SQL优化需要注意的点"></a>TiDB SQL优化需要注意的点</h3><ul>
+<li>where col1条件or col2条件，在TiDB中无法使用多个索引即MySQL的index merge功能，会导致全表扫描，可以转换为from xxx where col1 union from xxx where col2，这样就可以同时使用col1索引和col2索引。注意：需要注意本身结果集是否有重复数据，若有重复数据union和or无法等价转换</li>
+<li>index join的被驱动表，不能有函数处理的过滤条件，类似where year(xxx)=’2020’，尽量不要在过滤条件增加对列的函数处理，（现在还不支持函数索引，4.0后会支持）</li>
+<li>其余与通用数据库SQL一样，需要注意尽量减少not in，not exits使用，尽量用表关联</li>
+<li><strong>亮点：TiDB支持null及like ‘abc%’使用索引，!=xxx在TiDB也能转换为索引范围扫描，可以转换为[-inf,xxx),(xxx,+inf]，在某些特定场景比较有意义</strong></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://sunshaohua0221.github.io/2020/12/04/ThreadPoolExecutor%E7%9A%84%E6%8B%92%E7%BB%9D%E7%AD%96%E7%95%A5CallerRunsPolicy%E7%9A%84%E4%B8%80%E4%B8%AA%E6%BD%9C%E5%9C%A8%E7%9A%84%E5%A4%A7%E5%9D%91/" data-id="ckyieypd20007xh7ahh2j1ym3" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2020/12/03/MySQL%20JDBC%E7%9A%84queryTimeout%E7%9A%84%E4%B8%80%E4%B8%AA%E5%9D%91/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">ThreadPoolExecutor的拒绝策略CallerRunsPolicy的一个潜在的大坑</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/12/04/ThreadPoolExecutor%E7%9A%84%E6%8B%92%E7%BB%9D%E7%AD%96%E7%95%A5CallerRunsPolicy%E7%9A%84%E4%B8%80%E4%B8%AA%E6%BD%9C%E5%9C%A8%E7%9A%84%E5%A4%A7%E5%9D%91/">ThreadPoolExecutor的拒绝策略CallerRunsPolicy的一个潜在的大坑</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/03/MySQL%20JDBC%E7%9A%84queryTimeout%E7%9A%84%E4%B8%80%E4%B8%AA%E5%9D%91/">ThreadPoolExecutor的拒绝策略CallerRunsPolicy的一个潜在的大坑</a>
+          </li>
+        
+          <li>
+            <a href="/2020/08/31/TiDB-SQL%E7%9B%91%E6%8E%A7%E5%8F%8A%E5%85%B8%E5%9E%8B%E7%9A%84%E4%BC%98%E5%8C%96%E6%A1%88%E4%BE%8B/">TiDB SQL监控及典型的优化案例</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/20/SQL%E4%BC%98%E5%8C%96/">SQL诊断优化-持续更新</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/10/String.valueOf%E6%85%8E%E7%94%A8/">String.valueOf慎用</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2022 ssh<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>APM-Pinpoint | SSH</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="架构图 单机模式安装准备安装包：  Hbase hbase-2.1.5-bin.tar.gz hbase-create.hbase下载地址：http:&#x2F;&#x2F;apache.fayea.com&#x2F;hbase&#x2F;wget http:&#x2F;&#x2F;apache.fayea.com&#x2F;hbase&#x2F;2.1.5&#x2F;hbase-2.1.5-bin.tar.gzhttps:&#x2F;&#x2F;github.com&#x2F;naver&#x2F;pinpoint&#x2F;tre">
+<meta property="og:type" content="article">
+<meta property="og:title" content="APM-Pinpoint">
+<meta property="og:url" content="https://sunshaohua0221.github.io/2020/04/09/APM-Pinpoint/index.html">
+<meta property="og:site_name" content="SSH">
+<meta property="og:description" content="架构图 单机模式安装准备安装包：  Hbase hbase-2.1.5-bin.tar.gz hbase-create.hbase下载地址：http:&#x2F;&#x2F;apache.fayea.com&#x2F;hbase&#x2F;wget http:&#x2F;&#x2F;apache.fayea.com&#x2F;hbase&#x2F;2.1.5&#x2F;hbase-2.1.5-bin.tar.gzhttps:&#x2F;&#x2F;github.com&#x2F;naver&#x2F;pinpoint&#x2F;tre">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://sunshaohua0221.github.io/2020/04/09/APM-Pinpoint/pinpoint-0e99f9479531406cb207f1cd9b96a7e3.png">
+<meta property="article:published_time" content="2020-04-09T14:05:08.000Z">
+<meta property="article:modified_time" content="2020-04-09T14:05:08.000Z">
+<meta property="article:author" content="ssh">
+<meta property="article:tag" content="技术、生活">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sunshaohua0221.github.io/2020/04/09/APM-Pinpoint/pinpoint-0e99f9479531406cb207f1cd9b96a7e3.png">
+  
+    <link rel="alternate" href="/atom.xml" title="SSH" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">SSH</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://sunshaohua0221.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-APM-Pinpoint" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/04/09/APM-Pinpoint/" class="article-date">
+  <time datetime="2020-04-09T14:05:08.000Z" itemprop="datePublished">2020-04-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      APM-Pinpoint
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="架构图"><a href="#架构图" class="headerlink" title="架构图"></a>架构图</h3><p><img src="pinpoint-0e99f9479531406cb207f1cd9b96a7e3.png"></p>
+<h3 id="单机模式安装"><a href="#单机模式安装" class="headerlink" title="单机模式安装"></a>单机模式安装</h3><p>准备安装包：</p>
+<ul>
+<li>Hbase<ul>
+<li>hbase-2.1.5-bin.tar.gz</li>
+<li>hbase-create.hbase<br>下载地址：<a target="_blank" rel="noopener" href="http://apache.fayea.com/hbase/">http://apache.fayea.com/hbase/</a><br>wget <a target="_blank" rel="noopener" href="http://apache.fayea.com/hbase/2.1.5/hbase-2.1.5-bin.tar.gz">http://apache.fayea.com/hbase/2.1.5/hbase-2.1.5-bin.tar.gz</a><br><a target="_blank" rel="noopener" href="https://github.com/naver/pinpoint/tree/master/hbase/scripts/hbase-create.hbase">https://github.com/naver/pinpoint/tree/master/hbase/scripts/hbase-create.hbase</a>  </li>
+</ul>
+</li>
+<li>pinpoint<ul>
+<li>pinpoint-collector-1.8.4.war </li>
+<li>pinpoint-web-1.8.4.war</li>
+<li>pinpoint-agent-1.8.4.tar.gz<br>下载地址：<a target="_blank" rel="noopener" href="https://github.com/naver/pinpoint/releases">https://github.com/naver/pinpoint/releases</a>  </li>
+</ul>
+</li>
+</ul>
+<h3 id="安装Hbase"><a href="#安装Hbase" class="headerlink" title="安装Hbase"></a>安装Hbase</h3><p>1、解压hbase-2.1.5-bin.tar.gz</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar xf hbase-2.1.5-bin.tar.gz</span><br></pre></td></tr></table></figure>
+<p>2、启动</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd hbase-2.1.5/bin</span><br><span class="line">./start-hbase.sh</span><br></pre></td></tr></table></figure>
+<p>需要jdk8版本，手动指定jdk配置：<br>cd hbase-2.1.5/conf<br>vim hbase-env.sh<br>增加export JAVA_HOME=/export/software/jdk1.8.0_20/<br>保存后启动  </p>
+<p>3、初始化脚本</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./hbase shell /home/ssh/pinpoint/hbase-create.hbase</span><br></pre></td></tr></table></figure>
+<p>4、web访问<br><a target="_blank" rel="noopener" href="http://127.0.0.1:16010/">http://127.0.0.1:16010/</a></p>
+<h3 id="安装pinpoint-collector"><a href="#安装pinpoint-collector" class="headerlink" title="安装pinpoint-collector"></a>安装pinpoint-collector</h3><p>解压war包到tomcat下</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">unzip pinpoint-collector-1.8.4.war -d /home/ssh/pinpoint/tomcat-collector/webapps/ROOT</span><br><span class="line">cd /home/ssh/pinpoint/tomcat-collector/bin</span><br><span class="line">./startup.sh</span><br></pre></td></tr></table></figure>
+
+<h3 id="安装pinpoint-web"><a href="#安装pinpoint-web" class="headerlink" title="安装pinpoint-web"></a>安装pinpoint-web</h3><p>解压war包到tomcat下（端口号28080）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">unzip pinpoint-web-1.8.4.war -d /home/ssh/pinpoint/tomcat-web/webapps/ROOT</span><br><span class="line">cd /home/ssh/pinpoint/tomcat-web/bin</span><br><span class="line">./startup.sh</span><br></pre></td></tr></table></figure>
+<p>注意修改tomcat端口号  </p>
+<p>web访问：<a target="_blank" rel="noopener" href="http://127.0.0.1:28080/">http://127.0.0.1:28080/</a></p>
+<h3 id="安装pinpoint-agent"><a href="#安装pinpoint-agent" class="headerlink" title="安装pinpoint-agent"></a>安装pinpoint-agent</h3><ul>
+<li><p>tomcat启动的应用<br>在tomcat bin下的catalina.sh增加配置</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">CATALINA_OPTS=<span class="string">&quot;<span class="variable">$CATALINA_OPTS</span> -javaagent:/export/software/pinpoint/agent/pinpoint-bootstrap-1.8.4.jar&quot;</span></span><br><span class="line">CATALINA_OPTS=<span class="string">&quot;<span class="variable">$CATALINA_OPTS</span> -Dpinpoint.agentId=settlment1&quot;</span></span><br><span class="line">CATALINA_OPTS=<span class="string">&quot;<span class="variable">$CATALINA_OPTS</span> -Dpinpoint.applicationName=settlement&quot;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>springboot启动的应用<br>jar启动方式为：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nohup java -javaagent:/home/ssh/software/pinpoint/agent/pinpoint-bootstrap-1.8.4.jar -Dpinpoint.applicationName=settlement -Dpinpoint.agentId=settlement1 -jar settlement-latest.jar &gt;/dev/null 2&gt;&amp;1 &amp;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="使用手册"><a href="#使用手册" class="headerlink" title="使用手册"></a>使用手册</h3><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/xvshu/article/details/79866237">https://blog.csdn.net/xvshu/article/details/79866237</a></p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/a803571cd570">https://www.jianshu.com/p/a803571cd570</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://sunshaohua0221.github.io/2020/04/09/APM-Pinpoint/" data-id="ckyieypcm0000xh7a8bc00tby" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/04/09/Windows%E5%89%AA%E8%B4%B4%E6%9D%BF%E5%A2%9E%E5%BC%BA%E8%BD%AF%E4%BB%B6-ClipX/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Windows剪贴板增强软件-ClipX
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/04/09/redis%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">redis分布式锁</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/12/04/ThreadPoolExecutor%E7%9A%84%E6%8B%92%E7%BB%9D%E7%AD%96%E7%95%A5CallerRunsPolicy%E7%9A%84%E4%B8%80%E4%B8%AA%E6%BD%9C%E5%9C%A8%E7%9A%84%E5%A4%A7%E5%9D%91/">ThreadPoolExecutor的拒绝策略CallerRunsPolicy的一个潜在的大坑</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/03/MySQL%20JDBC%E7%9A%84queryTimeout%E7%9A%84%E4%B8%80%E4%B8%AA%E5%9D%91/">ThreadPoolExecutor的拒绝策略CallerRunsPolicy的一个潜在的大坑</a>
+          </li>
+        
+          <li>
+            <a href="/2020/08/31/TiDB-SQL%E7%9B%91%E6%8E%A7%E5%8F%8A%E5%85%B8%E5%9E%8B%E7%9A%84%E4%BC%98%E5%8C%96%E6%A1%88%E4%BE%8B/">TiDB SQL监控及典型的优化案例</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/20/SQL%E4%BC%98%E5%8C%96/">SQL诊断优化-持续更新</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/10/String.valueOf%E6%85%8E%E7%94%A8/">String.valueOf慎用</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2022 ssh<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
