@@ -7,14 +7,14 @@
   
   <title>Kafka | SSH</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="第1章Kafka概述1.1 定义Kafka是一个分布式的基于发布&#x2F;订阅模式的消息队列（Message Queue），主要应用于大数据实时处理领域。 1.2 消息队列1.2.1 传统消息队列的应用场景 使用消息队列的好处  解藕，允许你独立的扩展或修改两边的处理过程，只要确保他们遵守同样的接口约束。 可恢复性，系统的一部分组件失效时，不会影响到整个系统。消息队列降低了进程间的耦合度，所以即使一个处理">
+  <meta name="description" content="第1章Kafka概述1.1 定义Kafka是一个分布式的基于发布&#x2F;订阅模式的消息队列（Message Queue），主要应用于大数据实时处理领域。 1.2 消息队列1.2.1 传统消息队列的应用场景   使用消息队列的好处  解藕，允许你独立的扩展或修改两边的处理过程，只要确保他们遵守同样的接口约束。 可恢复性，系统的一部分组件失效时，不会影响到整个系统。消息队列降低了进程间的耦合度，所以即使一个">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Kafka">
 <meta property="og:url" content="https://sunshaohua0221.github.io/2022/02/07/Kafka/index.html">
 <meta property="og:site_name" content="SSH">
-<meta property="og:description" content="第1章Kafka概述1.1 定义Kafka是一个分布式的基于发布&#x2F;订阅模式的消息队列（Message Queue），主要应用于大数据实时处理领域。 1.2 消息队列1.2.1 传统消息队列的应用场景 使用消息队列的好处  解藕，允许你独立的扩展或修改两边的处理过程，只要确保他们遵守同样的接口约束。 可恢复性，系统的一部分组件失效时，不会影响到整个系统。消息队列降低了进程间的耦合度，所以即使一个处理">
+<meta property="og:description" content="第1章Kafka概述1.1 定义Kafka是一个分布式的基于发布&#x2F;订阅模式的消息队列（Message Queue），主要应用于大数据实时处理领域。 1.2 消息队列1.2.1 传统消息队列的应用场景   使用消息队列的好处  解藕，允许你独立的扩展或修改两边的处理过程，只要确保他们遵守同样的接口约束。 可恢复性，系统的一部分组件失效时，不会影响到整个系统。消息队列降低了进程间的耦合度，所以即使一个">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://sunshaohua0221.github.io/Users/sunshaohua2/Documents/blog/source/_posts/MQ%E4%BC%A0%E7%BB%9F%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF%E4%B9%8B%E5%BC%82%E6%AD%A5%E5%A4%84%E7%90%86.png">
+<meta property="og:image" content="https://sunshaohua0221.github.io/2022/02/07/Kafka/MQ%E4%BC%A0%E7%BB%9F%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF%E4%B9%8B%E5%BC%82%E6%AD%A5%E5%A4%84%E7%90%86.png">
 <meta property="og:image" content="https://sunshaohua0221.github.io/Users/sunshaohua2/Documents/blog/source/_posts/%E7%82%B9%E5%AF%B9%E7%82%B9.png">
 <meta property="og:image" content="https://sunshaohua0221.github.io/Users/sunshaohua2/Documents/blog/source/_posts/%E5%8F%91%E5%B8%83%E8%AE%A2%E9%98%85%E6%A8%A1%E5%BC%8F.png">
 <meta property="og:image" content="https://sunshaohua0221.github.io/Users/sunshaohua2/Documents/blog/source/_posts/Kafka%E5%9F%BA%E7%A1%80%E6%9E%B6%E6%9E%84.png">
@@ -26,11 +26,11 @@
 <meta property="og:image" content="https://sunshaohua0221.github.io/Users/sunshaohua2/Documents/blog/source/_posts/Kafka/acks=1%E6%95%B0%E6%8D%AE%E4%B8%A2%E5%A4%B1%E6%A1%88%E4%BE%8B.png">
 <meta property="og:image" content="https://sunshaohua0221.github.io/Users/sunshaohua2/Documents/blog/source/_posts/Kafka/acks=-1%E6%95%B0%E6%8D%AE%E9%87%8D%E5%A4%8D%E6%A1%88%E4%BE%8B.png">
 <meta property="article:published_time" content="2022-02-07T03:24:38.015Z">
-<meta property="article:modified_time" content="2022-02-07T03:27:56.781Z">
+<meta property="article:modified_time" content="2022-02-09T05:49:31.438Z">
 <meta property="article:author" content="ssh">
 <meta property="article:tag" content="技术、生活">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://sunshaohua0221.github.io/Users/sunshaohua2/Documents/blog/source/_posts/MQ%E4%BC%A0%E7%BB%9F%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF%E4%B9%8B%E5%BC%82%E6%AD%A5%E5%A4%84%E7%90%86.png">
+<meta name="twitter:image" content="https://sunshaohua0221.github.io/2022/02/07/Kafka/MQ%E4%BC%A0%E7%BB%9F%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF%E4%B9%8B%E5%BC%82%E6%AD%A5%E5%A4%84%E7%90%86.png">
   
     <link rel="alternate" href="/atom.xml" title="SSH" type="application/atom+xml">
   
@@ -102,7 +102,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h1 id="第1章Kafka概述"><a href="#第1章Kafka概述" class="headerlink" title="第1章Kafka概述"></a>第1章Kafka概述</h1><h2 id="1-1-定义"><a href="#1-1-定义" class="headerlink" title="1.1 定义"></a>1.1 定义</h2><p>Kafka是一个<code>分布式</code>的基于<code>发布/订阅模式</code>的<code>消息队列</code>（Message Queue），主要应用于大数据实时处理领域。</p>
-<h2 id="1-2-消息队列"><a href="#1-2-消息队列" class="headerlink" title="1.2 消息队列"></a>1.2 消息队列</h2><h3 id="1-2-1-传统消息队列的应用场景"><a href="#1-2-1-传统消息队列的应用场景" class="headerlink" title="1.2.1 传统消息队列的应用场景"></a>1.2.1 传统消息队列的应用场景</h3><p><img src="/Users/sunshaohua2/Documents/blog/source/_posts/MQ%E4%BC%A0%E7%BB%9F%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF%E4%B9%8B%E5%BC%82%E6%AD%A5%E5%A4%84%E7%90%86.png"></p>
+<h2 id="1-2-消息队列"><a href="#1-2-消息队列" class="headerlink" title="1.2 消息队列"></a>1.2 消息队列</h2><h3 id="1-2-1-传统消息队列的应用场景"><a href="#1-2-1-传统消息队列的应用场景" class="headerlink" title="1.2.1 传统消息队列的应用场景"></a>1.2.1 传统消息队列的应用场景</h3><p><img src="MQ%E4%BC%A0%E7%BB%9F%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF%E4%B9%8B%E5%BC%82%E6%AD%A5%E5%A4%84%E7%90%86.png">  </p>
 <p><strong>使用消息队列的好处</strong></p>
 <ol>
 <li>解藕，允许你独立的扩展或修改两边的处理过程，只要确保他们遵守同样的接口约束。</li>
@@ -217,7 +217,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2022/02/07/Kafka/" data-id="ckzf4o81900009o7a8h1i0fwo" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2022/02/07/Kafka/" data-id="ckzf4uhhf00028b7adlhrbksu" class="article-share-link">Share</a>
       
       
     </footer>
