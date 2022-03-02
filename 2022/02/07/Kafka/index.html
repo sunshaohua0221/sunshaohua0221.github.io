@@ -26,7 +26,7 @@
 <meta property="og:image" content="https://sunshaohua0221.github.io/2022/02/07/Kafka/acks=1%E6%95%B0%E6%8D%AE%E4%B8%A2%E5%A4%B1%E6%A1%88%E4%BE%8B.png">
 <meta property="og:image" content="https://sunshaohua0221.github.io/2022/02/07/Kafka/acks=-1%E6%95%B0%E6%8D%AE%E9%87%8D%E5%A4%8D%E6%A1%88%E4%BE%8B.png">
 <meta property="article:published_time" content="2022-02-07T03:24:38.015Z">
-<meta property="article:modified_time" content="2022-02-09T06:08:39.170Z">
+<meta property="article:modified_time" content="2022-03-02T06:03:24.240Z">
 <meta property="article:author" content="ssh">
 <meta property="article:tag" content="技术、生活">
 <meta name="twitter:card" content="summary">
@@ -211,13 +211,26 @@
 <p><img src="acks=-1%E6%95%B0%E6%8D%AE%E9%87%8D%E5%A4%8D%E6%A1%88%E4%BE%8B.png"></p>
 </li>
 <li><p>故障处理节</p>
+<p><strong>LEO</strong>：指的是每个副本最大的 <strong>offset</strong>；</p>
+<p><strong>HW</strong>：指的是消费者能见到的最大的 <strong>offset</strong>，<strong>ISR</strong> 队列中最小的 <strong>LEO</strong>。</p>
+<p>（1） <strong>follower</strong> 故障</p>
+<p>follower 发生故障后会被临时踢出 ISR，待该 follower 恢复后，follower 会读取本地磁盘记录的上次的HW，并将 log 文件高于 HW 的部分截取掉，从 HW 开始向 leader 进行同步。等该 <strong>follower</strong> 的 <strong>LEO</strong> 大于等于该 <strong>Partition</strong> 的 <strong>HW</strong>，即 follower 追上 leader 之后，就可以重新加入 ISR 了。</p>
+<p>（2） <strong>leader</strong> 故障</p>
+<p>leader 发生故障之后，会从 ISR 中选出一个新的 leader，之后，为保证多个副本之间的数据一致性，其余的 follower 会先将各自的 log 文件高于 HW 的部分截掉，然后从新的 leader同步数据。</p>
+<p>注意：这只能保证副本之间的数据一致性，并不能保证数据不丢失或者不重复。</p>
 </li>
 </ol>
+<h3 id="3-2-3-Exactly-Once-语义"><a href="#3-2-3-Exactly-Once-语义" class="headerlink" title="3.2.3 Exactly Once 语义"></a>3.2.3 Exactly Once 语义</h3><p>​        将服务器的 ACK 级别设置为-1，可以保证 Producer 到 Server 之间不会丢失数据，即 At Least Once 语义。相对的，将服务器 ACK 级别设置为 0，可以保证生产者每条消息只会被发送一次，即At Most Once 语义。</p>
+<p>​        At Least Once 可以保证数据不丢失，但是不能保证数据不重复；相对的，At Least Once 可以保证数据不重复，但是不能保证数据不丢失。但是，对于一些非常重要的信息，比如说交易数据，下游数据消费者要求数据既不重复也不丢失，即 Exactly Once 语义。在 0.11 版本以前的 Kafka，对此是无能为力的，只能保证数据不丢失，再在下游消费者对数据做全局去重。对于多个下游应用的情况，每个都需要单独做全局去重，这就对性能造成了很大影响。</p>
+<p>​        0.11 版本的 Kafka，引入了一项重大特性：幂等性。所谓的幂等性就是指Producer 不论向 Server 发送多少次重复数据，Server 端都只会持久化一条。幂等性结合 At Least Once 语义，就构成了Kafka 的Exactly Once 语义。即：</p>
+<p>​                                                <code>At Least Once + 幂等性 = Exactly Once</code></p>
+<p>​        要启用幂等性，只需要将 Producer 的参数中 enable.idompotence 设置为 true 即可。Kafka 的幂等性实现其实就是将原来下游需要做的去重放在了数据上游。开启幂等性的 Producer 在初始化的时候会被分配一个 PID，发往同一 Partition 的消息会附带 Sequence Number。而Broker 端会对&lt;PID, Partition, SeqNumber&gt;做缓存，当具有相同主键的消息提交时，Broker 只会持久化一条。</p>
+<p>​        但是PID 重启就会变化，同时不同的 Partition 也具有不同主键，所以幂等性无法保证跨分区跨会话的Exactly Once。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2022/02/07/Kafka/" data-id="ckzqsxhji00022c7a72hy890r" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2022/02/07/Kafka/" data-id="cl095l3g70002u87a1v9sdkms" class="article-share-link">Share</a>
       
       
     </footer>
