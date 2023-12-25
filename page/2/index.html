@@ -67,6 +67,75 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Sharding-JDBC" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/04/10/Sharding-JDBC/" class="article-date">
+  <time datetime="2020-04-10T00:15:54.000Z" itemprop="datePublished">2020-04-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/04/10/Sharding-JDBC/">Sharding JDBC生产问题</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>最近项目中在使用数据库中间件，采用<code>ShardingSphere</code>中的<code>Sharding-JDBC</code>，总结下最近出现的问题</p>
+<p><a target="_blank" rel="noopener" href="https://shardingsphere.apache.org/">ShardingSphere官网</a></p>
+<h3 id="分布式主键重复问题"><a href="#分布式主键重复问题" class="headerlink" title="分布式主键重复问题"></a>分布式主键重复问题</h3><h4 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h4><p>告警双写失败，库中新增metering和last_billing_record违反唯一主键约束</p>
+<h4 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h4><p>因为涉及到分库分表，数据是分散存放的，为了避免分表中的主键不重复，所以使用分布式主键算法生成主键，目前使用的是<code>Sharding</code>内置的<code>SnowFlake(Twitter开源的)</code>算法<br><code>SnowFlake</code>算法生成ID的结构如下图：<br><img src="snowflake.jpg"><br>其中<code>工作机器id(workerId)</code>是用来区分不同的机器而设计，上线时，未设置这个参数，默认为0，也就是线上8台服务的<code>workerId</code>都为0，这样就会出现某几台服务器在同一时间(毫秒)写同一张表，按照原理图可以得出时间戳一样，工作机器id一样，序列号一样，所以就出现了多台服务器同一时间用同一个主键id写表，报了违反唯一主键约束的错误  </p>
+<p>基于计费的业务特殊性，0-半点之间会跑分布式任务，所以很容易造成多台服务器同一时间写同一张表的情况  </p>
+<h4 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h4><p>为每台服务器设置单独的<code>workerId</code>，<code>workerId</code>取值范围<code>0-1023</code>  </p>
+<p><code>Spring Sharding</code>配置文件是支持注入<code>worker.id</code>值的，但只能在配置文件配置，不能动态生成，最终会部署到8台服务器上，读的还是一个值，咨询过<code>Sharding</code>创始人，也没有扩展接口可以重写<code>workerId</code>的值  </p>
+<p>起初想过通过云翼的外挂配置文件<code>important.properties</code>设置<code>workerId</code>值，<code>Spring</code>配置文件再读取<code>important.properties</code>设置的值，不行，因为云翼上是按照<code>az</code>外挂的，每个<code>az</code>有两台服务器，那这两台服务器读取的还是一个值，还是会出现问题  </p>
+<p>最后是通过实现<code>Spring IOC</code>容器给我们提供的一个扩展接口<code>BeanPostProcessor</code>实现的，<code>BeanPostProcessor</code>提供了一个<code>postProcessBeforeInitialization</code>方法，也就是在bean初始化前可以修改<code>worker.id</code>的值，这样就可以为所欲为了，最终是用<code>redis</code>为每个服务器ip生成自增的序列值，存到<code>redis</code>里，每次启动时根据键ip读取<code>redis</code>的值，以后扩容机器接着申请即可  </p>
+<h3 id="时钟回拨问题"><a href="#时钟回拨问题" class="headerlink" title="时钟回拨问题"></a>时钟回拨问题</h3><h4 id="问题描述-1"><a href="#问题描述-1" class="headerlink" title="问题描述"></a>问题描述</h4><p>邮件告警双写失败，Cause: java.lang.IllegalStateException:<code> Clock is moving backwards</code>, last time is %d milliseconds, current time is %d milliseconds [1584000400088, 1584000399959]</p>
+<h4 id="问题分析-1"><a href="#问题分析-1" class="headerlink" title="问题分析"></a>问题分析</h4><p>错误信息中<code>Clock is moving backwards</code>，是由于时钟回退导致，当前生成id的时间早于最后一次生成id的时间</p>
+<p><code>SnowFlake</code>生成规则依赖时间戳，这样由于时间校准，以及其他因素，可能导致服务器时间回退（时间向前快进不会有问题），如果恰巧回退前生成过一些id，而时间回退后，生成的id就有可能重复。官方对于此并没有给出解决方案，而是简单的抛错处理，这样会造成在时间被追回之前的这段时间服务不可用</p>
+<p>恰好10.160.10.50容器的时间比其他容器的时间快1-2s，每隔一段时间发生一次时间校准，在时间校准前后都发生了insert操作，导致了当前生成id的时间早于最后一次生成id的时间，框架报错，insert失败</p>
+<h4 id="解决方案-1"><a href="#解决方案-1" class="headerlink" title="解决方案"></a>解决方案</h4><ol>
+<li>代码方面</li>
+</ol>
+<p><code>Sharding</code>提供了一个扩展接口<code>ShardingKeyGenerator</code>，可以自己实现一套分布式id生成算法，这里只是在内置的<code>SnowFlake</code>基础上改进了时钟回拨导致服务不可用的问题</p>
+<p><code>SnowFlake</code>算法给<code>workerId</code>预留了10位，即<code>workerId</code>的取值范围为[0, 1023]，事实上实际生产环境不大可能需要部署1024个服务  </p>
+<p>所以采用备用<code>workerId</code>的方式，举例：将<code>workerId</code>取值范围缩小为[0, 511]，[512, 1023]这个范围的<code>workerId</code>当做备用<code>workerId</code>。<code>workerId</code>为0的备用<code>workerId</code>是512，<code>workerId</code>为1的备用<code>workerId</code>是513，以此类推……  </p>
+<p>备用<code>workerId</code>数量越多, 可靠性越高, 但是可部署的服务就越少  </p>
+<p>目前计费是设置了7个备份，最多能部署128个节点，足够用了</p>
+<p>这样改后，虽然解决了不可用问题，但频繁的时钟回退导致主键不具备递增特性，根据<code>MySql</code>聚集索引的特性，如果主不是递增，会导致索引数据结构(<code>B+Tree</code>)频繁的进行分裂和平衡，随着数据量越大，性能损耗越严重</p>
+<ol start="2">
+<li>硬件方面</li>
+</ol>
+<p>10.160.10.50容器迁移到了时钟正常的物理机上</p>
+<h3 id="多线程并发时路由不准确问题"><a href="#多线程并发时路由不准确问题" class="headerlink" title="多线程并发时路由不准确问题"></a>多线程并发时路由不准确问题</h3><h4 id="问题描述-2"><a href="#问题描述-2" class="headerlink" title="问题描述"></a>问题描述</h4><p>告警双写失败，更新metering或者last_billing_record条数为0，未更新成功</p>
+<h4 id="问题分析-2"><a href="#问题分析-2" class="headerlink" title="问题分析"></a>问题分析</h4><p>通过查日志发现，同一台服务器上的两个线程操作同一张表时，路由会混乱，a线程会使用b线程的路由分片值  </p>
+<p>a线程做数据迁移，迁移的时间2019-03-14 - 2019-03-31  </p>
+<p>b线程处理<code>Kafka</code>消息，生成用量数据，时间是2020-03-17  </p>
+<p>两个线程并发时，a线程会使用b线程的路由分片值，这样就导致a线程先用路由分片值2019-03-17插入表metering_1903成功，再用路由值2020-03-17更新表metering_2003的状态，两个表不一致，导致更新不到数据  </p>
+<p><code>Spring</code>注入的路由实现类是单例的，为了方便取值，路由实现类将路由分片值定义成了实例变量，如果单例中使用实例变量，多线程不安全  </p>
+<h4 id="解决方案-2"><a href="#解决方案-2" class="headerlink" title="解决方案"></a>解决方案</h4><p>删除实例变量，路由值通过方法参数传递，或者<code>Spring</code>注入实例设置为多例</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://sunshaohua0221.github.io/2020/04/10/Sharding-JDBC/" data-id="clqkfxar6000a8u7o88ada17g" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-log-mdc" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/04/09/log-mdc/" class="article-date">
@@ -139,7 +208,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/09/log-mdc/" data-id="clqkfmq49000f4l7o3fwgesis" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/09/log-mdc/" data-id="clqkfxarb000g8u7o14sg991s" class="article-share-link">Share</a>
       
       
     </footer>
@@ -203,7 +272,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/09/BASE/" data-id="clqkfmq3z00014l7o39n6a2np" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/09/BASE/" data-id="clqkfxar000038u7o9cgm9uvq" class="article-share-link">Share</a>
       
       
     </footer>
@@ -213,9 +282,9 @@
 
 
   
-    <article id="post-CAP" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-CAP2" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2020/04/09/CAP/" class="article-date">
+    <a href="/2020/04/09/CAP2/" class="article-date">
   <time datetime="2020-04-09T14:14:14.000Z" itemprop="datePublished">2020-04-09</time>
 </a>
     
@@ -227,7 +296,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/04/09/CAP/">CAP理论</a>
+      <a class="article-title" href="/2020/04/09/CAP2/">CAP理论</a>
     </h1>
   
 
@@ -243,7 +312,7 @@
 <li>可用性：非故障的节点在合理的时间内返回合理的响应（不是错误或者超时的响应）。</li>
 <li>分区容错性：分布式出现网络分区的时候，让能对外提供服务。</li>
 </ul>
-<p><strong>什么是网络分区？</strong><br>分布式系统中，多个节点之间的网络本来是连通的，但是因为某些故障（比如部分节点网络出现了问题）某些节点之间不连通了，整个网络就分成了几块区域，这就叫网络分区。<br><img src="naolie.png"></p>
+<p><strong>什么是网络分区？</strong><br>分布式系统中，多个节点之间的网络本来是连通的，但是因为某些故障（比如部分节点网络出现了问题）某些节点之间不连通了，整个网络就分成了几块区域，这就叫网络分区。<br><img src="naolie.png">$$</p>
 <h4 id="不是所谓的”3选2”"><a href="#不是所谓的”3选2”" class="headerlink" title="不是所谓的”3选2”"></a>不是所谓的”3选2”</h4><p>大部分人解释这一定律时，常常简单的表述为”一致性、可用性、分区容错性，这三者只能同时达到两个，不可能同时达到”。实际上这是一个非常有误导性的说法，而且在CAP理论诞生12年之后，CAP之父也在2012年重写了之前的论文。</p>
 <blockquote>
 <p>当发生网络分区的时候，如果我们要继续提供服务，那么强一致性合可用性只能2选1。也就是说当网络分区之后P是前提，决定了P之后才有C和A的选择。也就是说分区容错性（Partition Tolerance）我们是必须要实现的。<br>简而言之就是：CAP理论中分区容错性P是一定要满足的，在此基础上，只能满足可用性A或者一致性C。</p>
@@ -264,7 +333,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/09/CAP/" data-id="clqkfmq4000024l7oax8idxqa" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/09/CAP2/" data-id="clqkfxar000048u7obpek401n" class="article-share-link">Share</a>
       
       
     </footer>
@@ -506,7 +575,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/09/Hibernate-Validator/" data-id="clqkfmq4100034l7ohtle3tn4" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/09/Hibernate-Validator/" data-id="clqkfxar400088u7o3elkdbd9" class="article-share-link">Share</a>
       
       
     </footer>
@@ -557,7 +626,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/09/Windows%E5%89%AA%E8%B4%B4%E6%9D%BF%E5%A2%9E%E5%BC%BA%E8%BD%AF%E4%BB%B6-ClipX/" data-id="clqkfmq49000e4l7o7wqv9b5b" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/09/Windows%E5%89%AA%E8%B4%B4%E6%9D%BF%E5%A2%9E%E5%BC%BA%E8%BD%AF%E4%BB%B6-ClipX/" data-id="clqkfxar8000e8u7o3cmu8pvt" class="article-share-link">Share</a>
       
       
     </footer>
@@ -631,7 +700,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/09/APM-Pinpoint/" data-id="clqkfmq4600084l7o1wy042cc" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/09/APM-Pinpoint/" data-id="clqkfxaql00008u7o3vdq33x9" class="article-share-link">Share</a>
       
       
     </footer>
@@ -679,7 +748,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/09/redis%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/" data-id="clqkfmq4a000g4l7ocmt2fhkk" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/09/redis%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/" data-id="clqkfxarb000h8u7o2t94d6gv" class="article-share-link">Share</a>
       
       
     </footer>
@@ -721,7 +790,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/04/09/APM-Skywalking/" data-id="clqkfmq3v00004l7ofaob15np" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/04/09/APM-Skywalking/" data-id="clqkfxaqx00018u7o7bx3h9g6" class="article-share-link">Share</a>
       
       
     </footer>
@@ -754,7 +823,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">归档</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">七月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">三月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">二月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">十二月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">七月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">三月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">二月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a></li></ul>
     </div>
   </div>
 
@@ -765,6 +834,10 @@
     <h3 class="widget-title">最新文章</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2023/12/25/CAP/">CAP理论</a>
+          </li>
         
           <li>
             <a href="/2022/07/26/Java%E9%94%81%E6%9C%BA%E5%88%B6/">Java锁机制</a>
@@ -780,10 +853,6 @@
         
           <li>
             <a href="/2020/12/03/MySQL%20JDBC%E7%9A%84queryTimeout%E7%9A%84%E4%B8%80%E4%B8%AA%E5%9D%91/">ThreadPoolExecutor的拒绝策略CallerRunsPolicy的一个潜在的大坑</a>
-          </li>
-        
-          <li>
-            <a href="/2020/08/31/TiDB-SQL%E7%9B%91%E6%8E%A7%E5%8F%8A%E5%85%B8%E5%9E%8B%E7%9A%84%E4%BC%98%E5%8C%96%E6%A1%88%E4%BE%8B/">TiDB SQL监控及典型的优化案例</a>
           </li>
         
       </ul>
