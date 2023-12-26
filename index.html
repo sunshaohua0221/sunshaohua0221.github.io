@@ -1,13 +1,29 @@
 <!DOCTYPE html>
-<html>
+<html lang='zh-CN'>
+
 <head>
+  <meta name="generator" content="Hexo 7.0.0">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.21.0">
   <meta charset="utf-8">
   
 
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://gcore.jsdelivr.net'>
+  <link rel="preconnect" href="https://gcore.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
   
   <title>SSH</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="学无止境">
+
+  
+    <meta name="description" content="学无止境">
 <meta property="og:type" content="website">
 <meta property="og:title" content="SSH">
 <meta property="og:url" content="https://sunshaohua0221.github.io/index.html">
@@ -18,1338 +34,336 @@
 <meta property="article:tag" content="技术、生活">
 <meta name="twitter:card" content="summary">
   
-    <link rel="alternate" href="/atom.xml" title="SSH" type="application/atom+xml">
   
   
-    <link rel="icon" href="/favicon.png">
-  
-  
-    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
-  
-  
-<link rel="stylesheet" href="/css/style.css">
+  <meta name="keywords" content="技术、生活">
 
-<meta name="generator" content="Hexo 7.0.0"></head>
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+
+  
+
+  
+
+
+  
+</head>
 
 <body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">SSH</a>
-      </h1>
-      
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://sunshaohua0221.github.io"></form>
-      </div>
-    </div>
-  </div>
+  
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout=''>
+    
+
+  
+
+<header class="header"><div class="logo-wrap"><a class="title" href="/"><div class="main" ff="title">SSH</div><div class="sub cap">管好自己、但行好事、不度他人</div></a></div>
+
+<nav class="menu dis-select"></nav>
 </header>
-      <div class="outer">
-        <section id="main">
+
+
+<div class="widgets">
+<widget class="widget-wrapper search"><div class="widget-body"><div class="search-wrapper" id="search"><form class="search-form"><input type="text" class="search-input" id="search-input" placeholder="站内搜索"><svg t="1670596976048" class="icon search-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2676" width="200" height="200"><path d="M938.2 832.6L723.8 618.1c-2.5-2.5-5.3-4.4-7.9-6.4 36.2-55.6 57.3-121.8 57.3-193.1C773.3 222.8 614.6 64 418.7 64S64 222.8 64 418.6c0 195.9 158.8 354.6 354.6 354.6 71.3 0 137.5-21.2 193.2-57.4 2 2.7 3.9 5.4 6.3 7.8L832.5 938c14.6 14.6 33.7 21.9 52.8 21.9 19.1 0 38.2-7.3 52.8-21.8 29.2-29.1 29.2-76.4 0.1-105.5M418.7 661.3C284.9 661.3 176 552.4 176 418.6 176 284.9 284.9 176 418.7 176c133.8 0 242.6 108.9 242.6 242.7 0 133.7-108.9 242.6-242.6 242.6" p-id="2677"></path></svg></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div></div></widget>
+
+<widget class="widget-wrapper recent"><div class="widget-header cap theme dis-select"><span class="name">最近更新</span></div><div class="widget-body related-posts fs14"><a class="item title" href="/2023/12/25/BASE/"><span class="title">BASE理论</span></a><a class="item title" href="/2023/12/25/CAP/"><span class="title">CAP理论</span></a><a class="item title" href="/2022/07/26/Java%E9%94%81%E6%9C%BA%E5%88%B6/"><span class="title">Java锁机制</span></a><a class="item title" href="/2022/03/02/Kafka/"><span class="title">Kafka</span></a><a class="item title" href="/2022/02/17/TiDB-SQL%E7%9A%84%E4%B8%80%E7%94%9F/"><span class="title">TiDB-SQL的一生</span></a></div></widget>
+
+
+</div>
+
+
+    </aside>
+    <div class='l_main list'>
+      
   
-    <article id="post-BASE" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2023/12/25/BASE/" class="article-date">
-  <time datetime="2023-12-25T04:55:59.670Z" itemprop="datePublished">2023-12-25</time>
-</a>
-    
+
+<header class="header mobile-only"><div class="logo-wrap"><a class="title" href="/"><div class="main" ff="title">SSH</div><div class="sub cap">管好自己、但行好事、不度他人</div></a></div></header>
+
+
+
+      
+
+
+  
+
+<div class="nav-wrap"><nav class="sub post cap"><a class="active" href="/">近期发布</a><a href="/archives">归档</a></nav></div>
+  <div class="post-list post"><a class="post-card post " href="/2023/12/25/BASE/">
+<article class="md-text"><h2 class="post-title">BASE理论</h2><div class="excerpt"><p>BASE简介BASE理论起源于2008年，由eBay的架构师Dan Pritchett在ACM上发表。BASE是Basically Available（基本可用）、Soft-state（软状态）和Eventually Consistent（最终一致性）三个短语的缩写。BASE理论是对CAP中一致性C和可用性A权衡的结果，其来源于对大规模互联网系统分布式实践的总结，是基于CAP定理逐渐演化而来...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2023-12-25T04:55:59.670Z">2023-12-25</time></span></div></article>
+</a><a class="post-card post " href="/2023/12/25/CAP/">
+<article class="md-text"><h2 class="post-title">CAP理论</h2><div class="excerpt"><p>CAP简介CAP（CAP  theorem）定理又被称作布鲁尔定理（Brewer’s theorem），是加州大学伯克利分校的计算机科学家埃里克·布鲁尔（Eric Brewer）在2000年的ACM  PODC上提出的一个猜想。2002年，麻省理工学院的赛斯·吉尔伯特（Seth Gilbert）和南希·林奇（Nancy Lynch）发表了布鲁尔猜想的证明，使之成为分布式计算领域公认的一个定理...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2023-12-25T04:49:39.299Z">2023-12-25</time></span></div></article>
+</a><a class="post-card post " href="/2022/07/26/Java%E9%94%81%E6%9C%BA%E5%88%B6/">
+<article class="md-text"><h2 class="post-title">Java锁机制</h2><div class="excerpt"><p>1.什么是锁在并发情况下，多个线程会对同一个资源进行争抢，那么可能会导致数据不一致的问题，为了解决这个问题很多编程语言都引入了锁机制，通过一种抽象的锁来对资源进行锁定
+2. 锁机制是怎么设计的在谈锁之前先了解一些Java虚拟机内存结构的知识，JVM运行时内存结构主要包含了程序计数器、JVM栈、Native栈、堆、方法区，对于程序计数器、JVM栈、Native栈是线程私有的，对于这个区域的数据...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2022-07-26T05:57:30.000Z">2022-07-26</time></span></div></article>
+</a><a class="post-card post " href="/2022/03/02/Kafka/">
+<article class="md-text"><h2 class="post-title">Kafka</h2><div class="excerpt"><p>第1章Kafka概述1.1 定义Kafka是一个分布式的基于发布/订阅模式的消息队列（Message Queue），主要应用于大数据实时处理领域。
+1.2 消息队列1.2.1 传统消息队列的应用场景  
+
+使用消息队列的好处
+
+解藕，允许你独立的扩展或修改两边的处理过程，只要确保他们遵守同样的接口约束。
+可恢复性，系统的一部分组件失效时，不会影响到整个系统。消息队列降低了进程间的耦合度，所以...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2022-03-02T06:03:24.000Z">2022-03-02</time></span></div></article>
+</a><a class="post-card post " href="/2022/02/17/TiDB-SQL%E7%9A%84%E4%B8%80%E7%94%9F/">
+<article class="md-text"><h2 class="post-title">TiDB-SQL的一生</h2><div class="excerpt"><p>SQL的一生
+从客户端的Socket读取一条SQL
+
+获取一个token
+
+从PD获取TSO（事务的时间戳）
+
+使用Parser将SQL parse为AST
+
+将AST compile为执行计划   
+
+Logical Optimizer
+
+Physical  Optimizer
+
+Execute Plan
+
+
+
+根据对应的执行计划，最底层的Executor会根据这条SQL处理的Key范围构...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2022-02-17T09:44:32.000Z">2022-02-17</time></span></div></article>
+</a><a class="post-card post " href="/2020/12/03/MySQL%20JDBC%E7%9A%84queryTimeout%E7%9A%84%E4%B8%80%E4%B8%AA%E5%9D%91/">
+<article class="md-text"><h2 class="post-title">ThreadPoolExecutor的拒绝策略CallerRunsPolicy的一个潜在的大坑</h2><div class="excerpt"><p>https://blog.csdn.net/xieyuooo/article/details/39898449?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-1.control&amp;depth_1-utm_source=distribute.pc_relevant.none...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2020-12-03T10:49:50.000Z">2020-12-03</time></span></div></article>
+</a><a class="post-card post " href="/2020/08/31/TiDB-SQL%E7%9B%91%E6%8E%A7%E5%8F%8A%E5%85%B8%E5%9E%8B%E7%9A%84%E4%BC%98%E5%8C%96%E6%A1%88%E4%BE%8B/">
+<article class="md-text"><h2 class="post-title">TiDB SQL监控及典型的优化案例</h2><div class="excerpt"><p>TiDB读请求的执行流程SQL的一生
+
+
+从客户端的Socket读取一条SQL
+
+获取一个token
+
+从PD获取TSO（事务的时间戳）
+
+使用Parser将SQL parse为AST
+
+将AST compile为执行计划   
+
+Logical Optimizer
+
+Physical  Optimizer
+
+Execute Plan
+
+
+
+根据对应的执行计划，最底层的Executor会根据...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2020-08-31T02:04:56.000Z">2020-08-31</time></span></div></article>
+</a><a class="post-card post " href="/2020/07/20/SQL%E4%BC%98%E5%8C%96/">
+<article class="md-text"><h2 class="post-title">SQL诊断优化-持续更新</h2><div class="excerpt"><p>Explain诊断Explain各参数的含义如下：
+
+
+
+列名
+说明
+
+
+
+id
+执行编号，标识select所属的行，如果语句中没有子查询或者关联查询，只有唯一的select，执行编号显示1，否则，内层的select语句一般会顺序编号，对应于其在原始语句的位置
+
+
+select_key
+显示本行是简单或者复杂select，如果查询有任何复杂的子查询，则最外层标记为PRIMARY（DERIVE...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2020-07-20T13:18:50.000Z">2020-07-20</time></span></div></article>
+</a><a class="post-card post " href="/2020/07/10/String.valueOf%E6%85%8E%E7%94%A8/">
+<article class="md-text"><h2 class="post-title">String.valueOf慎用</h2><div class="excerpt"><p>Java API中String.valueOf(Object obj)方法，当传入的参数为一个引用，并且引用为null时，方法会返回字符串&quot;null&quot;，这样就会引发一些你意向不到的”血案”
+jdk1.8.0_181中String.valueOf(Object obj)源码：
+123456789101112/** * Returns the string represent...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2020-07-10T06:18:30.000Z">2020-07-10</time></span></div></article>
+</a><a class="post-card post " href="/2020/05/11/Spring%E4%BA%8B%E5%8A%A1%E4%BC%A0%E6%92%AD%E6%9C%BA%E5%88%B6%E5%AE%9E%E6%88%98/">
+<article class="md-text"><h2 class="post-title">Spring事务传播机制实战</h2><div class="excerpt"><p>背景前段时间项目中做了一次大升级，其中包括数据库分库，由于分了库，原来的单库事务就变成了跨库事务，所以用到了分布式事务，引入了阿里开源的seata；由于业务的特殊性，是属于定点执行任务，在某一时间集中处理业务，所以在压力测试时，seata-server端由于事务并发量大导致seata-server的表有死锁问题，一直重试。显然不可接受，所以决定暂时舍弃seata，还是采用Spring的事务来...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2020-05-11T11:18:36.000Z">2020-05-11</time></span></div></article>
+</a></div>
+  
+  <div class='paginator-wrap dis-select'>
+  <span class="extend prev" rel="prev"></span><span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"></a>
   </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2023/12/25/BASE/">BASE理论</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h4 id="BASE简介"><a href="#BASE简介" class="headerlink" title="BASE简介"></a>BASE简介</h4><p>BASE理论起源于2008年，由eBay的架构师Dan Pritchett在ACM上发表。<br>BASE是Basically Available（基本可用）、Soft-state（软状态）和Eventually Consistent（最终一致性）三个短语的缩写。BASE理论是对CAP中一致性C和可用性A权衡的结果，其来源于对大规模互联网系统分布式实践的总结，是基于CAP定理逐渐演化而来的，它大大降低了我们对系统的要求。</p>
-<h4 id="BASE理论的核心思想"><a href="#BASE理论的核心思想" class="headerlink" title="BASE理论的核心思想"></a>BASE理论的核心思想</h4><p>即使无法做到强一致性，但每个应用都可以根据自身的业务特点，采用适当的方式来达到最终一致性。</p>
-<blockquote>
-<p>也就是牺牲数据的一致性来满足系统的</p>
-</blockquote>
-<p>CAP是Consistency（一致性）、Availability（可用性）、Partition Tolerance（分区容错性） 这三个单词首字母组合。<br><img src="/vx_images/270632708279495.png" alt="cap"></p>
-<p>在一个分布式系统（指互相连接并共享数据的节点的集合）中，当涉及到读写操作时，只能同时满足一下三点中的两个：</p>
-<ul>
-<li>一致性：所有节点访问同一份最新的数据副本。</li>
-<li>可用性：非故障的节点在合理的时间内返回合理的响应（不是错误或者超时的响应）。</li>
-<li>分区容错性：分布式出现网络分区的时候，让能对外提供服务。</li>
-</ul>
-<p><strong>什么是网络分区？</strong><br>分布式系统中，多个节点之间的网络本来是连通的，但是因为某些故障（比如部分节点网络出现了问题）某些节点之间不连通了，整个网络就分成了几块区域，这就叫网络分区。<br>![脑裂 ](vx_images&#x2F;278636199626110 &#x3D;455x)</p>
-<h4 id="不是所谓的”3选2”"><a href="#不是所谓的”3选2”" class="headerlink" title="不是所谓的”3选2”"></a>不是所谓的”3选2”</h4><p>大部分人解释这一定律时，常常简单的表述为”一致性、可用性、分区容错性，这三者只能同时达到两个，不可能同时达到”。实际上这是一个非常有误导性的说法，而且在CAP理论诞生12年之后，CAP之父也在2012年重写了之前的论文。</p>
-<blockquote>
-<p>当发生网络分区的时候，如果我们要继续提供服务，那么强一致性合可用性只能2选1。也就是说当网络分区之后P是前提，决定了P之后才有C和A的选择。也就是说分区容错性（Partition Tolerance）我们是必须要实现的。<br>简而言之就是：CAP理论中分区容错性P是一定要满足的，在此基础上，只能满足可用性A或者一致性C。</p>
-</blockquote>
-<p>因此，分布式系统理论上不可能选择CA架构，只能选择CP或者AP架构。比如<code>ZooKeeper</code>、<code>HBase</code>就是CP架构，<code>Cassandra</code>、<code>Eureka</code>就是AP架构，<code>Nacos</code>不仅支持CP也支持AP。</p>
-<p><strong>为啥不能选择CA架构呢？</strong><br>举个例子：若系统出现分区，系统中某个节点在进行写操作。为了保证C，必须要禁止其他节点的读写操作，这就和A发生冲突了。如果为了保证A，其他节点的读写操作正常的话，那就和C发生冲突了。<br></p>
-<p>选择CP和AP的关键在于当前的业务场景，没有定论，比如对于需要确保强一致性的场景如银行一般会选择CP。<br></p>
-<p>另外需要补充说明一点的是，如果网络分区正常的话，也就是说不需要保证P的时候，C和A能够同时保证。<br></p>
-<h4 id="CAP实际应用案例"><a href="#CAP实际应用案例" class="headerlink" title="CAP实际应用案例"></a>CAP实际应用案例</h4><p>以注册中心来探讨一下CAP的实际应用，下图是Dubbo的架构图，其中注册中心（Registry）负责服务地址的注册与查找，相当于目录服务，服务提供者和消费者只在启动时与注册中心交互，注册中心不转发请求，压力较小。<br>![dubbo-architecture](vx_images&#x2F;291034832951861.png &#x3D;490x)<br>常见的可以作为注册中心的有：Zookeeper、Eureka、Nacos等。</p>
-<ol>
-<li>Zookeeper保证的是CP。任何时刻对Zookeeper的读请求都能得到一致性的结果，但是，Zookeeper不保证每次请求的可用性，比如在Leader选举过程中或者半数以上的机器不可用的时候就是不可用的。</li>
-<li>Eureka保证的则是AP。Eureka在设计的时候就是优先保证A（可用性）。在Eureka中不存在什么Leader节点，每个节点都是一样的、平等的。因此Eureka不会像Zookeeper那样出现选举过程中或者半数以上的机器不可用的时候服务就是不可用的情况，Eureka保证即使大部分节点挂掉也不会影响正常提供服务，只要有一个节点是可用的就行了，只不过这个节点上的数据可能并不是最新的。</li>
-<li>Nacos不仅支持CP也支持AP。</li>
-</ol>
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>在进行分布式系统设计和开发时，我们不应该仅仅局限在 CAP 问题上，还要关注系统的扩展性、可用性等等<br>在系统发生“分区”的情况下，CAP 理论只能满足 CP 或者 AP。要注意的是，这里的前提是系统发生了“分区”<br>如果系统没有发生“分区”的话，节点间的网络连接通信正常的话，也就不存在 P 了。这个时候，我们就可以同时保证 C 和 A 了。<br>总结：如果系统发生“分区”，我们要考虑选择 CP 还是 AP。如果系统没有发生“分区”的话，我们要思考如何保证 CA 。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2023/12/25/BASE/" data-id="clqlvqb270006c07o9qgvee0v" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-CAP" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2023/12/25/CAP/" class="article-date">
-  <time datetime="2023-12-25T04:49:39.299Z" itemprop="datePublished">2023-12-25</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2023/12/25/CAP/">CAP理论</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h4 id="CAP简介"><a href="#CAP简介" class="headerlink" title="CAP简介"></a>CAP简介</h4><p>CAP（CAP  theorem）定理又被称作布鲁尔定理（Brewer’s theorem），是加州大学伯克利分校的计算机科学家埃里克·布鲁尔（Eric Brewer）在2000年的ACM  PODC上提出的一个猜想。2002年，麻省理工学院的赛斯·吉尔伯特（Seth Gilbert）和南希·林奇（Nancy Lynch）发表了布鲁尔猜想的证明，使之成为分布式计算领域公认的一个定理。</p>
-<p>CAP是Consistency（一致性）、Availability（可用性）、Partition Tolerance（分区容错性） 这三个单词首字母组合。<br><img src="/cap.png"></p>
-<p>在一个分布式系统（指互相连接并共享数据的节点的集合）中，当涉及到读写操作时，只能同时满足一下三点中的两个：</p>
-<ul>
-<li>一致性：所有节点访问同一份最新的数据副本。</li>
-<li>可用性：非故障的节点在合理的时间内返回合理的响应（不是错误或者超时的响应）。</li>
-<li>分区容错性：分布式出现网络分区的时候，让能对外提供服务。</li>
-</ul>
-<p><strong>什么是网络分区？</strong><br>分布式系统中，多个节点之间的网络本来是连通的，但是因为某些故障（比如部分节点网络出现了问题）某些节点之间不连通了，整个网络就分成了几块区域，这就叫网络分区。<br><img src="/naolie.png">$$</p>
-<h4 id="不是所谓的”3选2”"><a href="#不是所谓的”3选2”" class="headerlink" title="不是所谓的”3选2”"></a>不是所谓的”3选2”</h4><p>大部分人解释这一定律时，常常简单的表述为”一致性、可用性、分区容错性，这三者只能同时达到两个，不可能同时达到”。实际上这是一个非常有误导性的说法，而且在CAP理论诞生12年之后，CAP之父也在2012年重写了之前的论文。</p>
-<blockquote>
-<p>当发生网络分区的时候，如果我们要继续提供服务，那么强一致性合可用性只能2选1。也就是说当网络分区之后P是前提，决定了P之后才有C和A的选择。也就是说分区容错性（Partition Tolerance）我们是必须要实现的。<br>简而言之就是：CAP理论中分区容错性P是一定要满足的，在此基础上，只能满足可用性A或者一致性C。</p>
-</blockquote>
-<p>因此，分布式系统理论上不可能选择CA架构，只能选择CP或者AP架构。比如<code>ZooKeeper</code>、<code>HBase</code>就是CP架构，<code>Cassandra</code>、<code>Eureka</code>就是AP架构，<code>Nacos</code>不仅支持CP也支持AP。</p>
-<p><strong>为啥不能选择CA架构呢？</strong><br>举个例子：若系统出现分区，系统中某个节点在进行写操作。为了保证C，必须要禁止其他节点的读写操作，这就和A发生冲突了。如果为了保证A，其他节点的读写操作正常的话，那就和C发生冲突了。<br></p>
-<p>选择CP和AP的关键在于当前的业务场景，没有定论，比如对于需要确保强一致性的场景如银行一般会选择CP。<br></p>
-<p>另外需要补充说明一点的是，如果网络分区正常的话，也就是说不需要保证P的时候，C和A能够同时保证。<br></p>
-<h4 id="CAP实际应用案例"><a href="#CAP实际应用案例" class="headerlink" title="CAP实际应用案例"></a>CAP实际应用案例</h4><p>以注册中心来探讨一下CAP的实际应用，下图是Dubbo的架构图，其中注册中心（Registry）负责服务地址的注册与查找，相当于目录服务，服务提供者和消费者只在启动时与注册中心交互，注册中心不转发请求，压力较小。<br><img src="/dubbo-architecture.png"></p>
-<p>常见的可以作为注册中心的有：Zookeeper、Eureka、Nacos等。</p>
-<ol>
-<li>Zookeeper保证的是CP。任何时刻对Zookeeper的读请求都能得到一致性的结果，但是，Zookeeper不保证每次请求的可用性，比如在Leader选举过程中或者半数以上的机器不可用的时候就是不可用的。</li>
-<li>Eureka保证的则是AP。Eureka在设计的时候就是优先保证A（可用性）。在Eureka中不存在什么Leader节点，每个节点都是一样的、平等的。因此Eureka不会像Zookeeper那样出现选举过程中或者半数以上的机器不可用的时候服务就是不可用的情况，Eureka保证即使大部分节点挂掉也不会影响正常提供服务，只要有一个节点是可用的就行了，只不过这个节点上的数据可能并不是最新的。</li>
-<li>Nacos不仅支持CP也支持AP。</li>
-</ol>
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>在进行分布式系统设计和开发时，我们不应该仅仅局限在 CAP 问题上，还要关注系统的扩展性、可用性等等<br>在系统发生“分区”的情况下，CAP 理论只能满足 CP 或者 AP。要注意的是，这里的前提是系统发生了“分区”<br>如果系统没有发生“分区”的话，节点间的网络连接通信正常的话，也就不存在 P 了。这个时候，我们就可以同时保证 C 和 A 了。<br>总结：如果系统发生“分区”，我们要考虑选择 CP 还是 AP。如果系统没有发生“分区”的话，我们要思考如何保证 CA 。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2023/12/25/CAP/" data-id="clqlvqb2d000fc07oenpxat7y" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Java锁机制" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2022/07/26/Java%E9%94%81%E6%9C%BA%E5%88%B6/" class="article-date">
-  <time datetime="2022-07-26T05:57:30.000Z" itemprop="datePublished">2022-07-26</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/07/26/Java%E9%94%81%E6%9C%BA%E5%88%B6/">Java锁机制</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="1-什么是锁"><a href="#1-什么是锁" class="headerlink" title="1.什么是锁"></a>1.什么是锁</h2><p>在并发情况下，多个线程会对同一个资源进行争抢，那么可能会导致数据不一致的问题，为了解决这个问题很多编程语言都引入了锁机制，通过一种抽象的锁来对资源进行锁定</p>
-<h2 id="2-锁机制是怎么设计的"><a href="#2-锁机制是怎么设计的" class="headerlink" title="2. 锁机制是怎么设计的"></a>2. 锁机制是怎么设计的</h2><p>在谈锁之前先了解一些Java虚拟机内存结构的知识，JVM运行时内存结构主要包含了程序计数器、JVM栈、Native栈、堆、方法区，对于程序计数器、JVM栈、Native栈是线程私有的，对于这个区域的数据，不会出现线程竞争的问题，而堆、方法区中的数据被所有线程共享，其中Java堆中存放的是所有对象，方法区中存放着类信息、常量、静态变量等数据。所以当多个线程在竞争其中一些数据时，有可能会发生难以预料的异常情况，因此需要锁机制进行限制，</p>
-<p><code>锁</code>是一种抽象的概念，那么它在代码层面是究竟如何实现的呢？简单来说，在Java中，每个Object，也就是每个对象都拥有一把锁，这把锁存放在对象头中，锁中记录了当前对象被哪个线程所占用。</p>
-<p>刚才提到了锁是存放在对象头中的，那么对象、对象头的结构分别是什么呢？先来看下对象的结构，Java对象包含了三个部分：对象头、实例数据、对齐填充字节，其中对齐填充字节是为了满足<code>Java对象的大小必须是8比特的倍数</code>这一条件设置的，对齐填充字节正如它的名字一样，是为了帮只对象来对齐而填充的一些无用字节，大可不必理会，实例数据就是你在初始化对象时，设定的属性和状态的内容，对象头则是要说的重点之一，它存放了一些对象本身的运行时信息，对象头包含了两部分，Mark Word和Class Point，相较于实例数据，对象头属于一些额外的存储开销，所以它被设计的极小来提高效率	</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2022/07/26/Java%E9%94%81%E6%9C%BA%E5%88%B6/" data-id="clqlvqb290008c07obgkib6ts" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Kafka" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2022/03/02/Kafka/" class="article-date">
-  <time datetime="2022-03-02T06:03:24.000Z" itemprop="datePublished">2022-03-02</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/03/02/Kafka/">Kafka</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="第1章Kafka概述"><a href="#第1章Kafka概述" class="headerlink" title="第1章Kafka概述"></a>第1章Kafka概述</h1><h2 id="1-1-定义"><a href="#1-1-定义" class="headerlink" title="1.1 定义"></a>1.1 定义</h2><p>Kafka是一个<code>分布式</code>的基于<code>发布/订阅模式</code>的<code>消息队列</code>（Message Queue），主要应用于大数据实时处理领域。</p>
-<h2 id="1-2-消息队列"><a href="#1-2-消息队列" class="headerlink" title="1.2 消息队列"></a>1.2 消息队列</h2><h3 id="1-2-1-传统消息队列的应用场景"><a href="#1-2-1-传统消息队列的应用场景" class="headerlink" title="1.2.1 传统消息队列的应用场景"></a>1.2.1 传统消息队列的应用场景</h3><p><img src="/MQ%E4%BC%A0%E7%BB%9F%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF%E4%B9%8B%E5%BC%82%E6%AD%A5%E5%A4%84%E7%90%86.png">  </p>
-<p><strong>使用消息队列的好处</strong></p>
-<ol>
-<li>解藕，允许你独立的扩展或修改两边的处理过程，只要确保他们遵守同样的接口约束。</li>
-<li>可恢复性，系统的一部分组件失效时，不会影响到整个系统。消息队列降低了进程间的耦合度，所以即使一个处理消息的进程挂掉，加入队列中的消息仍然可以在系统恢复后被处理。</li>
-<li>缓冲，有助于控制和优化数据流经过系统的速度，解决生产消息和消费消息的处理速度不一致的情况。</li>
-<li>灵活性 &amp; 峰值处理能力，在访问量剧增的情况下，应用仍然需要继续发挥作用，但是这样的突发流量并不常见。如果为以能处理这类峰值访问为标准来投入资源随时待命无疑是巨大的浪费。使用消息队列能够使关键组件顶住突发的访问压力，而不会因为突发的超负荷的请求而完全崩溃。异步通信，很多时候，用户不想也不需要立即处理消息。消息队列提供了异步处理机制，允许用户把一个消息放入队列，但并不立即处理它。想向队列中放入多少消息就放多少，然后在需要的时候再去处理它们。</li>
-</ol>
-<h3 id="1-2-1-消息队列的两种模式"><a href="#1-2-1-消息队列的两种模式" class="headerlink" title="1.2.1 消息队列的两种模式"></a>1.2.1 消息队列的两种模式</h3><ol>
-<li><p>点对点模式（<code>一对一</code>，消费者主动拉取数据，消息收到后消息清除）</p>
-<p>消息生产者生产消息发送到Queue 中，然后消息消费者从Queue 中取出并且消费消息。消息被消费以后，queue 中不再有存储，所以消息消费者不可能消费到已经被消费的消息。Queue 支持存在多个消费者， 但是对一个消息而言， 只会有一个消费者可以消费。</p>
-<p><img src="/%E7%82%B9%E5%AF%B9%E7%82%B9.png">  </p>
-<p>发布&#x2F;订阅模式（一对多，消费者消费数据之后消息不会清楚）</p>
-<p>消息生产者（发布）将消息发布到 topic 中，同时有多个消息消费者（订阅）消费该消息。和点对点方式不同，发布到 topic 的消息会被所有订阅者消费。</p>
-<p><img src="/%E5%8F%91%E5%B8%83%E8%AE%A2%E9%98%85%E6%A8%A1%E5%BC%8F.png"></p>
-<p>1.3 Kafka基础架构</p>
-<p><img src="/Kafka%E5%9F%BA%E7%A1%80%E6%9E%B6%E6%9E%84.png"></p>
-</li>
-<li><p><strong>Producer</strong> ：消息生产者，就是向 kafka broker 发消息的客户端；</p>
-</li>
-<li><p><strong>Consumer</strong> ：消息消费者，向 kafka broker 取消息的客户端；</p>
-</li>
-<li><p><strong>Consumer Group</strong> （<strong>CG</strong>）：消费者组，由多个 consumer 组成。<code>消费者组内每个消费者负责消费不同分区的数据，一个分区只能由一个组内消费者消费；消费者组之间互不影响</code>。所有的消费者都属于某个消费者组，即<code>消费者组是逻辑上的一个订阅者</code>。</p>
-</li>
-<li><p><strong>Broker</strong> ：一台 kafka 服务器就是一个 broker。一个集群由多个 broker 组成。一个 broker可以容纳多个topic。</p>
-</li>
-<li><p><strong>Topic</strong> ：可以理解为一个队列，<code>生产者和消费者面向的都是一个topic</code>；</p>
-</li>
-<li><p><strong>Partition</strong>：为了实现扩展性，一个非常大的 topic 可以分布到多个broker（即服务器）上，<code>一个topic可以分为多个partition</code>，每个 partition 是一个有序的队列；</p>
-</li>
-<li><p><strong>Replica</strong>：副本，为保证集群中的某个节点发生故障时，<code>该节点上的 partition 数据不丢失，且kafka 仍然能够继续工作</code>，kafka 提供了副本机制，一个 topic 的每个分区都有若干个副本，一个 <strong>leader</strong> 和若干个 <strong>follower</strong>。</p>
-</li>
-<li><p><strong>leader</strong>：每个分区多个副本的“主”，生产者发送数据的对象，以及消费者消费数据的对象都是leader。</p>
-</li>
-<li><p><strong>follower</strong>：每个分区多个副本中的“从”，实时从 leader 中同步数据，保持和 leader 数据的同步。leader 发生故障时，某个 follower 会成为新的 leader。</p>
-</li>
-</ol>
-<h1 id="第2章Kafka快速入门"><a href="#第2章Kafka快速入门" class="headerlink" title="第2章Kafka快速入门"></a>第2章Kafka快速入门</h1><h1 id="第3章Kafka架构深入"><a href="#第3章Kafka架构深入" class="headerlink" title="第3章Kafka架构深入"></a>第3章Kafka架构深入</h1><h2 id="3-1-Kafka工作流程及文件存储机制"><a href="#3-1-Kafka工作流程及文件存储机制" class="headerlink" title="3.1 Kafka工作流程及文件存储机制"></a>3.1 Kafka工作流程及文件存储机制</h2><p><img src="/Kafka%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B.png">  </p>
-<p>Kafka 中消息是以 <strong>topic</strong> 进行分类的，生产者生产消息，消费者消费消息，都是面向 topic的。</p>
-<p>topic 是逻辑上的概念，而 partition 是物理上的概念，每个 partition 对应于一个 log 文件，该 log 文件中存储的就是 producer 生产的数据。Producer 生产的数据会被不断追加到该log 文件末端，且每条数据都有自己的 offset。消费者组中的每个消费者，都会实时记录自己消费到了哪个offset，以便出错恢复时，从上次的位置继续消费。</p>
-<p><img src="/Kafka%E6%96%87%E4%BB%B6%E5%AD%98%E5%82%A8%E6%9C%BA%E5%88%B6.png">  </p>
-<p>由于生产者生产的消息会不断追加到 log 文件末尾，为防止 log 文件过大导致数据定位效率低下，Kafka 采取了分片和索引机制，将每个 partition 分为多个 segment。每个 segment 对应两个文件——“.index”文件和“.log”文件。这些文件位于一个文件夹下，该文件夹的命名规则为：topic 名称+分区序号。例如，first 这个 topic 有三个分区，则其对应的文件夹为 first- 0,first-1,first-2。</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">00000000000000000000.index</span><br><span class="line">00000000000000000000.log</span><br><span class="line">00000000000000170410.index</span><br><span class="line">00000000000000170410.log</span><br><span class="line">00000000000000239430.index</span><br><span class="line">00000000000000239430.log</span><br></pre></td></tr></table></figure>
-
-<p>index 和 log 文件以当前 segment 的第一条消息的 offset 命名。下图为 index 文件和 log文件的结构示意图。</p>
-<p><img src="/index%E6%96%87%E4%BB%B6%E5%92%8Clog%E6%96%87%E4%BB%B6%E8%AF%A6%E8%A7%A3.png">  </p>
-<p><code>“.index”文件存储大量的索引信息，“.log”文件存储大量的数据</code>，索引文件中的元  数据指向对应数据文件中message 的物理偏移地址。</p>
-<h2 id="3-2-Kafka生产者"><a href="#3-2-Kafka生产者" class="headerlink" title="3.2 Kafka生产者"></a>3.2 Kafka生产者</h2><h3 id="3-2-1-分区策略"><a href="#3-2-1-分区策略" class="headerlink" title="3.2.1 分区策略"></a>3.2.1 分区策略</h3><ol>
-<li><p>分区的原因</p>
-<ul>
-<li><code>方便在集群中扩展</code>，每个 Partition 可以通过调整以适应它所在的机器，而一个 topic又可以有多个 Partition 组成，因此整个集群就可以适应任意大小的数据了；</li>
-<li><code>可以提高并发</code>，因为可以以Partition 为单位读写了。</li>
-</ul>
-</li>
-<li><p>分区的原则</p>
-<p>我们需要将 producer 发送的数据封装成一个 <strong>ProducerRecord</strong> 对象。</p>
-<p><img src="/ProducerRecord.png">  </p>
-<ul>
-<li>指明 partition 的情况下，直接将指明的值直接作为 partiton 值；</li>
-<li>没有指明 partition 值但有 key 的情况下，将 key 的 hash 值与 topic 的 partition数进行取余得到 partition 值；</li>
-<li>既没有 partition 值又没有 key 值的情况下，第一次调用时随机生成一个整数（ 后面每次调用在这个整数上自增），将这个值与 topic 可用的 partition 总数取余得到partition值，也就是常说的 round-robin 算法。</li>
-</ul>
-</li>
-</ol>
-<h3 id="3-2-2-数据可靠性保证"><a href="#3-2-2-数据可靠性保证" class="headerlink" title="3.2.2 数据可靠性保证"></a>3.2.2 数据可靠性保证</h3><p><code>为保证 producer 发送的数据，能可靠的发送到指定的 topic，topic 的每个 partition 收到producer 发送的数据后，都需要向 producer 发送 ack（acknowledgement 确认收到），如果producer 收到 ack，就会进行下一轮的发送，否则重新发送数据。</code></p>
-<p><img src="/%E6%95%B0%E6%8D%AE%E5%8F%AF%E9%9D%A0%E6%80%A7%E4%BF%9D%E8%AF%81.png"></p>
-<ol>
-<li><p>副本数据同步策略</p>
-<table>
-<thead>
-<tr>
-<th>方案</th>
-<th>优点</th>
-<th>缺点</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>半数以上完成同步，就发送 <strong>ack</strong></td>
-<td>延迟低</td>
-<td>选举新的 leader  时，容忍 n 台节点的故障，需要 2n+1 个副  本</td>
-</tr>
-<tr>
-<td>全部完成同步，才发送  <strong>ack</strong></td>
-<td>选举新的 leader  时，容忍 n 台节点的故障，需要 n+1 个副  本</td>
-<td>延迟高</td>
-</tr>
-</tbody></table>
-<p>Kafka 选择了第二种方案，原因如下：</p>
-<ul>
-<li>同样为了容忍 n 台节点的故障，第一种方案需要 2n+1 个副本，而第二种方案只需要 n+1个副本，而Kafka 的每个分区都有大量的数据，第一种方案会造成大量数据的冗余。</li>
-<li>虽然第二种方案的网络延迟会比较高，但网络延迟对 Kafka 的影响较小。</li>
-</ul>
-</li>
-<li><p>ISR</p>
-<p>采用第二种方案之后，设想以下情景：leader 收到数据，所有 follower 都开始同步数据， 但有一个 follower，因为某种故障，迟迟不能与 leader 进行同步，那 leader 就要一直等下去， 直到它完成同步，才能发送 ack。这个问题怎么解决呢？</p>
-<p><code>Leader 维护了一个动态的 in-sync replica set (ISR)，意为和 leader 保持同步的 follower 集合。当 ISR 中的 follower 完成数据的同步之后，leader 就会给 follower 发送 ack。如果 follower长 时 间 未 向 leader 同 步 数 据 ， 则 该 follower 将 被 踢 出 ISR ， 该 时 间 阈 值 由</code><strong>replica.lag.time.max.ms</strong> <code>参数设定。Leader 发生故障之后，就会从 ISR 中选举新的 leader。</code></p>
-</li>
-<li><p>ack应答机制</p>
-<p>对于某些不太重要的数据，对数据的可靠性要求不是很高，能够容忍数据的少量丢失， 所以没必要等ISR 中的 follower 全部接收成功。</p>
-<p>所以 Kafka 为用户提供了三种可靠性级别，用户根据对可靠性和延迟的要求进行权衡， 选择以下的配置。</p>
-<p><strong>acks</strong> 参数配置：</p>
-<p><strong>acks:</strong></p>
-<p>0：producer 不等待 broker 的 ack，这一操作提供了一个最低的延迟，broker 一接收到还没有写入磁盘就已经返回，当 broker 故障时有可能丢失数据；</p>
-<p>1：producer 等待broker 的 ack，partition 的 leader 落盘成功后返回ack，如果在 follower同步成功之前leader 故障，那么将会丢失数据；</p>
-<p><img src="/acks=1%E6%95%B0%E6%8D%AE%E4%B8%A2%E5%A4%B1%E6%A1%88%E4%BE%8B.png"></p>
-<p>-1（all）：producer 等待 broker 的 ack，partition 的 leader 和 follower 全部落盘成功后才返回 ack。但是如果在 follower 同步完成后，broker 发送 ack 之前，leader 发生故障，那么会造成数据重复。</p>
-<p><img src="/acks=-1%E6%95%B0%E6%8D%AE%E9%87%8D%E5%A4%8D%E6%A1%88%E4%BE%8B.png"></p>
-</li>
-<li><p>故障处理节</p>
-<p><strong>LEO</strong>：指的是每个副本最大的 <strong>offset</strong>；</p>
-<p><strong>HW</strong>：指的是消费者能见到的最大的 <strong>offset</strong>，<strong>ISR</strong> 队列中最小的 <strong>LEO</strong>。</p>
-<p>（1） <strong>follower</strong> 故障</p>
-<p>follower 发生故障后会被临时踢出 ISR，待该 follower 恢复后，follower 会读取本地磁盘记录的上次的HW，并将 log 文件高于 HW 的部分截取掉，从 HW 开始向 leader 进行同步。等该 <strong>follower</strong> 的 <strong>LEO</strong> 大于等于该 <strong>Partition</strong> 的 <strong>HW</strong>，即 follower 追上 leader 之后，就可以重新加入 ISR 了。</p>
-<p>（2） <strong>leader</strong> 故障</p>
-<p>leader 发生故障之后，会从 ISR 中选出一个新的 leader，之后，为保证多个副本之间的数据一致性，其余的 follower 会先将各自的 log 文件高于 HW 的部分截掉，然后从新的 leader同步数据。</p>
-<p>注意：这只能保证副本之间的数据一致性，并不能保证数据不丢失或者不重复。</p>
-</li>
-</ol>
-<h3 id="3-2-3-Exactly-Once-语义"><a href="#3-2-3-Exactly-Once-语义" class="headerlink" title="3.2.3 Exactly Once 语义"></a>3.2.3 Exactly Once 语义</h3><p>​		将服务器的 ACK 级别设置为-1，可以保证 Producer 到 Server 之间不会丢失数据，即 At Least Once 语义。相对的，将服务器 ACK 级别设置为 0，可以保证生产者每条消息只会被发送一次，即At Most Once 语义。</p>
-<p>​		At Least Once 可以保证数据不丢失，但是不能保证数据不重复；相对的，At Least Once 可以保证数据不重复，但是不能保证数据不丢失。但是，对于一些非常重要的信息，比如说交易数据，下游数据消费者要求数据既不重复也不丢失，即 Exactly Once 语义。在 0.11 版本以前的 Kafka，对此是无能为力的，只能保证数据不丢失，再在下游消费者对数据做全局去重。对于多个下游应用的情况，每个都需要单独做全局去重，这就对性能造成了很大影响。</p>
-<p>​		0.11 版本的 Kafka，引入了一项重大特性：幂等性。所谓的幂等性就是指Producer 不论向 Server 发送多少次重复数据，Server 端都只会持久化一条。幂等性结合 At Least Once 语义，就构成了Kafka 的Exactly Once 语义。即：</p>
-<p>​												<code>At Least Once + 幂等性 = Exactly Once</code></p>
-<p>​		要启用幂等性，只需要将 Producer 的参数中 enable.idompotence 设置为 true 即可。Kafka 的幂等性实现其实就是将原来下游需要做的去重放在了数据上游。开启幂等性的 Producer 在初始化的时候会被分配一个 PID，发往同一 Partition 的消息会附带 Sequence Number。而Broker 端会对&lt;PID, Partition, SeqNumber&gt;做缓存，当具有相同主键的消息提交时，Broker 只会持久化一条。</p>
-<p>​		但是PID 重启就会变化，同时不同的 Partition 也具有不同主键，所以幂等性无法保证跨分区跨会话的Exactly Once。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2022/03/02/Kafka/" data-id="clqlvqb240003c07og34j9p2k" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-TiDB-SQL的一生" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2022/02/17/TiDB-SQL%E7%9A%84%E4%B8%80%E7%94%9F/" class="article-date">
-  <time datetime="2022-02-17T09:44:32.000Z" itemprop="datePublished">2022-02-17</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/02/17/TiDB-SQL%E7%9A%84%E4%B8%80%E7%94%9F/">TiDB-SQL的一生</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="SQL的一生"><a href="#SQL的一生" class="headerlink" title="SQL的一生"></a>SQL的一生</h3><ul>
-<li><p>从客户端的Socket读取一条SQL</p>
-</li>
-<li><p>获取一个token</p>
-</li>
-<li><p>从PD获取TSO（事务的时间戳）</p>
-</li>
-<li><p>使用Parser将SQL parse为AST</p>
-</li>
-<li><p>将AST compile为执行计划   </p>
-<ul>
-<li><p>Logical Optimizer</p>
-</li>
-<li><p>Physical  Optimizer</p>
-</li>
-<li><p>Execute Plan</p>
-</li>
-</ul>
-</li>
-<li><p>根据对应的执行计划，最底层的Executor会根据这条SQL处理的Key范围构建出多个要下发到TiKV的请求，并通过distsql的API将这些请求分发到TiKV</p>
-</li>
-<li><p>TiKV对结果做一些处理（包括filter,limit等）后，将中间结果集反馈给TiDB</p>
-</li>
-<li><p>TiDB进行一些表关联、聚合运算最终返回给Client</p>
-</li>
-</ul>
-<p><img src="/TiKV-read.png"></p>
-<p>TiKV收到请求后，会将请求分为两类：</p>
-<ul>
-<li>storage read pool执行引擎：负责主键和唯一索引点查</li>
-<li>coprocessor执行引擎：其余的请求</li>
-</ul>
-<h2 id="如何定位slow-query"><a href="#如何定位slow-query" class="headerlink" title="如何定位slow query"></a>如何定位slow query</h2><h3 id="slow-query产生的原因"><a href="#slow-query产生的原因" class="headerlink" title="slow query产生的原因"></a>slow query产生的原因</h3><ul>
-<li><p>按组件划分</p>
-<ul>
-<li><p>TiDB</p>
-<ul>
-<li><p>parse慢</p>
-</li>
-<li><p>complie慢，生成物理执行计划</p>
-</li>
-<li><p>get token慢，分配线程慢</p>
-</li>
-<li><p>执行计划不正确</p>
-</li>
-</ul>
-</li>
-<li><p>PD</p>
-<ul>
-<li>获取tso慢，每个SQL要获取时间戳的</li>
-</ul>
-</li>
-<li><p>TiKV</p>
-<ul>
-<li><p>需要扫描大量的key，耗时久</p>
-</li>
-<li><p>coprocessor cpu打满，资源等待</p>
-</li>
-<li><p>读热点</p>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="slow-query获取渠道"><a href="#slow-query获取渠道" class="headerlink" title="slow query获取渠道"></a>slow query获取渠道</h3><ul>
-<li>集群监控上的metrics信息</li>
-<li>slow-query log，对标MySQL格式，支持市场上的MySQL慢查询分析工具</li>
-<li>TiDB的慢查询SQL内存表</li>
-<li>TiKV节点日志slow-query反查</li>
-</ul>
-<h3 id="TiDB-Parse-Metrics"><a href="#TiDB-Parse-Metrics" class="headerlink" title="TiDB - Parse Metrics"></a>TiDB - Parse Metrics</h3><ul>
-<li><p>位置：TiDB-&gt;Executor-&gt;Parse Duration</p>
-</li>
-<li><p>parse慢可能原因：TiDB节点CPU压力大</p>
-</li>
-<li><p>图例：</p>
-<p><img src="/Parse-Duration.png"></p>
-</li>
-</ul>
-<h3 id="TiDB-Compile-Metrics"><a href="#TiDB-Compile-Metrics" class="headerlink" title="TiDB - Compile Metrics"></a>TiDB - Compile Metrics</h3><ul>
-<li><p>位置：TiDB-&gt;Executor-&gt;Compile Duration</p>
-</li>
-<li><p>parse慢可能原因：</p>
-<ul>
-<li><p>TiDB节点CPU压力大</p>
-</li>
-<li><p>in子查询结果集多，跟参数tidb_opt_insuqquery_unfold有关(2.1)</p>
-<p>这个参数控制in子查询执行计划的处理，设置为1的情况，会默认把in的子查询结果集当做一个常量返回给上一层做where条件的过滤，compile是要生成物理执行计划的，在执行计划时in的查询已经执行了，只在2.1有开关，默认关闭，3.0后没有这个参数</p>
-</li>
-</ul>
-</li>
-<li><p>图例：</p>
-<p><img src="/Compile-Duration.png"></p>
-</li>
-</ul>
-<h3 id="TiDB-Get-Token-Duration-Metrics"><a href="#TiDB-Get-Token-Duration-Metrics" class="headerlink" title="TiDB - Get Token Duration Metrics"></a>TiDB - Get Token Duration Metrics</h3><ul>
-<li><p>位置：TiDB-&gt;Server-&gt;Get Token Duration</p>
-</li>
-<li><p>parse慢可能原因：token个数不足，需要调整token-limit</p>
-<p>说明连接过多，token默认上限是1000，超过1000后，客户端或者前台需要等待，如果这个等待比较长，并且连接数也超过上限了，就可以适当的调整这个参数，或者加TiDB节点</p>
-</li>
-<li><p>图例：</p>
-<p><img src="/Get-Token-Duration.png"></p>
-</li>
-</ul>
-<h3 id="PD-tso"><a href="#PD-tso" class="headerlink" title="PD - tso"></a>PD - tso</h3><ul>
-<li><p>位置：PD-&gt;Grpc-&gt;99% completed_cmd_duration_seconds-&gt;txn</p>
-</li>
-<li><p>可能慢的原因：</p>
-<ul>
-<li>PD Leader切换</li>
-<li>PD Leader节点异常，包括cpu、磁盘等。</li>
-</ul>
-</li>
-<li><p>图例：</p>
-<p><img src="/99-completed-commands-duration.png"></p>
-</li>
-</ul>
-<h3 id="TIKV-Grpc-Duration-Metrics"><a href="#TIKV-Grpc-Duration-Metrics" class="headerlink" title="TIKV - Grpc Duration Metrics"></a>TIKV - Grpc Duration Metrics</h3><ul>
-<li><p>位置：TiKV-&gt;Grpc-&gt;Coprocessor</p>
-</li>
-<li><p>可能慢的原因：</p>
-<ul>
-<li>需要大量扫描的key，某个SQL扫了大量的key</li>
-<li>Coprocessor CPU打满，造成资源等待</li>
-</ul>
-</li>
-<li><p>图例：</p>
-<p><img src="/99-grpc-message-duration.png"></p>
-</li>
-</ul>
-<h3 id="TIKV-Coprocessor-Cpu"><a href="#TIKV-Coprocessor-Cpu" class="headerlink" title="TIKV - Coprocessor Cpu"></a>TIKV - Coprocessor Cpu</h3><ul>
-<li><p>位置：TiKV-&gt;Thead Cpu-&gt;Coprocessor Cpu</p>
-</li>
-<li><p>可能慢的原因：</p>
-<ul>
-<li>大量扫描的key，将cpu资源占满</li>
-<li>读热点，造成cpu资源等待</li>
-</ul>
-</li>
-<li><p>图例：</p>
-<p><img src="/coprocessor-cpu.png"></p>
-</li>
-</ul>
-<h3 id="慢查询排查技能-slow-query-log"><a href="#慢查询排查技能-slow-query-log" class="headerlink" title="慢查询排查技能 - slow query log"></a>慢查询排查技能 - slow query log</h3><p>#Time：2019-04-25-15:19:33.26029 +0800     –记录了sql执行完成的时间，不是开始的时间</p>
-<p>#Txn_start_ts：407942403346923524        –事务开始的时间戳</p>
-<p>#User：<a href="mailto:&#x72;&#111;&#x6f;&#116;&#x40;&#x31;&#50;&#55;&#x2e;&#x30;&#46;&#48;&#46;&#x31;">&#x72;&#111;&#x6f;&#116;&#x40;&#x31;&#50;&#55;&#x2e;&#x30;&#46;&#48;&#46;&#x31;</a></p>
-<p>#Conn_ID：1</p>
-<p>#Query_time：2.632671582          –sql整体执行时间</p>
-<p>#Process_time：0.079 Wait_time：0.009 Backoff_time：0.1 Request_count：8 Total_keys：20008 Process_keys：20000         –TiKV相关时间</p>
-<p>#DB：test</p>
-<p>#Index_ids：[1]         –TiDB，生成计划用到的索引</p>
-<p>#Is_internal：false</p>
-<p>#Digest：edb16a8f28d9c48790925fd1c868fdae3feb49bc58481dda7df228625a5ba6e1         </p>
-<p>#Stats：t_wide:407941920305971202,t_slim:pseudo       –TiDB</p>
-<p>#Cop_proc_avg：0.009875 Cop_proc_p90：0.018 Cop_proc_max：0.018 Cop_proc_addr：127.0.0.1:22160           –详细Cop信息</p>
-<p>#Cop_wait_avg：0.001125 Cop_wait_p90：0.002 Cop_wait_max：0.002 Cop_wait_addr：127.0.0.1:24160</p>
-<p>#Mem_max：195349          –TiDB  内存使用大小</p>
-<p>select count(1) from t_slim,t_wide where t.clim.c0&gt;t.wide.c0 and t.slim.c1&gt;t.wide.c1 and t_wide.c0 &gt; 5000;</p>
-<ul>
-<li>Red color is related with TiDB</li>
-<li>Blue color is related with TiKV&#x2F;Coprocessor</li>
-</ul>
-<h3 id="慢查询排查技能-内存表"><a href="#慢查询排查技能-内存表" class="headerlink" title="慢查询排查技能 - 内存表"></a>慢查询排查技能 - 内存表</h3><p>INFOMATION_SCHEMA:</p>
-<p>select * from slow_query order by query_time desc, total_keys&#x2F;process_keys\G;</p>
-<p>slow_query的字段值跟slow query log是对应的</p>
-<h3 id="slow-log相关参数"><a href="#slow-log相关参数" class="headerlink" title="slow log相关参数"></a>slow log相关参数</h3><ul>
-<li><p>slow-threshold</p>
-<ul>
-<li>参数含义：输出慢sql的耗时阈值，单位ms，静态参数，需要重启TiDB SERVER生效</li>
-<li>建议值：在OLTP系统，建议设置50ms左右，OLTP系统SQL一版有以下特点：SQL短小、单次运行时间短、执行次数多；OLAP系统可以适当放大点。</li>
-</ul>
-</li>
-<li><p>query-log-max-len</p>
-<ul>
-<li>参数含义：日志记录的SQL长度，超过这个长度会截断输出，单位为字符，静态参数，需要重启TiDB SERVER生效</li>
-<li>建议值：4096</li>
-</ul>
-</li>
-<li><p>tidb_slow_query_file</p>
-<ul>
-<li><p>参数含义：日志记录的SQL长度，超过这个长度会截断输出，单位为字符，静态参数，需要重启TiDB SERVER生效</p>
-</li>
-<li><p>建议值：慢查询日志的文件名，默认值为tidb_slow.log，可以存储300M内容，动态参数，可以通过会话变量生效</p>
-</li>
-<li><p>建议值：tidb_slow.log 300M以后会重新生成一个文件，所以如果要定位某一段时间的slow log，需要设置该环境变量，TiDB通过session变量tidb_slow_query_file控制查询</p>
-<p>INFOMATION_SCHEMA.SLOW_QUERY时要读取和解析的文件，可通过修改session变量的值来查询其他慢查询日志文件的内容</p>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="用SQL从多个维度查询slow-log表"><a href="#用SQL从多个维度查询slow-log表" class="headerlink" title="用SQL从多个维度查询slow log表"></a>用SQL从多个维度查询slow log表</h3><p>查询INFOMATION_SCHEMA.SLOW_QUERY</p>
-<h3 id="TiKV日志反查slow-log"><a href="#TiKV日志反查slow-log" class="headerlink" title="TiKV日志反查slow log"></a>TiKV日志反查slow log</h3><p>在某个SQL执行导致的TiKV cpu异常高的场合下，使用TiKV可以快速的定位问题SQL</p>
-<p>TiKV日志中记录了slow-query的几个关键信息：</p>
-<ul>
-<li>ipv4：发出请求的TiDB地址，通过该地址可以确定SQL在哪个TiDB节点执行</li>
-<li>start_ts：事务的start_ts，通过start_ts反查slow log，快速定位问题SQL，不太适合特别频繁的查询场景，start_ts很多，很难查</li>
-<li>table_id：查询的那张表，可以通过information_schema.tables的tidb_table_id反查表名</li>
-</ul>
-<h3 id="使用方法总结"><a href="#使用方法总结" class="headerlink" title="使用方法总结"></a>使用方法总结</h3><ul>
-<li>通过监控的相关metrics可以获取到TiDB集群的整体运行情况，比如某些TiKV节点CPU高不高等，对于定位慢查询来说可以有一个初步的认知，用metrics来判断哪些时间段存在问题，可能存在哪些问题</li>
-<li>slow query log及slow log内存表，可以从整体上观察SQL运行情况，比如SQL执行花了多长时间，执行多少次，哪些SQL最耗时，哪些SQL占用资源最多等等</li>
-<li>但是slow log内存表还存在一定的局限性，因为每个TiDB有自己的slow log且slow log file到达300M后还会切换，所以使用起来还是有一定的局限性</li>
-<li>TiKV日志能够快速定位问题SQL，对于执行一次或几次的的大SQL来说，非常容易定位问题，但是如果单次执行快但是执行频率高的SQL来说，查看TiKV日志还是相对比较麻烦</li>
-<li>综上所述，结合的使用三个工具能比较快速定位问题SQL</li>
-</ul>
-<h2 id="AP场景加速"><a href="#AP场景加速" class="headerlink" title="AP场景加速"></a>AP场景加速</h2><h3 id="相关并发参数"><a href="#相关并发参数" class="headerlink" title="相关并发参数"></a>相关并发参数</h3><p>扫描key数量比较多</p>
-<ol>
-<li><p>tidb_distsql_scan_concurrency</p>
-<p>这个变量用来设置scan操作的并发度，对于AP类应用，最大建议值不要超过所有TiKV节点的CPU核数</p>
-</li>
-<li><p>tidb_index_serial_scan_concurrency</p>
-<p>这个变量用来设置顺序scan操作的并发度</p>
-</li>
-<li><p>tidb_index_lookup_scan_concurrency</p>
-<p>这个变量用来设置index lookup操作的并发度</p>
-</li>
-<li><p>tidb_index_lookup_join_concurrency</p>
-<p>这个变量用来设置index lookup join算法的并发度</p>
-</li>
-<li><p>tidb_hash_join_concurrency</p>
-<p>这个变量用来设置hash join算法的并发度</p>
-</li>
-</ol>
-<h2 id="SQL优化案例"><a href="#SQL优化案例" class="headerlink" title="SQL优化案例"></a>SQL优化案例</h2><h3 id="TiDB-SQL优化需要注意的点"><a href="#TiDB-SQL优化需要注意的点" class="headerlink" title="TiDB SQL优化需要注意的点"></a>TiDB SQL优化需要注意的点</h3><ul>
-<li>where col1条件or col2条件，在TiDB中无法使用多个索引即MySQL的index merge功能，会导致全表扫描，可以转换为from xxx where col1 union from xxx where col2，这样就可以同时使用col1索引和col2索引。注意：需要注意本身结果集是否有重复数据，若有重复数据union和or无法等价转换</li>
-<li>index join的被驱动表，不能有函数处理的过滤条件，类似where year(xxx)&#x3D;’2020’，尽量不要在过滤条件增加对列的函数处理，（现在还不支持函数索引，4.0后会支持）</li>
-<li>其余与通用数据库SQL一样，需要注意尽量减少not in，not exits使用，尽量用表关联</li>
-<li><strong>亮点：TiDB支持null及like ‘abc%’使用索引，!&#x3D;xxx在TiDB也能转换为索引范围扫描，可以转换为[-inf,xxx),(xxx,+inf]，在某些特定场景比较有意义</strong></li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2022/02/17/TiDB-SQL%E7%9A%84%E4%B8%80%E7%94%9F/" data-id="clqlvqb2e000gc07oey678jyp" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-MySQL JDBC的queryTimeout的一个坑" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/12/03/MySQL%20JDBC%E7%9A%84queryTimeout%E7%9A%84%E4%B8%80%E4%B8%AA%E5%9D%91/" class="article-date">
-  <time datetime="2020-12-03T10:49:50.000Z" itemprop="datePublished">2020-12-03</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/12/03/MySQL%20JDBC%E7%9A%84queryTimeout%E7%9A%84%E4%B8%80%E4%B8%AA%E5%9D%91/">ThreadPoolExecutor的拒绝策略CallerRunsPolicy的一个潜在的大坑</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/xieyuooo/article/details/39898449?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-1.control&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-1.control">https://blog.csdn.net/xieyuooo/article/details/39898449?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-1.control&amp;depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-1.control</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/12/03/MySQL%20JDBC%E7%9A%84queryTimeout%E7%9A%84%E4%B8%80%E4%B8%AA%E5%9D%91/" data-id="clqlvqb250004c07od5owe8oi" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-TiDB-SQL监控及典型的优化案例" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/08/31/TiDB-SQL%E7%9B%91%E6%8E%A7%E5%8F%8A%E5%85%B8%E5%9E%8B%E7%9A%84%E4%BC%98%E5%8C%96%E6%A1%88%E4%BE%8B/" class="article-date">
-  <time datetime="2020-08-31T02:04:56.000Z" itemprop="datePublished">2020-08-31</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/08/31/TiDB-SQL%E7%9B%91%E6%8E%A7%E5%8F%8A%E5%85%B8%E5%9E%8B%E7%9A%84%E4%BC%98%E5%8C%96%E6%A1%88%E4%BE%8B/">TiDB SQL监控及典型的优化案例</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="TiDB读请求的执行流程"><a href="#TiDB读请求的执行流程" class="headerlink" title="TiDB读请求的执行流程"></a>TiDB读请求的执行流程</h2><h3 id="SQL的一生"><a href="#SQL的一生" class="headerlink" title="SQL的一生"></a>SQL的一生</h3><p><img src="/tidb-computing-tidb-sql-layer.png"></p>
-<ul>
-<li><p>从客户端的Socket读取一条SQL</p>
-</li>
-<li><p>获取一个token</p>
-</li>
-<li><p>从PD获取TSO（事务的时间戳）</p>
-</li>
-<li><p>使用Parser将SQL parse为AST</p>
-</li>
-<li><p>将AST compile为执行计划   </p>
-<ul>
-<li><p>Logical Optimizer</p>
-</li>
-<li><p>Physical  Optimizer</p>
-</li>
-<li><p>Execute Plan</p>
-</li>
-</ul>
-</li>
-<li><p>根据对应的执行计划，最底层的Executor会根据这条SQL处理的Key范围构建出多个要下发到TiKV的请求，并通过distsql的API将这些请求分发到TiKV</p>
-</li>
-<li><p>TiKV对结果做一些处理（包括filter,limit等）后，将中间结果集反馈给TiDB</p>
-</li>
-<li><p>TiDB进行一些表关联、聚合运算最终返回给Client</p>
-</li>
-</ul>
-<p><img src="/TiKV-read.png"></p>
-<p>TiKV收到请求后，会将请求分为两类：</p>
-<ul>
-<li>storage read pool执行引擎：负责主键和唯一索引点查</li>
-<li>coprocessor执行引擎：其余的请求</li>
-</ul>
-<h2 id="如何定位slow-query"><a href="#如何定位slow-query" class="headerlink" title="如何定位slow query"></a>如何定位slow query</h2><h3 id="slow-query产生的原因"><a href="#slow-query产生的原因" class="headerlink" title="slow query产生的原因"></a>slow query产生的原因</h3><ul>
-<li><p>按组件划分</p>
-<ul>
-<li><p>TiDB</p>
-<ul>
-<li><p>parse慢</p>
-</li>
-<li><p>complie慢，生成物理执行计划</p>
-</li>
-<li><p>get token慢，分配线程慢</p>
-</li>
-<li><p>执行计划不正确</p>
-</li>
-</ul>
-</li>
-<li><p>PD</p>
-<ul>
-<li>获取tso慢，每个SQL要获取时间戳的</li>
-</ul>
-</li>
-<li><p>TiKV</p>
-<ul>
-<li><p>需要扫描大量的key，耗时久</p>
-</li>
-<li><p>coprocessor cpu打满，资源等待</p>
-</li>
-<li><p>读热点</p>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="slow-query获取渠道"><a href="#slow-query获取渠道" class="headerlink" title="slow query获取渠道"></a>slow query获取渠道</h3><ul>
-<li>集群监控上的metrics信息</li>
-<li>slow-query log，对标MySQL格式，支持市场上的MySQL慢查询分析工具</li>
-<li>TiDB的慢查询SQL内存表</li>
-<li>TiKV节点日志slow-query反查</li>
-</ul>
-<h3 id="TiDB-Parse-Metrics"><a href="#TiDB-Parse-Metrics" class="headerlink" title="TiDB - Parse Metrics"></a>TiDB - Parse Metrics</h3><ul>
-<li><p>位置：TiDB-&gt;Executor-&gt;Parse Duration</p>
-</li>
-<li><p>parse慢可能原因：TiDB节点CPU压力大</p>
-</li>
-<li><p>图例：</p>
-<p><img src="/Parse-Duration.png"></p>
-</li>
-</ul>
-<h3 id="TiDB-Compile-Metrics"><a href="#TiDB-Compile-Metrics" class="headerlink" title="TiDB - Compile Metrics"></a>TiDB - Compile Metrics</h3><ul>
-<li><p>位置：TiDB-&gt;Executor-&gt;Compile Duration</p>
-</li>
-<li><p>parse慢可能原因：</p>
-<ul>
-<li><p>TiDB节点CPU压力大</p>
-</li>
-<li><p>in子查询结果集多，跟参数tidb_opt_insuqquery_unfold有关(2.1)</p>
-<p>这个参数控制in子查询执行计划的处理，设置为1的情况，会默认把in的子查询结果集当做一个常量返回给上一层做where条件的过滤，compile是要生成物理执行计划的，在执行计划时in的查询已经执行了，只在2.1有开关，默认关闭，3.0后没有这个参数</p>
-</li>
-</ul>
-</li>
-<li><p>图例：</p>
-<p><img src="/Compile-Duration.png"></p>
-</li>
-</ul>
-<h3 id="TiDB-Get-Token-Duration-Metrics"><a href="#TiDB-Get-Token-Duration-Metrics" class="headerlink" title="TiDB - Get Token Duration Metrics"></a>TiDB - Get Token Duration Metrics</h3><ul>
-<li><p>位置：TiDB-&gt;Server-&gt;Get Token Duration</p>
-</li>
-<li><p>parse慢可能原因：token个数不足，需要调整token-limit</p>
-<p>说明连接过多，token默认上限是1000，超过1000后，客户端或者前台需要等待，如果这个等待比较长，并且连接数也超过上限了，就可以适当的调整这个参数，或者加TiDB节点</p>
-</li>
-<li><p>图例：</p>
-<p><img src="/Get-Token-Duration.png"></p>
-</li>
-</ul>
-<h3 id="PD-tso"><a href="#PD-tso" class="headerlink" title="PD - tso"></a>PD - tso</h3><ul>
-<li><p>位置：PD-&gt;Grpc-&gt;99% completed_cmd_duration_seconds-&gt;txn</p>
-</li>
-<li><p>可能慢的原因：</p>
-<ul>
-<li>PD Leader切换</li>
-<li>PD Leader节点异常，包括cpu、磁盘等。</li>
-</ul>
-</li>
-<li><p>图例：</p>
-<p><img src="/99-completed-commands-duration.png"></p>
-</li>
-</ul>
-<h3 id="TIKV-Grpc-Duration-Metrics"><a href="#TIKV-Grpc-Duration-Metrics" class="headerlink" title="TIKV - Grpc Duration Metrics"></a>TIKV - Grpc Duration Metrics</h3><ul>
-<li><p>位置：TiKV-&gt;Grpc-&gt;Coprocessor</p>
-</li>
-<li><p>可能慢的原因：</p>
-<ul>
-<li>需要大量扫描的key，某个SQL扫了大量的key</li>
-<li>Coprocessor CPU打满，造成资源等待</li>
-</ul>
-</li>
-<li><p>图例：</p>
-<p><img src="/99-grpc-message-duration.png"></p>
-</li>
-</ul>
-<h3 id="TIKV-Coprocessor-Cpu"><a href="#TIKV-Coprocessor-Cpu" class="headerlink" title="TIKV - Coprocessor Cpu"></a>TIKV - Coprocessor Cpu</h3><ul>
-<li><p>位置：TiKV-&gt;Thead Cpu-&gt;Coprocessor Cpu</p>
-</li>
-<li><p>可能慢的原因：</p>
-<ul>
-<li>大量扫描的key，将cpu资源占满</li>
-<li>读热点，造成cpu资源等待</li>
-</ul>
-</li>
-<li><p>图例：</p>
-<p><img src="/coprocessor-cpu.png"></p>
-</li>
-</ul>
-<h3 id="慢查询排查技能-slow-query-log"><a href="#慢查询排查技能-slow-query-log" class="headerlink" title="慢查询排查技能 - slow query log"></a>慢查询排查技能 - slow query log</h3><p>#Time：2019-04-25-15:19:33.26029 +0800     –记录了sql执行完成的时间，不是开始的时间</p>
-<p>#Txn_start_ts：407942403346923524        –事务开始的时间戳</p>
-<p>#User：<a href="mailto:&#114;&#x6f;&#111;&#116;&#64;&#49;&#x32;&#55;&#x2e;&#x30;&#x2e;&#x30;&#46;&#x31;">&#114;&#x6f;&#111;&#116;&#64;&#49;&#x32;&#55;&#x2e;&#x30;&#x2e;&#x30;&#46;&#x31;</a></p>
-<p>#Conn_ID：1</p>
-<p>#Query_time：2.632671582          –sql整体执行时间</p>
-<p>#Process_time：0.079 Wait_time：0.009 Backoff_time：0.1 Request_count：8 Total_keys：20008 Process_keys：20000         –TiKV相关时间</p>
-<p>#DB：test</p>
-<p>#Index_ids：[1]         –TiDB，生成计划用到的索引</p>
-<p>#Is_internal：false</p>
-<p>#Digest：edb16a8f28d9c48790925fd1c868fdae3feb49bc58481dda7df228625a5ba6e1         </p>
-<p>#Stats：t_wide:407941920305971202,t_slim:pseudo       –TiDB</p>
-<p>#Cop_proc_avg：0.009875 Cop_proc_p90：0.018 Cop_proc_max：0.018 Cop_proc_addr：127.0.0.1:22160           –详细Cop信息</p>
-<p>#Cop_wait_avg：0.001125 Cop_wait_p90：0.002 Cop_wait_max：0.002 Cop_wait_addr：127.0.0.1:24160</p>
-<p>#Mem_max：195349          –TiDB  内存使用大小</p>
-<p>select count(1) from t_slim,t_wide where t.clim.c0&gt;t.wide.c0 and t.slim.c1&gt;t.wide.c1 and t_wide.c0 &gt; 5000;</p>
-<ul>
-<li>Red color is related with TiDB</li>
-<li>Blue color is related with TiKV&#x2F;Coprocessor</li>
-</ul>
-<h3 id="慢查询排查技能-内存表"><a href="#慢查询排查技能-内存表" class="headerlink" title="慢查询排查技能 - 内存表"></a>慢查询排查技能 - 内存表</h3><p>INFOMATION_SCHEMA:</p>
-<p>select * from slow_query order by query_time desc, total_keys&#x2F;process_keys\G;</p>
-<p>slow_query的字段值跟slow query log是对应的</p>
-<h3 id="slow-log相关参数"><a href="#slow-log相关参数" class="headerlink" title="slow log相关参数"></a>slow log相关参数</h3><ul>
-<li><p>slow-threshold</p>
-<ul>
-<li>参数含义：输出慢sql的耗时阈值，单位ms，静态参数，需要重启TiDB SERVER生效</li>
-<li>建议值：在OLTP系统，建议设置50ms左右，OLTP系统SQL一版有以下特点：SQL短小、单次运行时间短、执行次数多；OLAP系统可以适当放大点。</li>
-</ul>
-</li>
-<li><p>query-log-max-len</p>
-<ul>
-<li>参数含义：日志记录的SQL长度，超过这个长度会截断输出，单位为字符，静态参数，需要重启TiDB SERVER生效</li>
-<li>建议值：4096</li>
-</ul>
-</li>
-<li><p>tidb_slow_query_file</p>
-<ul>
-<li><p>参数含义：日志记录的SQL长度，超过这个长度会截断输出，单位为字符，静态参数，需要重启TiDB SERVER生效</p>
-</li>
-<li><p>建议值：慢查询日志的文件名，默认值为tidb_slow.log，可以存储300M内容，动态参数，可以通过会话变量生效</p>
-</li>
-<li><p>建议值：tidb_slow.log 300M以后会重新生成一个文件，所以如果要定位某一段时间的slow log，需要设置该环境变量，TiDB通过session变量tidb_slow_query_file控制查询</p>
-<p>INFOMATION_SCHEMA.SLOW_QUERY时要读取和解析的文件，可通过修改session变量的值来查询其他慢查询日志文件的内容</p>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="用SQL从多个维度查询slow-log表"><a href="#用SQL从多个维度查询slow-log表" class="headerlink" title="用SQL从多个维度查询slow log表"></a>用SQL从多个维度查询slow log表</h3><p>查询INFOMATION_SCHEMA.SLOW_QUERY</p>
-<h3 id="TiKV日志反查slow-log"><a href="#TiKV日志反查slow-log" class="headerlink" title="TiKV日志反查slow log"></a>TiKV日志反查slow log</h3><p>在某个SQL执行导致的TiKV cpu异常高的场合下，使用TiKV可以快速的定位问题SQL</p>
-<p>TiKV日志中记录了slow-query的几个关键信息：</p>
-<ul>
-<li>ipv4：发出请求的TiDB地址，通过该地址可以确定SQL在哪个TiDB节点执行</li>
-<li>start_ts：事务的start_ts，通过start_ts反查slow log，快速定位问题SQL，不太适合特别频繁的查询场景，start_ts很多，很难查</li>
-<li>table_id：查询的那张表，可以通过information_schema.tables的tidb_table_id反查表名</li>
-</ul>
-<h3 id="使用方法总结"><a href="#使用方法总结" class="headerlink" title="使用方法总结"></a>使用方法总结</h3><ul>
-<li>通过监控的相关metrics可以获取到TiDB集群的整体运行情况，比如某些TiKV节点CPU高不高等，对于定位慢查询来说可以有一个初步的认知，用metrics来判断哪些时间段存在问题，可能存在哪些问题</li>
-<li>slow query log及slow log内存表，可以从整体上观察SQL运行情况，比如SQL执行花了多长时间，执行多少次，哪些SQL最耗时，哪些SQL占用资源最多等等</li>
-<li>但是slow log内存表还存在一定的局限性，因为每个TiDB有自己的slow log且slow log file到达300M后还会切换，所以使用起来还是有一定的局限性</li>
-<li>TiKV日志能够快速定位问题SQL，对于执行一次或几次的的大SQL来说，非常容易定位问题，但是如果单次执行快但是执行频率高的SQL来说，查看TiKV日志还是相对比较麻烦</li>
-<li>综上所述，结合的使用三个工具能比较快速定位问题SQL</li>
-</ul>
-<h2 id="AP场景加速"><a href="#AP场景加速" class="headerlink" title="AP场景加速"></a>AP场景加速</h2><h3 id="相关并发参数"><a href="#相关并发参数" class="headerlink" title="相关并发参数"></a>相关并发参数</h3><p>扫描key数量比较多</p>
-<ol>
-<li><p>tidb_distsql_scan_concurrency</p>
-<p>这个变量用来设置scan操作的并发度，对于AP类应用，最大建议值不要超过所有TiKV节点的CPU核数</p>
-</li>
-<li><p>tidb_index_serial_scan_concurrency</p>
-<p>这个变量用来设置顺序scan操作的并发度</p>
-</li>
-<li><p>tidb_index_lookup_scan_concurrency</p>
-<p>这个变量用来设置index lookup操作的并发度</p>
-</li>
-<li><p>tidb_index_lookup_join_concurrency</p>
-<p>这个变量用来设置index lookup join算法的并发度</p>
-</li>
-<li><p>tidb_hash_join_concurrency</p>
-<p>这个变量用来设置hash join算法的并发度</p>
-</li>
-</ol>
-<h2 id="SQL优化案例"><a href="#SQL优化案例" class="headerlink" title="SQL优化案例"></a>SQL优化案例</h2><h3 id="TiDB-SQL优化需要注意的点"><a href="#TiDB-SQL优化需要注意的点" class="headerlink" title="TiDB SQL优化需要注意的点"></a>TiDB SQL优化需要注意的点</h3><ul>
-<li>where col1条件or col2条件，在TiDB中无法使用多个索引即MySQL的index merge功能，会导致全表扫描，可以转换为from xxx where col1 union from xxx where col2，这样就可以同时使用col1索引和col2索引。注意：需要注意本身结果集是否有重复数据，若有重复数据union和or无法等价转换</li>
-<li>index join的被驱动表，不能有函数处理的过滤条件，类似where year(xxx)&#x3D;’2020’，尽量不要在过滤条件增加对列的函数处理，（现在还不支持函数索引，4.0后会支持）</li>
-<li>其余与通用数据库SQL一样，需要注意尽量减少not in，not exits使用，尽量用表关联</li>
-<li><strong>亮点：TiDB支持null及like ‘abc%’使用索引，!&#x3D;xxx在TiDB也能转换为索引范围扫描，可以转换为[-inf,xxx),(xxx,+inf]，在某些特定场景比较有意义</strong></li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/08/31/TiDB-SQL%E7%9B%91%E6%8E%A7%E5%8F%8A%E5%85%B8%E5%9E%8B%E7%9A%84%E4%BC%98%E5%8C%96%E6%A1%88%E4%BE%8B/" data-id="clqlvqb2b000bc07o2hyb92ad" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-SQL优化" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/07/20/SQL%E4%BC%98%E5%8C%96/" class="article-date">
-  <time datetime="2020-07-20T13:18:50.000Z" itemprop="datePublished">2020-07-20</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/07/20/SQL%E4%BC%98%E5%8C%96/">SQL诊断优化-持续更新</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="Explain诊断"><a href="#Explain诊断" class="headerlink" title="Explain诊断"></a>Explain诊断</h2><p>Explain各参数的含义如下：</p>
-<table>
-<thead>
-<tr>
-<th><strong>列名</strong></th>
-<th><strong>说明</strong></th>
-</tr>
-</thead>
-<tbody><tr>
-<td>id</td>
-<td>执行编号，标识select所属的行，如果语句中没有子查询或者关联查询，只有唯一的select，执行编号显示1，否则，内层的select语句一般会顺序编号，对应于其在原始语句的位置</td>
-</tr>
-<tr>
-<td>select_key</td>
-<td>显示本行是简单或者复杂select，如果查询有任何复杂的子查询，则最外层标记为PRIMARY（DERIVED、UNION、UNION RESULT）</td>
-</tr>
-<tr>
-<td>table</td>
-<td>访问引用哪个表</td>
-</tr>
-<tr>
-<td>type</td>
-<td>数据访问&#x2F;读取操作类型（All、index、range、ref、eq_ref、const&#x2F;system、NULL）</td>
-</tr>
-<tr>
-<td>possible_keys</td>
-<td>揭示哪一些索引可能有利于高效的查找</td>
-</tr>
-<tr>
-<td>key</td>
-<td>显示mysql实际决定采用哪个索引来优化查询</td>
-</tr>
-<tr>
-<td>key_len</td>
-<td>显示mysql在索引里使用的字节数</td>
-</tr>
-<tr>
-<td>ref</td>
-<td>显示了之前的表在key列记录的索引中查找值所用的列或常量</td>
-</tr>
-<tr>
-<td>rows</td>
-<td>为了找到所需要的行而需要读取的行数、估算值</td>
-</tr>
-<tr>
-<td>Extra</td>
-<td>额外信息，如using index、filesort等</td>
-</tr>
-</tbody></table>
-<h3 id="select-type常见类型及其含义"><a href="#select-type常见类型及其含义" class="headerlink" title="select_type常见类型及其含义"></a>select_type常见类型及其含义</h3><ul>
-<li><strong>SIMPLE</strong>：不包含子查询或者UNION操作的查询</li>
-<li><strong>PRIMARY</strong>：查询中如果包含任何子查询，那么最外层的查询被标记为PRIMARY</li>
-<li><strong>SUBQUERY</strong>：子查询中第一个SELECT</li>
-<li><strong>DEPENDENT SUBQUERY</strong>：子查询中的第一个SELECT，取决于外部查询</li>
-<li><strong>UNION</strong>：UNION操作的第二个或者之后的查询</li>
-<li><strong>DEPENDENT UNION</strong>：UNION操作的第二个或者之后的查询，取决于外部查询</li>
-<li><strong>UNION RESULT</strong>：UNION产生的结果集</li>
-<li><strong>DERIVED</strong>：出现在FROM子句中子查询</li>
-</ul>
-<h3 id="type常见类型及其含义"><a href="#type常见类型及其含义" class="headerlink" title="type常见类型及其含义"></a>type常见类型及其含义</h3><ul>
-<li><strong>system</strong>：这是const类型的一个特例，只会出现在待查询的表只有一行数据的情况下</li>
-<li><code>consts</code>：常出现在主键或唯一索引与常量值进行比较的场景下，此时查询性能最优</li>
-<li><strong>eq_ref</strong>：当连接使用的是完整的索引并且是PRIMARY KEY或UNIQUE NOT NULL INDEX时使用它</li>
-<li><code>ref</code>：当连接使用的是前缀索引或连接条件不是PRIMARY KEY或UNIQUE INDEX时则使用它</li>
-<li><strong>ref_or_null</strong>：类似于ref的查询，但是附加了对NULL值列的查询</li>
-<li><strong>index_merge</strong>：该连接类型表示使用了索引进行合并优化</li>
-<li>rang：使用索引进行范围扫描，常见于between、&gt;、&lt;这样的查询条件</li>
-<li><code>index</code>：索引连接类型与ALL相同，只是扫描的是索引树，通常出现在索引是该查询的覆盖索引的情况</li>
-<li><strong>ALL</strong>：全表扫描，效率最差的查找方式</li>
-</ul>
-<blockquote>
-<p>阿里编码规范要求：<strong>至少要达到range级别，要求是ref级别，如果可以是consts最好</strong></p>
-</blockquote>
-<h3 id="key列"><a href="#key列" class="headerlink" title="key列"></a>key列</h3><p>实际在查询中是否使用到索引标志字段</p>
-<h3 id="Extra列"><a href="#Extra列" class="headerlink" title="Extra列"></a>Extra列</h3><p>Extea列主要用于显示额外信息，常见信息及含义如下：</p>
-<ul>
-<li><strong>Using where</strong>：MySQL服务器会在存储引擎检索行后再进行过滤</li>
-<li><strong>Using filesort</strong>：通常出现在GROUP BY或GROUP BY语句中，且排序或分组没有基于索引，此时需要使用文件在内存中排序，因为使用索引排序的性能好于使用文件排序，所以出现这种情况就可以考虑通过添加索引进行优化</li>
-<li><strong>Using index</strong>：使用了覆盖索引进行查询，此时不需要访问表，从索引中就可以获取到所需要的全部数据</li>
-<li><strong>Using index condition</strong>：查找使用了索引，但需要回表查询数据</li>
-<li><strong>Using temporary</strong>：标识需要使用临时表来处理查询，常出现GROUP BY或者GROUP BY语句中</li>
-</ul>
-<h2 id="SQL优化"><a href="#SQL优化" class="headerlink" title="SQL优化"></a>SQL优化</h2><h3 id="深度分页"><a href="#深度分页" class="headerlink" title="深度分页"></a>深度分页</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 反例</span></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> <span class="keyword">table</span> <span class="keyword">where</span> 条件 limit <span class="number">1000000</span>, <span class="number">10</span></span><br></pre></td></tr></table></figure>
-
-<p>MySQL并不是跳过offset行，而是取offset+N行，然后返回放弃前offset行，返回N行，那当offset特别大的时候，效率就特别低下</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 正例</span></span><br><span class="line"><span class="keyword">select</span> a.<span class="operator">*</span> <span class="keyword">from</span> <span class="keyword">table</span> a, (<span class="keyword">select</span> id <span class="keyword">from</span> <span class="keyword">table</span> <span class="keyword">where</span> 条件 limit <span class="number">1000000</span>, <span class="number">10</span>) b <span class="keyword">where</span> a.id <span class="operator">=</span> b.id</span><br></pre></td></tr></table></figure>
-
-<p>该方案的核心逻辑即<code>聚簇索引</code>，再不通过<code>回表</code>的情况下，快速拿到指定偏移量数据主键的id，然后利用<code>聚簇索引</code>进行回表查询，此时总量仅为10条，效率很高</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 其他思路</span></span><br><span class="line"><span class="comment">-- id是连续的</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">from</span> <span class="keyword">table</span> <span class="keyword">WHERE</span> id <span class="keyword">between</span> <span class="number">1000000</span> <span class="keyword">and</span> <span class="number">1000010</span>;</span><br><span class="line"><span class="comment">-- id不连续</span></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> <span class="keyword">table</span> <span class="keyword">where</span> id <span class="operator">&gt;=</span> (<span class="keyword">select</span> id <span class="keyword">from</span> <span class="keyword">table</span> <span class="keyword">WHERE</span> 条件 limit <span class="number">1000000</span>,<span class="number">1</span>) limit <span class="number">10</span></span><br><span class="line"><span class="comment">-- 滚动查询，属性lastBatchMaxId存放了本次查询结果集中的最大id，开始于0，同时它也是下一批查询的起始id，直到返回空列表才退出死循环，适合大量数据导出等操作，</span></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> <span class="keyword">table</span> <span class="keyword">where</span> id <span class="operator">&gt;</span> #&#123;lastBatchMaxId&#125; <span class="keyword">order</span> <span class="keyword">by</span> id <span class="keyword">asc</span> limit <span class="number">10</span></span><br><span class="line"><span class="comment">-- order by id desc怎么滚动查询？？？</span></span><br><span class="line"><span class="comment">-- 第一次id起始为0，后面属性lastBatchMaxId存放了本次查询结果集中的最小id，是下一批查询的起始id，直到返回空列表才退出死循环</span></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> <span class="keyword">table</span> <span class="keyword">where</span> id <span class="operator">&gt;</span> <span class="number">0</span> <span class="keyword">order</span> <span class="keyword">by</span> id <span class="keyword">desc</span> limit <span class="number">10</span></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> <span class="keyword">table</span> <span class="keyword">where</span> id <span class="operator">&lt;</span> #&#123;lastBatchMaxId&#125; <span class="keyword">order</span> <span class="keyword">by</span> id <span class="keyword">desc</span> limit <span class="number">10</span></span><br></pre></td></tr></table></figure>
 
 
 
 
       
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/07/20/SQL%E4%BC%98%E5%8C%96/" data-id="clqlvqb270005c07oa9r3gb7d" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>本站由 <a href="/">@anonymity</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar">Stellar</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
 
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
 
-  
-    <article id="post-String.valueOf慎用" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/07/10/String.valueOf%E6%85%8E%E7%94%A8/" class="article-date">
-  <time datetime="2020-07-10T06:18:30.000Z" itemprop="datePublished">2020-07-10</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/07/10/String.valueOf%E6%85%8E%E7%94%A8/">String.valueOf慎用</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><code>Java API</code>中<code>String.valueOf(Object obj)</code>方法，当传入的参数为一个引用，并且引用为null时，方法会返回字符串<code>&quot;null&quot;</code>，这样就会引发一些你意向不到的”血案”</p>
-<p><code>jdk1.8.0_181</code>中<code>String.valueOf(Object obj)</code>源码：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Returns the string representation of the &#123;<span class="doctag">@code</span> Object&#125; argument.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span>   obj   an &#123;<span class="doctag">@code</span> Object&#125;.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span>  if the argument is &#123;<span class="doctag">@code</span> null&#125;, then a string equal to</span></span><br><span class="line"><span class="comment"> *          &#123;<span class="doctag">@code</span> &quot;null&quot;&#125;; otherwise, the value of</span></span><br><span class="line"><span class="comment"> *          &#123;<span class="doctag">@code</span> obj.toString()&#125; is returned.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@see</span>     java.lang.Object#toString()</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title function_">valueOf</span><span class="params">(Object obj)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> (obj == <span class="literal">null</span>) ? <span class="string">&quot;null&quot;</span> : obj.toString();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>但当你用main方法验证时，又出现了<code>NPE</code>，What？</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">    System.out.println(String.valueOf(<span class="literal">null</span>));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Caused by: java.lang.NullPointerException</span><br><span class="line">	at java.lang.String.&lt;init&gt;(String.java:<span class="number">166</span>)</span><br><span class="line">	at java.lang.String.valueOf(String.java:<span class="number">3008</span>)</span><br><span class="line">	at com.jcloud.billing.operation.Test.main(Test.java:<span class="number">21</span>)</span><br><span class="line">	... <span class="number">5</span> more</span><br></pre></td></tr></table></figure>
-
-<p>点进方法后，发现调的是这个：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Returns the string representation of the &#123;<span class="doctag">@code</span> char&#125; array</span></span><br><span class="line"><span class="comment"> * argument. The contents of the character array are copied; subsequent</span></span><br><span class="line"><span class="comment"> * modification of the character array does not affect the returned</span></span><br><span class="line"><span class="comment"> * string.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span>   data     the character array.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@return</span>  a &#123;<span class="doctag">@code</span> String&#125; that contains the characters of the</span></span><br><span class="line"><span class="comment"> *          character array.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title function_">valueOf</span><span class="params">(<span class="type">char</span> data[])</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">String</span>(data);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这是两个问题：</p>
-<h3 id="1、String-valueOf-Object-obj-，如果obj为null，则返回”null”"><a href="#1、String-valueOf-Object-obj-，如果obj为null，则返回”null”" class="headerlink" title="1、String.valueOf(Object obj)，如果obj为null，则返回”null”"></a><strong>1、<code>String.valueOf(Object obj)</code>，如果obj为null，则返回”null”</strong></h3><p>这没什么好说的，因为源码就是这样写的，当你使用这个方法时，只需要特别注意一下返回值的判断，不是<code>if(str == null)</code>，而是<code>if(str.equals(&quot;null&quot;))</code></p>
-<p>另外一点也体现出看源码的重要性，<strong>所以以后再调用任何<code>API</code>时都养成看源码的好习惯</strong></p>
-<h3 id="2、System-out-println-String-valueOf-null-为什么会走到String-valueOf-char-data-，而不是String-valueOf-Object-obj-？"><a href="#2、System-out-println-String-valueOf-null-为什么会走到String-valueOf-char-data-，而不是String-valueOf-Object-obj-？" class="headerlink" title="2、System.out.println(String.valueOf(null))为什么会走到String valueOf(char data[])，而不是String.valueOf(Object obj)？"></a><strong>2、<code>System.out.println(String.valueOf(null))</code>为什么会走到<code>String valueOf(char data[])</code>，而不是<code>String.valueOf(Object obj)</code>？</strong></h3><p>看下<code>String</code>类库，有如下几种<code>valueOf</code>方法：</p>
-<p><img src="/StringValueOf.png"></p>
-<p>其中红色框中都是基本类型，<code>null</code>不是基本类型，能接受<code>String.valueOf(null)</code>的只有蓝色框中的方法，因为<code>char[]</code>比<code>Object</code>更精确，所以选择了<code>String.valueOf(char[])</code></p>
-<blockquote>
-<p>何谓精确：这两个都能接受<code>null</code>的参数，这种情况下，<code>java</code>的重载会选取其中更精确的一个，所谓精确，比如有重载方法A和B，如果方法A入参是方法B入参的子集，则A比B更精确，换句话说就是char[]是Object的子集，毕竟Object是老大，当直接传<code>null</code>时会选择<code>String.valueOf(char[])</code></p>
-</blockquote>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/07/10/String.valueOf%E6%85%8E%E7%94%A8/" data-id="clqlvqb2a0009c07og60ubsmj" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Spring事务传播机制实战" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/05/11/Spring%E4%BA%8B%E5%8A%A1%E4%BC%A0%E6%92%AD%E6%9C%BA%E5%88%B6%E5%AE%9E%E6%88%98/" class="article-date">
-  <time datetime="2020-05-11T11:18:36.000Z" itemprop="datePublished">2020-05-11</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/05/11/Spring%E4%BA%8B%E5%8A%A1%E4%BC%A0%E6%92%AD%E6%9C%BA%E5%88%B6%E5%AE%9E%E6%88%98/">Spring事务传播机制实战</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>前段时间项目中做了一次大升级，其中包括数据库分库，由于分了库，原来的单库事务就变成了跨库事务，所以用到了分布式事务，引入了阿里开源的<code>seata</code>；由于业务的特殊性，是属于定点执行任务，在某一时间集中处理业务，所以在压力测试时，<code>seata-server</code>端由于事务并发量大导致<code>seata-server</code>的表有死锁问题，一直重试。显然不可接受，所以决定暂时舍弃<code>seata</code>，还是采用<code>Spring</code>的事务来实现跨库事务。虽然也达到了目的，但如果跨太多个库，还是不建议用<code>Spring</code>事务来解决，可能会造成数据不一致的情况。</p>
-<h2 id="Spring事务失效的原因-事务生效的条件"><a href="#Spring事务失效的原因-事务生效的条件" class="headerlink" title="Spring事务失效的原因(事务生效的条件)"></a>Spring事务失效的原因(事务生效的条件)</h2><p><strong>经常犯的错误：</strong></p>
-<ul>
-<li><p>方法不是<code>public</code>的，<code>@Transactional</code>作用于public方法上才会生效，如果方法不是<code>public</code>，能编译过能正常运行，但事务不生效，经常发生</p>
-</li>
-<li><p>类自身调用，同一个类的方法A调用方法B，方法B上有事务注解，事务不会生效，因为自身调用没用经过Spring代理类，默认只有在外部调用时才会生效，经常发生</p>
-</li>
-<li><p>异常被吃了，或者异常类型错误，Spring事务默认回滚的是<code>RuntimeException</code>，如果想触发其他异常回滚需要在注解上配置一下</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Transactional(rollbackFor = Exception.class)</span></span><br></pre></td></tr></table></figure>
-
-<p>这个配置仅限于 <code>Throwable</code> 异常类及其子类</p>
-</li>
-</ul>
-<p><strong>其他错误：</strong></p>
-<ul>
-<li>没有被<code>Spring</code>管理，类没有加注解<code>@Service</code>或者其他</li>
-<li>数据源没有配置数据管理器</li>
-<li>数据库引擎不支持事务，比如<code>MyISAM</code></li>
-</ul>
-<h2 id="为什么会有传播机制"><a href="#为什么会有传播机制" class="headerlink" title="为什么会有传播机制"></a>为什么会有传播机制</h2><p><code>Spring</code>对事务的控制，是使用<code>aop</code>切面实现的，我们不用关心事务的开始、提交、回滚，只需要在方法上加上注解<code>@Transactional</code>即可，那这时候就有问题了：</p>
-<ul>
-<li>场景1：serviceA方法调用serviceB方法，但两个方法都有事务，这个时候如果serviceB方法异常，是让serviceB方法提交，还是两个一起回滚；</li>
-<li>场景2：serviceA方法调用serviceB方法，只有serviceA方法加了事务，serviceB方法是否也要加入serviceA方法的事务，如果serviceB方法异常，是否回滚serviceA；</li>
-<li>场景3：serviceA方法调用serviceB方法，两者都有事务，serviceB正常执行完，但serviceA异常，是否需要回滚serviceB；</li>
-</ul>
-<h2 id="传播机制类型"><a href="#传播机制类型" class="headerlink" title="传播机制类型"></a>传播机制类型</h2><h3 id="PROPAGATION-REQUIRED-默认"><a href="#PROPAGATION-REQUIRED-默认" class="headerlink" title="PROPAGATION_REQUIRED(默认)"></a>PROPAGATION_REQUIRED(默认)</h3><ul>
-<li>支持当前事务，如果当前没有事务，则新建事务</li>
-<li>如果当前存在事务，则加入当前事务，合并为一个事务</li>
-</ul>
-<h3 id="REQUIRES-NEW"><a href="#REQUIRES-NEW" class="headerlink" title="REQUIRES_NEW"></a>REQUIRES_NEW</h3><ul>
-<li>新建事务，如果当前存在事务，则把当前事务挂起</li>
-<li>这个类型，是独立提交事务，不受调用者的事务影响，父级异常，也不影响提交</li>
-</ul>
-<h3 id="NESTED"><a href="#NESTED" class="headerlink" title="NESTED"></a>NESTED</h3><ul>
-<li>如果当前存在事务，它将成为父级事务的一个子事务，方法结束后并没有提交，只有等父级事务结束才提交</li>
-<li>如果当前没有事务，则新建事务</li>
-<li>如果它异常，父级可以捕获它的异常而不进行回滚，正常提交</li>
-<li>但如果父级异常，它必回滚，这就是和<code>REQUIRES_NEW</code>的区别</li>
-</ul>
-<h3 id="SUPPORTS"><a href="#SUPPORTS" class="headerlink" title="SUPPORTS"></a>SUPPORTS</h3><ul>
-<li>如果当前存在事务，则加入事务</li>
-<li>如果当前不存在事务，则以非事务方式运行，这个和没写没有区别</li>
-</ul>
-<h3 id="NOT-SUPPORTED"><a href="#NOT-SUPPORTED" class="headerlink" title="NOT_SUPPORTED"></a>NOT_SUPPORTED</h3><ul>
-<li>以非事务方式运行</li>
-<li>如果当前存在事务，则把当前事务挂起</li>
-</ul>
-<h3 id="MANDATORY"><a href="#MANDATORY" class="headerlink" title="MANDATORY"></a>MANDATORY</h3><ul>
-<li>如果当前存在事务，则运行在当前事务中</li>
-<li>如果当前不存在事务，则抛出异常，也即父级方法必须有事务</li>
-</ul>
-<h3 id="NEVER"><a href="#NEVER" class="headerlink" title="NEVER"></a>NEVER</h3><ul>
-<li>以非事务方式运行，如果当前存在事务，则抛出异常，即父级方法必须无事务</li>
-</ul>
-<h2 id="实现跨库事务"><a href="#实现跨库事务" class="headerlink" title="实现跨库事务"></a>实现跨库事务</h2><p><strong>前提</strong>：事务都是跟着数据库连接走的，一个<code>@Transactional</code>只能控制一个数据库的事务，所以一个事务方法内操作多个库的话，只有一个库事务启作用</p>
-<p><strong>有两个注意点：</strong></p>
-<ul>
-<li>一个事务里涉及到多个库，一定要使用嵌套方法调用，每个方法都加<code>@Transactional</code>，每个方法操作一个库，比如A调B，B调C，C调D，这样每个方法（事务）都会等下一个方法（事务）处理完才能提交，如果有一个方法（事务）异常，则全部回滚</li>
-<li>不能A调完B再调C，这样B方法执行完，如果没有异常直接提交了，那A方法后边的逻辑异常了，B是不会回滚的，所以第二点需要注意的是，嵌套调用时，调用方法后不能有任何逻辑，否则，主方法异常后，子方法不能回滚</li>
-</ul>
-<p><strong>场景1：</strong></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Transactional(&quot;库A&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">serviceA</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="comment">//库A-表1</span></span><br><span class="line">    <span class="comment">//库A-表2</span></span><br><span class="line">    <span class="comment">//库B-表1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>如果跨两个库，可以不用嵌套事务，一个事务就可以，因为库A的事务等执行完整个方法才提交，所以库B成功，则库A也提交，库B失败，则库A也回滚，但库B后边不能有任何逻辑，参考第二注意点</p>
-<p><strong>场景2：</strong></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Transactional(&quot;库A&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">serviceA</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="comment">//库A-表1</span></span><br><span class="line">    <span class="comment">//库A-表2</span></span><br><span class="line">    serviceB();</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">@Transactional(&quot;库B&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">serviceB</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="comment">//库B-表1</span></span><br><span class="line">    serviceC();</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">@Transactional(&quot;库C&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">serviceC</span><span class="params">()</span>&#123;</span><br><span class="line">    <span class="comment">//库C-表1</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>涉及3个以上的库，嵌套调用，如果serviceB异常，serviceA还没提交，还在等serviceB执行，捕捉到serviceB异常后，回滚，同理serviceC异常，serviceA等serviceB，serviceB等serviceC，捕获到异常后都回滚。</p>
-<p>注意：抛<code>RuntimeException</code>，或者注解中指定异常类型</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/05/11/Spring%E4%BA%8B%E5%8A%A1%E4%BC%A0%E6%92%AD%E6%9C%BA%E5%88%B6%E5%AE%9E%E6%88%98/" data-id="clqlvqb2b000ac07oep7bh4ek" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-
-
-  <nav id="page-nav">
-    
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">下一页 &raquo;</a>
-  </nav>
-
-</section>
-        
-          <aside id="sidebar">
-  
-    
-
-  
-    
-
-  
-    
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">归档</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/12/">十二月 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">七月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">三月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">二月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">八月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">七月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">五月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/">四月 2020</a></li></ul>
     </div>
   </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  const stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
 
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')){
+        src = stellar.config.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.version = '1.21.0';
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.21.0';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+    root : '/',
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://gcore.jsdelivr.net/npm/jquery@3.6.2/dist/jquery.min.js'
+  };
+
+  if ('local_search') {
+    stellar.search = {};
+    stellar.search.service = 'local_search';
+    if (stellar.search.service == 'local_search') {
+      let service_obj = Object.assign({}, {"field":"all","path":"/search.json","content":true,"sort":"-date"});
+      stellar.search[stellar.search.service] = service_obj;
+    }
+  }
+
+  // stellar js
+  stellar.plugins.stellar = Object.assign({"sites":"/js/plugins/sites.js","friends":"/js/plugins/friends.js","ghinfo":"/js/plugins/ghinfo.js","timeline":"/js/plugins/timeline.js","linkcard":"/js/plugins/linkcard.js","fcircle":"/js/plugins/fcircle.js","weibo":"/js/plugins/weibo.js","memos":"/js/plugins/memos.js"});
+
+  stellar.plugins.marked = Object.assign("https://cdn.bootcdn.net/ajax/libs/marked/4.0.18/marked.min.js");
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@10.3/swiper-bundle.min.css","js":"https://unpkg.com/swiper@10.3/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://gcore.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://gcore.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://gcore.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img, .gallery img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti@0.9.2/umd/heti.min.css","js":"https://unpkg.com/heti@0.9.2/umd/heti-addon.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.copycode = Object.assign({"enable":true,"js":"/js/plugins/copycode.js","default_text":"Copy","success_text":"Copied"});
+  }
+</script>
+
+<!-- required -->
 
   
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">最新文章</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2023/12/25/BASE/">BASE理论</a>
-          </li>
-        
-          <li>
-            <a href="/2023/12/25/CAP/">CAP理论</a>
-          </li>
-        
-          <li>
-            <a href="/2022/07/26/Java%E9%94%81%E6%9C%BA%E5%88%B6/">Java锁机制</a>
-          </li>
-        
-          <li>
-            <a href="/2022/03/02/Kafka/">Kafka</a>
-          </li>
-        
-          <li>
-            <a href="/2022/02/17/TiDB-SQL%E7%9A%84%E4%B8%80%E7%94%9F/">TiDB-SQL的一生</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-</aside>
-        
-      </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      &copy; 2023 ssh<br>
-      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
-</footer>
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
-    
-
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-
-
-  
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
-
-  
-<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script src="/js/main.js" async></script>
 
 
 
+<!-- optional -->
 
-<script src="/js/script.js"></script>
 
 
+<!-- inject -->
 
 
   </div>
