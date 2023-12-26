@@ -14,14 +14,14 @@
 <meta property="og:site_name" content="SSH">
 <meta property="og:description" content="最近遇到一个很头疼的问题，在一次合代码后，系统启不来了，确切的说，本地可以起来，生成容器镜像后启不来，报了一大堆创建Spring bean异常，本地能启动，镜像启不来，这是不是很怀疑人生，通过各种排除法手段合并代码、删除代码，但就是不行，第二天又重新倒腾了一下（merge），好了，也不知道为啥就好了。     接着又有新需求了，从master上拉新的分支，吭哧吭哧干完了，编译、打包、生成镜像、部署">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://sunshaohua0221.github.io/2020/05/09/%E4%B8%80%E6%AC%A1%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5%E7%BB%8F%E5%8E%86/mybatis-1.3.0.png">
-<meta property="og:image" content="https://sunshaohua0221.github.io/2020/05/09/%E4%B8%80%E6%AC%A1%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5%E7%BB%8F%E5%8E%86/mybatis-1.3.0-depend.png">
+<meta property="og:image" content="https://sunshaohua0221.github.io/mybatis-1.3.0.png">
+<meta property="og:image" content="https://sunshaohua0221.github.io/mybatis-1.3.0-depend.png">
 <meta property="article:published_time" content="2020-05-09T02:11:22.000Z">
 <meta property="article:modified_time" content="2020-05-09T02:11:22.000Z">
 <meta property="article:author" content="ssh">
 <meta property="article:tag" content="技术、生活">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://sunshaohua0221.github.io/2020/05/09/%E4%B8%80%E6%AC%A1%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5%E7%BB%8F%E5%8E%86/mybatis-1.3.0.png">
+<meta name="twitter:image" content="https://sunshaohua0221.github.io/mybatis-1.3.0.png">
   
     <link rel="alternate" href="/atom.xml" title="SSH" type="application/atom+xml">
   
@@ -34,7 +34,7 @@
   
 <link rel="stylesheet" href="/css/style.css">
 
-<meta name="generator" content="Hexo 6.0.0"></head>
+<meta name="generator" content="Hexo 7.0.0"></head>
 
 <body>
   <div id="container">
@@ -101,13 +101,13 @@
 <p>再看<code>shardingsphere-example</code>后，持久层是用<code>@Mapper</code>注解，项目工程是用<code>@Repository</code>注解，难道是这个问题吗？到了这个份上，可能你觉得什么都有可能是错的，那就试一下吧，持久层注解改成<code>@Mapper</code>，咦？没有这个注解，项目工程的<code>mybatis</code>包版本是3.2.5，版本低，还没有这个注解，那就升下级，升级到3.4.2，顺便把<code>mybatis-spring</code>也升下级，1.2.1-&gt;1.3.0，完事后镜像启动，好了，很鸡冻。</p>
 <p>此时由恍惚变得清醒了点，其实跟注解是<code>@Mapper</code>没啥关系，主要还是很<code>mybatis</code>、<code>mybatis-spring</code>版本低有关，重新把<code>@Mapper</code>换成<code>@Repository</code>后，镜像启动，也没毛病。</p>
 <p>所以最终还是<code>mybatis</code>、<code>mybatis-spring</code>的版本和<code>spring</code>的版本不匹配导致，至于在本地启动可以，在镜像启动不行，这个问题还是无解，可能是跟环境有关</p>
-<p><img src="mybatis-1.3.0.png"></p>
-<p><img src="mybatis-1.3.0-depend.png"></p>
+<p><img src="/mybatis-1.3.0.png"></p>
+<p><img src="/mybatis-1.3.0-depend.png"></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://sunshaohua0221.github.io/2020/05/09/%E4%B8%80%E6%AC%A1%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5%E7%BB%8F%E5%8E%86/" data-id="clqkg4wtb000hcl7ofv13cmh6" class="article-share-link">Share</a>
+      <a data-url="https://sunshaohua0221.github.io/2020/05/09/%E4%B8%80%E6%AC%A1%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5%E7%BB%8F%E5%8E%86/" data-id="clqlvqb2e000hc07o93xj2ust" class="article-share-link">Share</a>
       
       
     </footer>
