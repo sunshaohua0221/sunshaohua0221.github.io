@@ -76,7 +76,7 @@
 <div class="widgets">
 <widget class="widget-wrapper search"><div class="widget-body"><div class="search-wrapper" id="search"><form class="search-form"><input type="text" class="search-input" id="search-input" placeholder="站内搜索"><svg t="1670596976048" class="icon search-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2676" width="200" height="200"><path d="M938.2 832.6L723.8 618.1c-2.5-2.5-5.3-4.4-7.9-6.4 36.2-55.6 57.3-121.8 57.3-193.1C773.3 222.8 614.6 64 418.7 64S64 222.8 64 418.6c0 195.9 158.8 354.6 354.6 354.6 71.3 0 137.5-21.2 193.2-57.4 2 2.7 3.9 5.4 6.3 7.8L832.5 938c14.6 14.6 33.7 21.9 52.8 21.9 19.1 0 38.2-7.3 52.8-21.8 29.2-29.1 29.2-76.4 0.1-105.5M418.7 661.3C284.9 661.3 176 552.4 176 418.6 176 284.9 284.9 176 418.7 176c133.8 0 242.6 108.9 242.6 242.7 0 133.7-108.9 242.6-242.6 242.6" p-id="2677"></path></svg></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div></div></widget>
 
-<widget class="widget-wrapper recent"><div class="widget-header cap theme dis-select"><span class="name">最近更新</span></div><div class="widget-body related-posts fs14"><a class="item title" href="/2023/12/27/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/"><span class="title">分布式事务</span></a><a class="item title" href="/2023/12/26/maven-deploy-401/"><span class="title">maven中deploy命令报401的原因及解决方案</span></a><a class="item title" href="/2020/04/09/Hibernate-Validator/"><span class="title">Hibernate Validator 参数校验</span></a><a class="item title" href="/2023/12/25/BASE/"><span class="title">BASE理论</span></a><a class="item title" href="/2023/12/25/CAP/"><span class="title">CAP理论</span></a></div></widget>
+<widget class="widget-wrapper recent"><div class="widget-header cap theme dis-select"><span class="name">最近更新</span></div><div class="widget-body related-posts fs14"><a class="item title" href="/2023/12/31/redis-rehash/"><span class="title">Redis rehash</span></a><a class="item title" href="/2023/12/27/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/"><span class="title">分布式事务</span></a><a class="item title" href="/2023/12/26/maven-deploy-401/"><span class="title">maven中deploy命令报401的原因及解决方案</span></a><a class="item title" href="/2020/04/09/Hibernate-Validator/"><span class="title">Hibernate Validator 参数校验</span></a><a class="item title" href="/2023/12/25/BASE/"><span class="title">BASE理论</span></a></div></widget>
 
 
 </div>
@@ -97,7 +97,23 @@
   
 
 <div class="nav-wrap"><nav class="sub post cap"><a class="active" href="/">近期发布</a><a href="/archives">归档</a></nav></div>
-  <div class="post-list post"><a class="post-card post " href="/2020/07/10/String.valueOf%E6%85%8E%E7%94%A8/">
+  <div class="post-list post"><a class="post-card post " href="/2020/07/20/SQL%E4%BC%98%E5%8C%96/">
+<article class="md-text"><h2 class="post-title">SQL诊断优化-持续更新</h2><div class="excerpt"><p>Explain诊断Explain各参数的含义如下：
+
+
+
+列名
+说明
+
+
+
+id
+执行编号，标识select所属的行，如果语句中没有子查询或者关联查询，只有唯一的select，执行编号显示1，否则，内层的select语句一般会顺序编号，对应于其在原始语句的位置
+
+
+select_key
+显示本行是简单或者复杂select，如果查询有任何复杂的子查询，则最外层标记为PRIMARY（DERIVE...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2020-07-20T13:18:50.000Z">2020-07-20</time></span></div></article>
+</a><a class="post-card post " href="/2020/07/10/String.valueOf%E6%85%8E%E7%94%A8/">
 <article class="md-text"><h2 class="post-title">String.valueOf慎用</h2><div class="excerpt"><p>Java API中String.valueOf(Object obj)方法，当传入的参数为一个引用，并且引用为null时，方法会返回字符串&quot;null&quot;，这样就会引发一些你意向不到的”血案”
 jdk1.8.0_181中String.valueOf(Object obj)源码：
 123456789101112/** * Returns the string represent...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2020-07-10T06:18:30.000Z">2020-07-10</time></span></div></article>
@@ -150,15 +166,10 @@ hbase-create.hbase下载地址：http://apache.fayea.com/hbase/wget http://apach
 </a><a class="post-card post " href="/2020/04/09/redis%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/">
 <article class="md-text"><h2 class="post-title">redis分布式锁</h2><div class="excerpt"><p>加锁伪代码
 123456789101112private static final String LOCK_SUCCESS = &quot;OK&quot;;public boolean acquireLock(String lockKey, String value) &#123;       logger.info(&quot;acquireLock lockKey:&#123;&#12...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2020-04-09T13:43:54.000Z">2020-04-09</time></span></div></article>
-</a><a class="post-card post " href="/2020/04/09/APM-Skywalking/">
-<article class="md-text"><h2 class="post-title">APM-Skywalking</h2><div class="excerpt"><p>简介官网：http://skywalking.apache.org/zh/
-安装：https://github.com/apache/skywalking/blob/5.x/docs/README_ZH.md
-mysql版本安装：https://blog.csdn.net/sinat_30126855/article/details/100895591
-查看效果：http://blog.wu...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2020-04-09T13:35:18.000Z">2020-04-09</time></span></div></article>
 </a></div>
   
   <div class='paginator-wrap dis-select'>
-  <a class="extend prev" rel="prev" href="/"></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><span class="extend next" rel="next"></span>
+  <a class="extend prev" rel="prev" href="/"></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/"></a>
   </div>
 
 

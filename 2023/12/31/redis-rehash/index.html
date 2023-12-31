@@ -5,7 +5,7 @@
   <meta name="generator" content="Hexo 7.0.0">
   <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.21.0">
   <meta charset="utf-8">
-  <meta name="robots" content="noindex,follow">
+  
 
   <meta http-equiv='x-dns-prefetch-control' content='on' />
   <link rel='dns-prefetch' href='https://gcore.jsdelivr.net'>
@@ -20,19 +20,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="theme-color" content="#f8f8f8">
   
-  <title>归档 - SSH</title>
+  <title>Redis rehash - SSH</title>
 
   
-    <meta name="description" content="学无止境">
-<meta property="og:type" content="website">
-<meta property="og:title" content="归档">
-<meta property="og:url" content="https://sunshaohua0221.github.io/archives/2020/index.html">
+    <meta name="description" content="Redis键值对结构  HashTableRedis中有一个全局哈希表，该哈希表中保存所有的键值对，对于Hash表查找的操作的复杂度为O(1)。  Bucket哈希表中每一个元素称为哈希桶（Bucket），哈希桶中保存了键值对数据。  Entry用来保存键值对数据，保存的是Key、Value的指针值，通过对应的指针对Key、Value进行查找。   什么是rehashredis在项目中时常用来放缓">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis rehash">
+<meta property="og:url" content="https://sunshaohua0221.github.io/2023/12/31/redis-rehash/index.html">
 <meta property="og:site_name" content="SSH">
-<meta property="og:description" content="学无止境">
+<meta property="og:description" content="Redis键值对结构  HashTableRedis中有一个全局哈希表，该哈希表中保存所有的键值对，对于Hash表查找的操作的复杂度为O(1)。  Bucket哈希表中每一个元素称为哈希桶（Bucket），哈希桶中保存了键值对数据。  Entry用来保存键值对数据，保存的是Key、Value的指针值，通过对应的指针对Key、Value进行查找。   什么是rehashredis在项目中时常用来放缓">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://sunshaohua0221.github.io/2023/12/31/redis-rehash/redisHashTable.png">
+<meta property="og:image" content="https://sunshaohua0221.github.io/2023/12/31/redis-rehash/rehashReady.png">
+<meta property="og:image" content="https://sunshaohua0221.github.io/2023/12/31/redis-rehash/rehashidx0.png">
+<meta property="og:image" content="https://sunshaohua0221.github.io/2023/12/31/redis-rehash/rehashidx1.png">
+<meta property="og:image" content="https://sunshaohua0221.github.io/2023/12/31/redis-rehash/rehashidx2.png">
+<meta property="og:image" content="https://sunshaohua0221.github.io/2023/12/31/redis-rehash/rehashidx3.png">
+<meta property="og:image" content="https://sunshaohua0221.github.io/2023/12/31/redis-rehash/rehashidxFinish.png">
+<meta property="article:published_time" content="2023-12-31T10:05:34.263Z">
+<meta property="article:modified_time" content="2023-12-31T11:59:11.741Z">
 <meta property="article:author" content="ssh">
 <meta property="article:tag" content="技术、生活">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sunshaohua0221.github.io/2023/12/31/redis-rehash/redisHashTable.png">
   
   
   
@@ -61,8 +71,10 @@
   
 
 
+
+
   <div class='l_body' id='start'>
-    <aside class='l_left' layout=''>
+    <aside class='l_left' layout='post'>
     
 
   
@@ -76,473 +88,79 @@
 <div class="widgets">
 <widget class="widget-wrapper search"><div class="widget-body"><div class="search-wrapper" id="search"><form class="search-form"><input type="text" class="search-input" id="search-input" data-filter="/blog/" placeholder="文章搜索"><svg t="1670596976048" class="icon search-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2676" width="200" height="200"><path d="M938.2 832.6L723.8 618.1c-2.5-2.5-5.3-4.4-7.9-6.4 36.2-55.6 57.3-121.8 57.3-193.1C773.3 222.8 614.6 64 418.7 64S64 222.8 64 418.6c0 195.9 158.8 354.6 354.6 354.6 71.3 0 137.5-21.2 193.2-57.4 2 2.7 3.9 5.4 6.3 7.8L832.5 938c14.6 14.6 33.7 21.9 52.8 21.9 19.1 0 38.2-7.3 52.8-21.8 29.2-29.1 29.2-76.4 0.1-105.5M418.7 661.3C284.9 661.3 176 552.4 176 418.6 176 284.9 284.9 176 418.7 176c133.8 0 242.6 108.9 242.6 242.7 0 133.7-108.9 242.6-242.6 242.6" p-id="2677"></path></svg></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div></div></widget>
 
-<widget class="widget-wrapper recent"><div class="widget-header cap theme dis-select"><span class="name">最近更新</span></div><div class="widget-body related-posts fs14"><a class="item title" href="/2023/12/31/redis-rehash/"><span class="title">Redis rehash</span></a><a class="item title" href="/2023/12/27/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/"><span class="title">分布式事务</span></a><a class="item title" href="/2023/12/26/maven-deploy-401/"><span class="title">maven中deploy命令报401的原因及解决方案</span></a><a class="item title" href="/2020/04/09/Hibernate-Validator/"><span class="title">Hibernate Validator 参数校验</span></a><a class="item title" href="/2023/12/25/BASE/"><span class="title">BASE理论</span></a></div></widget>
+
+<widget class="widget-wrapper toc single" id="data-toc"><div class="widget-header cap dis-select"><span class="name">Redis rehash</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Redis%E9%94%AE%E5%80%BC%E5%AF%B9%E7%BB%93%E6%9E%84"><span class="toc-text">Redis键值对结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFrehash"><span class="toc-text">什么是rehash</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#rehash%E6%AD%A5%E9%AA%A4"><span class="toc-text">rehash步骤</span></a></li></ol></div></div></widget>
+
+
 
 
 </div>
 
 
     </aside>
-    <div class='l_main list'>
+    <div class='l_main'>
       
-  
-
-<header class="header mobile-only"><div class="logo-wrap"><a class="title" href="/"><div class="main" ff="title">SSH</div><div class="sub cap">管好自己、但行好事、不度他人</div></a></div></header>
-
-
 
       
 
-  
-  
 
-<div class="nav-wrap"><nav class="sub post cap"><a href="/">近期发布</a><a class="active" href="/archives">归档</a></nav></div>
-  <div class='post-list'>
-  	
-  	
-  		
-  		
-  			
-  		
-  	
-  		
-  		
-  	
-  		
-  		
-  	
-  		
-  		
-  	
-  		
-  		
-  	
-  		
-  		
-  			
-  		
-  	
-  		
-  		
-  	
-  		
-  		
-  	
-  		
-  		
-  			
-  		
-  	
-  		
-  		
-  	
-  		
-  		
-  	
-  		
-  		
-  	
-  		
-  		
-  	
-  		
-  		
-  	
-  		
-  		
-  	
-  		
-  		
-  	
-  		
-  		
-  	
-  		
-  		
-  	
-  		
-  		
-  	
-  		
-  		
-  	
-  		
-  		
-  	
-  	
-  		<article class='' id='archive'>
-  			<div class='archive-header h4'>2023</div>
-  			
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				<div class='archive-list'>
-            <a class='post fs14' href="/2023/12/31/redis-rehash/">
-    					<time>12-31</time>
-    					<span>
-                
-      						Redis rehash
-      					
-              </span>
-    				</a>
-          </div>
-  			
-  				<div class='archive-list'>
-            <a class='post fs14' href="/2023/12/27/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/">
-    					<time>12-27</time>
-    					<span>
-                
-      						分布式事务
-      					
-              </span>
-    				</a>
-          </div>
-  			
-  				<div class='archive-list'>
-            <a class='post fs14' href="/2023/12/26/maven-deploy-401/">
-    					<time>12-26</time>
-    					<span>
-                
-      						maven中deploy命令报401的原因及解决方案
-      					
-              </span>
-    				</a>
-          </div>
-  			
-  				<div class='archive-list'>
-            <a class='post fs14' href="/2023/12/25/BASE/">
-    					<time>12-25</time>
-    					<span>
-                
-      						BASE理论
-      					
-              </span>
-    				</a>
-          </div>
-  			
-  				<div class='archive-list'>
-            <a class='post fs14' href="/2023/12/25/CAP/">
-    					<time>12-25</time>
-    					<span>
-                
-      						CAP理论
-      					
-              </span>
-    				</a>
-          </div>
-  			
-  		</article>
-  	
-  		<article class='' id='archive'>
-  			<div class='archive-header h4'>2022</div>
-  			
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				<div class='archive-list'>
-            <a class='post fs14' href="/2022/07/26/Java%E9%94%81%E6%9C%BA%E5%88%B6/">
-    					<time>07-26</time>
-    					<span>
-                
-      						Java锁机制
-      					
-              </span>
-    				</a>
-          </div>
-  			
-  				<div class='archive-list'>
-            <a class='post fs14' href="/2022/03/02/Kafka/">
-    					<time>03-02</time>
-    					<span>
-                
-      						Kafka
-      					
-              </span>
-    				</a>
-          </div>
-  			
-  				<div class='archive-list'>
-            <a class='post fs14' href="/2022/02/17/TiDB-SQL%E7%9A%84%E4%B8%80%E7%94%9F/">
-    					<time>02-17</time>
-    					<span>
-                
-      						TiDB-SQL的一生
-      					
-              </span>
-    				</a>
-          </div>
-  			
-  		</article>
-  	
-  		<article class='' id='archive'>
-  			<div class='archive-header h4'>2020</div>
-  			
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				
-  		    
-  				<div class='archive-list'>
-            <a class='post fs14' href="/2020/12/03/MySQL%20JDBC%E7%9A%84queryTimeout%E7%9A%84%E4%B8%80%E4%B8%AA%E5%9D%91/">
-    					<time>12-03</time>
-    					<span>
-                
-      						ThreadPoolExecutor的拒绝策略CallerRunsPolicy的一个潜在的大坑
-      					
-              </span>
-    				</a>
-          </div>
-  			
-  				<div class='archive-list'>
-            <a class='post fs14' href="/2020/08/31/TiDB-SQL%E7%9B%91%E6%8E%A7%E5%8F%8A%E5%85%B8%E5%9E%8B%E7%9A%84%E4%BC%98%E5%8C%96%E6%A1%88%E4%BE%8B/">
-    					<time>08-31</time>
-    					<span>
-                
-      						TiDB SQL监控及典型的优化案例
-      					
-              </span>
-    				</a>
-          </div>
-  			
-  				<div class='archive-list'>
-            <a class='post fs14' href="/2020/07/20/SQL%E4%BC%98%E5%8C%96/">
-    					<time>07-20</time>
-    					<span>
-                
-      						SQL诊断优化-持续更新
-      					
-              </span>
-    				</a>
-          </div>
-  			
-  				<div class='archive-list'>
-            <a class='post fs14' href="/2020/07/10/String.valueOf%E6%85%8E%E7%94%A8/">
-    					<time>07-10</time>
-    					<span>
-                
-      						String.valueOf慎用
-      					
-              </span>
-    				</a>
-          </div>
-  			
-  				<div class='archive-list'>
-            <a class='post fs14' href="/2020/05/11/Spring%E4%BA%8B%E5%8A%A1%E4%BC%A0%E6%92%AD%E6%9C%BA%E5%88%B6%E5%AE%9E%E6%88%98/">
-    					<time>05-11</time>
-    					<span>
-                
-      						Spring事务传播机制实战
-      					
-              </span>
-    				</a>
-          </div>
-  			
-  				<div class='archive-list'>
-            <a class='post fs14' href="/2020/05/09/%E4%B8%80%E6%AC%A1%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5%E7%BB%8F%E5%8E%86/">
-    					<time>05-09</time>
-    					<span>
-                
-      						一次系统启动失败经历
-      					
-              </span>
-    				</a>
-          </div>
-  			
-  				<div class='archive-list'>
-            <a class='post fs14' href="/2020/04/10/Sharding-JDBC/">
-    					<time>04-10</time>
-    					<span>
-                
-      						Sharding JDBC生产问题
-      					
-              </span>
-    				</a>
-          </div>
-  			
-  				<div class='archive-list'>
-            <a class='post fs14' href="/2020/04/09/log-mdc/">
-    					<time>04-09</time>
-    					<span>
-                
-      						Slf4j MDC 实现日志追踪
-      					
-              </span>
-    				</a>
-          </div>
-  			
-  				<div class='archive-list'>
-            <a class='post fs14' href="/2020/04/09/Hibernate-Validator/">
-    					<time>04-09</time>
-    					<span>
-                
-      						Hibernate Validator 参数校验
-      					
-              </span>
-    				</a>
-          </div>
-  			
-  				<div class='archive-list'>
-            <a class='post fs14' href="/2020/04/09/Windows%E5%89%AA%E8%B4%B4%E6%9D%BF%E5%A2%9E%E5%BC%BA%E8%BD%AF%E4%BB%B6-ClipX/">
-    					<time>04-09</time>
-    					<span>
-                
-      						Windows剪贴板增强软件-ClipX
-      					
-              </span>
-    				</a>
-          </div>
-  			
-  				<div class='archive-list'>
-            <a class='post fs14' href="/2020/04/09/APM-Pinpoint/">
-    					<time>04-09</time>
-    					<span>
-                
-      						APM-Pinpoint
-      					
-              </span>
-    				</a>
-          </div>
-  			
-  				<div class='archive-list'>
-            <a class='post fs14' href="/2020/04/09/redis%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/">
-    					<time>04-09</time>
-    					<span>
-                
-      						redis分布式锁
-      					
-              </span>
-    				</a>
-          </div>
-  			
-  				<div class='archive-list'>
-            <a class='post fs14' href="/2020/04/09/APM-Skywalking/">
-    					<time>04-09</time>
-    					<span>
-                
-      						APM-Skywalking
-      					
-              </span>
-    				</a>
-          </div>
-  			
-  		</article>
-  	
-  </div>
+
+<div class="bread-nav fs12"><div class="left"><div id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" href="/">文章</a></div><div id="post-meta">
+    <span>发布于&nbsp;<time datetime="2023-12-31T10:05:34.263Z">2023-12-31</time></span>
+    
+    <span>更新于&nbsp;<time datetime="2023-12-31T11:59:11.741Z">2023-12-31</time></span>
+    </div></div></div>
+
+<article class='md-text content post'>
+<h1 class="article-title"><span>Redis rehash</span></h1>
+<h3 id="Redis键值对结构"><a href="#Redis键值对结构" class="headerlink" title="Redis键值对结构"></a>Redis键值对结构</h3><div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="redisHashTable.png"/></div></div>
+<ul>
+<li><p>HashTable<br>Redis中有一个全局哈希表，该哈希表中保存所有的键值对，对于Hash表查找的操作的复杂度为O(1)。</p>
+</li>
+<li><p>Bucket<br>哈希表中每一个元素称为哈希桶（Bucket），哈希桶中保存了键值对数据。</p>
+</li>
+<li><p>Entry<br>用来保存键值对数据，保存的是Key、Value的指针值，通过对应的指针对Key、Value进行查找。</p>
+</li>
+</ul>
+<h3 id="什么是rehash"><a href="#什么是rehash" class="headerlink" title="什么是rehash"></a>什么是rehash</h3><p>redis在项目中时常用来放缓存信息，由上面可知是由位桶组成的，随着缓存信息越来越大，这时候就需要对redis进行扩容。然而，之前已经存在的键值对是redis经过hash计算出的值存放在hash桶上，此时扩容需要对之前的键值对进行重新计算也就是rehash。</p>
+<h3 id="rehash步骤"><a href="#rehash步骤" class="headerlink" title="rehash步骤"></a>rehash步骤</h3><p>Redis其实有两个全局全局哈希表，一开始默认使用的是Hash Table1来存储数据，而Hash Table2并没有分配内存空间，随着Hash Table1中的元素越来越多时，Redis会进行rehash操作。</p>
+<ol>
+<li>为ht[1]分配空间</li>
+<li>在字典中维持一个索引计数器变量rehashidx，并将它的值设置为0，表示rehash工作正式开始</li>
+<li>在rehash进行期间，每次对字段执行添加、删除、查找或者更新操作时，程序除了执行指定的操作以外，还会顺带将ht[0]哈希表在rehashidx索引上的所有键值对rehash到ht[1]，当rehash工作完成之后，程序将rehashidx属性值增1</li>
+<li>随着字典操作的不断执行，最终在某个时间点上，ht[0]上的所有键值对都会被rehash至ht[1]，这是程序将rehashidx的值设置为-1，表示rehash操作已完成<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="rehashReady.png"/></div></div>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="rehashidx0.png"/></div></div>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="rehashidx1.png"/></div></div>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="rehashidx2.png"/></div></div>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="rehashidx3.png"/></div></div>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="rehashidxFinish.png"/></div></div></li>
+</ol>
+<blockquote>
+<p>在进行渐进式rehash过程中，字典会同时使用ht[0]和ht[1]两个哈希表，所以在渐进式rehash进行期间，字段的删除、查找、更新等操作会在两个哈希表上进行，比如，在字典里查找一个键的话，先在ht[0]里进行查找，如果没找到，就会继续在ht[1]里进行查找。</p>
+</blockquote>
+<blockquote>
+<p>另外，在渐进式rehash进行期间，新添加到字典里的键值对一律会保存到ht[1]里，而ht[0]不在进行任何添加操作，这一措施保证了ht[0]包含的键值对数量只减不增，并随着rehash操作的执行最终变成空表。</p>
+</blockquote>
+
+
+
+<div class="article-footer reveal fs14">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    </div>
+
+</article>
+
+<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2023/12/27/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/">分布式事务</a></div></section></div>
+
+
+
+
+
+
 
 
       
