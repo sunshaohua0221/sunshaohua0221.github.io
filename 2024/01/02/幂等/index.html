@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+  <meta name="generator" content="Hexo 7.0.0">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.21.0">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://gcore.jsdelivr.net'>
+  <link rel="preconnect" href="https://gcore.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  
+  <title>幂等 - SSH</title>
+
+  
+    <meta name="description" content="什么是幂等幂等是一个数学与计算机科学概念  在数学中，幂等用函数表达式就是：f(x) &#x3D; f(f(x))。比如求绝对值的函数就是幂等的，abs(x) &#x3D; abs(abs(x))。 在计算机科学中，幂等表示一次或多次请求某一个资源应该具有同样的副作用，或者说，多次请求所产生的影响与一次请求所产生的影响效果相同。  为什么需要幂等当前互联网的系统几乎都是解耦隔离的，会存在各个不同系">
+<meta property="og:type" content="article">
+<meta property="og:title" content="幂等">
+<meta property="og:url" content="https://sunshaohua0221.github.io/2024/01/02/%E5%B9%82%E7%AD%89/index.html">
+<meta property="og:site_name" content="SSH">
+<meta property="og:description" content="什么是幂等幂等是一个数学与计算机科学概念  在数学中，幂等用函数表达式就是：f(x) &#x3D; f(f(x))。比如求绝对值的函数就是幂等的，abs(x) &#x3D; abs(abs(x))。 在计算机科学中，幂等表示一次或多次请求某一个资源应该具有同样的副作用，或者说，多次请求所产生的影响与一次请求所产生的影响效果相同。  为什么需要幂等当前互联网的系统几乎都是解耦隔离的，会存在各个不同系">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://sunshaohua0221.github.io/2024/01/02/%E5%B9%82%E7%AD%89/timeoutQuery.png">
+<meta property="og:image" content="https://sunshaohua0221.github.io/2024/01/02/%E5%B9%82%E7%AD%89/timeoutRetry.png">
+<meta property="og:image" content="https://sunshaohua0221.github.io/2024/01/02/%E5%B9%82%E7%AD%89/idempotent.png">
+<meta property="og:image" content="https://sunshaohua0221.github.io/2024/01/02/%E5%B9%82%E7%AD%89/idempotentSelectInsert.png">
+<meta property="og:image" content="https://sunshaohua0221.github.io/2024/01/02/%E5%B9%82%E7%AD%89/idempotentInsert.png">
+<meta property="og:image" content="https://sunshaohua0221.github.io/2024/01/02/%E5%B9%82%E7%AD%89/idempotentStatus.png">
+<meta property="og:image" content="https://sunshaohua0221.github.io/2024/01/02/%E5%B9%82%E7%AD%89/idempotentToken.png">
+<meta property="og:image" content="https://sunshaohua0221.github.io/2024/01/02/%E5%B9%82%E7%AD%89/idempotentOpLock.png">
+<meta property="og:image" content="https://sunshaohua0221.github.io/2024/01/02/%E5%B9%82%E7%AD%89/idempotentDisLock.png">
+<meta property="article:published_time" content="2024-01-02T08:30:00.623Z">
+<meta property="article:modified_time" content="2024-01-02T08:30:10.480Z">
+<meta property="article:author" content="ssh">
+<meta property="article:tag" content="技术、生活">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sunshaohua0221.github.io/2024/01/02/%E5%B9%82%E7%AD%89/timeoutQuery.png">
+  
+  
+  
+  <meta name="keywords" content="技术、生活">
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+
+  
+
+  
+
+
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='post'>
+    
+
+  
+
+<header class="header"><div class="logo-wrap"><a class="title" href="/"><div class="main" ff="title">SSH</div><div class="sub cap">管好自己、但行好事、不度他人</div></a></div>
+
+<nav class="menu dis-select"></nav>
+</header>
+
+
+<div class="widgets">
+<widget class="widget-wrapper search"><div class="widget-body"><div class="search-wrapper" id="search"><form class="search-form"><input type="text" class="search-input" id="search-input" data-filter="/blog/" placeholder="文章搜索"><svg t="1670596976048" class="icon search-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2676" width="200" height="200"><path d="M938.2 832.6L723.8 618.1c-2.5-2.5-5.3-4.4-7.9-6.4 36.2-55.6 57.3-121.8 57.3-193.1C773.3 222.8 614.6 64 418.7 64S64 222.8 64 418.6c0 195.9 158.8 354.6 354.6 354.6 71.3 0 137.5-21.2 193.2-57.4 2 2.7 3.9 5.4 6.3 7.8L832.5 938c14.6 14.6 33.7 21.9 52.8 21.9 19.1 0 38.2-7.3 52.8-21.8 29.2-29.1 29.2-76.4 0.1-105.5M418.7 661.3C284.9 661.3 176 552.4 176 418.6 176 284.9 284.9 176 418.7 176c133.8 0 242.6 108.9 242.6 242.7 0 133.7-108.9 242.6-242.6 242.6" p-id="2677"></path></svg></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div></div></widget>
+
+
+<widget class="widget-wrapper toc single" id="data-toc"><div class="widget-header cap dis-select"><span class="name">幂等</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%B9%82%E7%AD%89"><span class="toc-text">什么是幂等</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E5%B9%82%E7%AD%89"><span class="toc-text">为什么需要幂等</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%A5%E5%8F%A3%E8%B6%85%E6%97%B6%EF%BC%8C%E5%A6%82%E4%BD%95%E5%A4%84%E7%90%86"><span class="toc-text">接口超时，如何处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1%E5%B9%82%E7%AD%89"><span class="toc-text">如何设计幂等</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B9%82%E7%AD%89%E8%AE%BE%E8%AE%A1%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%B5%81%E7%A8%8B"><span class="toc-text">幂等设计的基本流程</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0%E5%B9%82%E7%AD%89%E7%9A%848%E7%A7%8D%E6%96%B9%E5%BC%8F"><span class="toc-text">实现幂等的8种方式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#select-insert-%E4%B8%BB%E9%94%AE-%E5%94%AF%E4%B8%80%E7%B4%A2%E5%BC%95%E5%86%B2%E7%AA%81"><span class="toc-text">select+insert+主键&#x2F;唯一索引冲突</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%9B%B4%E6%8E%A5insert-%E4%B8%BB%E9%94%AE-%E5%94%AF%E4%B8%80%E7%B4%A2%E5%BC%95%E5%86%B2%E7%AA%81"><span class="toc-text">直接insert+主键&#x2F;唯一索引冲突</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%8A%B6%E6%80%81%E6%9C%BA%E5%B9%82%E7%AD%89"><span class="toc-text">状态机幂等</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8A%BD%E5%8F%96%E9%98%B2%E9%87%8D%E8%A1%A8"><span class="toc-text">抽取防重表</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#token%E4%BB%A4%E7%89%8C"><span class="toc-text">token令牌</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%82%B2%E8%A7%82%E9%94%81%EF%BC%88select-for-update%EF%BC%89"><span class="toc-text">悲观锁（select for update）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B9%90%E8%A7%82%E9%94%81"><span class="toc-text">乐观锁</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81"><span class="toc-text">分布式锁</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#HTTP%E7%9A%84%E5%B9%82%E7%AD%89"><span class="toc-text">HTTP的幂等</span></a></li></ol></li></ol></div></div></widget>
+
+
+
+
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+
+
+<div class="bread-nav fs12"><div class="left"><div id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" href="/">文章</a></div><div id="post-meta">
+    <span>发布于&nbsp;<time datetime="2024-01-02T08:30:00.623Z">2024-01-02</time></span>
+    
+    <span>更新于&nbsp;<time datetime="2024-01-02T08:30:10.480Z">2024-01-02</time></span>
+    </div></div></div>
+
+<article class='md-text content post'>
+<h1 class="article-title"><span>幂等</span></h1>
+<h3 id="什么是幂等"><a href="#什么是幂等" class="headerlink" title="什么是幂等"></a>什么是幂等</h3><p>幂等是一个数学与计算机科学概念</p>
+<ul>
+<li>在数学中，幂等用函数表达式就是：f(x) &#x3D; f(f(x))。比如求绝对值的函数就是幂等的，abs(x) &#x3D; abs(abs(x))。</li>
+<li>在计算机科学中，幂等表示一次或多次请求某一个资源应该具有同样的副作用，或者说，多次请求所产生的影响与一次请求所产生的影响效果相同。</li>
+</ul>
+<h3 id="为什么需要幂等"><a href="#为什么需要幂等" class="headerlink" title="为什么需要幂等"></a>为什么需要幂等</h3><p>当前互联网的系统几乎都是解耦隔离的，会存在各个不同系统相互远程调用。调用远程服务会有三个状态，成功、失败、超时，前两者都是明确的状态，超时则是<code>未知状态</code>。比如转账超时的时候，如果下游转账系统做好幂等控制，发起重试，那么即可以<code>保证转账正常进行，又可以保证不会多转一笔</code>。</p>
+<p>其实，除了转账这个例子，日常开发中很多很多例子需要考虑幂等。比如：</p>
+<ul>
+<li>MQ（消息中间件）消费者读取消息时，有可能会读取到重复消息（<code>重复消费</code>）</li>
+<li>提交form表单时，如果快速点击提交按钮，可能产生了两条一样的数据（<code>前端重复提交</code>）</li>
+</ul>
+<h3 id="接口超时，如何处理"><a href="#接口超时，如何处理" class="headerlink" title="接口超时，如何处理"></a>接口超时，如何处理</h3><p>两种方案</p>
+<ol>
+<li>下游系统提供一个对应的查询接口，如果接口超时了，先查下对应的记录，如果查询到成功，就走成功流程，如果是失败，就走失败流程。<blockquote>
+<p>拿我们的转账例子来说，转账系统提供一个查询转账记录的接口，如果渠道系统调用转账系统超时时，渠道系统先去查询一下这笔记录，看下这笔转账记录成功还是失败，如果成功就走成功流程，失败再重试发起转账。</p>
+</blockquote>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="timeoutQuery.png"/></div></div></li>
+<li>下游接口<code>支持幂等</code>，上游系统如果<code>调用超时</code>，发起重试即可<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="timeoutRetry.png"/></div></div></li>
+</ol>
+<p>两种方案都挺不错的，但是如果是<code>MQ重复消费的场景</code>，方案一处理并不是很妥，所以，还是得要求下游系统<code>对外接口支持幂等</code>。</p>
+<h3 id="如何设计幂等"><a href="#如何设计幂等" class="headerlink" title="如何设计幂等"></a>如何设计幂等</h3><p>幂等意味着请求的唯一性，不管哪个方案设计幂等，都需要一个全局唯一的ID，去标记这个请求是独一无二的。</p>
+<ul>
+<li>如果是利用唯一索引控制幂等，那唯一索引是唯一的</li>
+<li>如果是利用数据库主键控制幂等，那主键是唯一的</li>
+<li>如果是悲观锁的方式，底层标记还是全局唯一的</li>
+</ul>
+<blockquote>
+<p>全局唯一ID可以通过数据库主键、UUID、雪花算法、百度的Uidgenerator或者美团的Leaf都可以。</p>
+</blockquote>
+<h4 id="幂等设计的基本流程"><a href="#幂等设计的基本流程" class="headerlink" title="幂等设计的基本流程"></a>幂等设计的基本流程</h4><p>幂等处理的过程，说到底其实就是过滤一下已经收到的请求，当然，请求一定要有一个全局唯一的ID标记。然后，怎么判断请求是否之前收到过呢？把请求储存起来，收到请求时，先查下存储记录，如果存在就返回上次的结果，不存在就处理请求。</p>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="idempotent.png"/></div></div>
+
+<h3 id="实现幂等的8种方式"><a href="#实现幂等的8种方式" class="headerlink" title="实现幂等的8种方式"></a>实现幂等的8种方式</h3><h4 id="select-insert-主键-唯一索引冲突"><a href="#select-insert-主键-唯一索引冲突" class="headerlink" title="select+insert+主键&#x2F;唯一索引冲突"></a>select+insert+主键&#x2F;唯一索引冲突</h4><p>交易请求过来，会先根据请求的唯一流水号bizSeq字段，先select一下数据库的流水表</p>
+<ul>
+<li>如果数据已经存在，就拦截是重复请求，直接返回成功</li>
+<li>如果数据不存在，就执行insert插入，如果insert成功就返回成功，如果insert产生主键冲突异常，则捕获异常，接着直接返回成功<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="idempotentSelectInsert.png"/></div></div></li>
+</ul>
+<h4 id="直接insert-主键-唯一索引冲突"><a href="#直接insert-主键-唯一索引冲突" class="headerlink" title="直接insert+主键&#x2F;唯一索引冲突"></a>直接insert+主键&#x2F;唯一索引冲突</h4><p>跟上边唯一的区别是，如果请求重复的概率比较低的话，可以直接插入请求，利用主键&#x2F;唯一索引冲突，去判断重复请求</p>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="idempotentInsert.png"/></div></div>
+<blockquote>
+<p>大家别搞混，防重和幂等设计其实是有区别的。防重主要为了避免产生重复数据，把重复请求拦截下来即可。而幂等设计除了拦截已经处理的请求，还要求每次相同的请求都返回一样的效果。不过呢，很多时候，它们的处理流程可以是类似的。</p>
+</blockquote>
+<h4 id="状态机幂等"><a href="#状态机幂等" class="headerlink" title="状态机幂等"></a>状态机幂等</h4><p>很多业务表，都是有状态的，比如转账流水表，就会有0-待处理，1-处理中、2-成功、3-失败状态。转账流水更新的时候，都会涉及流水状态更新，即涉及<code>状态机 (即状态变更图)</code>。我们可以利用状态机实现幂等，一起来看下它是怎么实现的。</p>
+<p>比如转账成功后，把<code>处理中</code>的转账流水更新为<code>成功</code>状态，SQL这么写：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">update</span> transfr_flow <span class="keyword">set</span> status<span class="operator">=</span><span class="number">2</span> <span class="keyword">where</span> biz_seq<span class="operator">=</span>‘<span class="number">666</span>’ <span class="keyword">and</span> status<span class="operator">=</span><span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="idempotentStatus.png"/></div></div>
+<ul>
+<li><p>第1次请求来时，bizSeq流水号是 666，该流水的状态是处理中，值是 1，要更新为2-成功的状态，所以该update语句可以正常更新数据，sql执行结果的影响行数是1，流水状态最后变成了2。</p>
+</li>
+<li><p>第2请求也过来了，如果它的流水号还是 666，因为该流水状态已经2-成功的状态了，所以更新结果是0，不会再处理业务逻辑，接口直接返回。</p>
+</li>
+</ul>
+<h4 id="抽取防重表"><a href="#抽取防重表" class="headerlink" title="抽取防重表"></a>抽取防重表</h4><p>上面的两种方案，都是建立在业务流水表上bizSeq的唯一性上。很多时候，我们业务表唯一流水号希望后端系统生成，又或者我们希望防重功能与业务表分隔开来，这时候我们可以单独搞个防重表。当然防重表也是利用主键&#x2F;索引的唯一性，如果插入防重表冲突即直接返回成功，如果插入成功，即去处理请求。</p>
+<h4 id="token令牌"><a href="#token令牌" class="headerlink" title="token令牌"></a>token令牌</h4><p>token令牌方案一般包括两个请求方案</p>
+<ol>
+<li>客户端请求申请获取token，服务端生成token返回</li>
+<li>客户端带着token请求，服务端校验token<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="idempotentToken.png"/></div></div></li>
+<li>客户端发起请求，申请获取token。</li>
+<li>服务端生成全局唯一的token，保存到redis中（一般会设置一个过期时间），然后返回给客户端。</li>
+<li>客户端带着token，发起请求。</li>
+<li>服务端去redis确认token是否存在，一般用 redis.del(token)的方式，如果存在会删除成功，即处理业务逻辑，如果删除失败不处理业务逻辑，直接返回结果。</li>
+</ol>
+<h4 id="悲观锁（select-for-update）"><a href="#悲观锁（select-for-update）" class="headerlink" title="悲观锁（select for update）"></a>悲观锁（select for update）</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">begin;  # <span class="number">1.</span>开始事务</span><br><span class="line">select * from order where order_id=<span class="string">&#x27;666&#x27;</span> <span class="keyword">for</span> update # 查询订单，判断状态,锁住这条记录</span><br><span class="line"><span class="keyword">if</span>（status !=处理中）&#123;</span><br><span class="line">   <span class="comment">//非处理中状态，直接返回；</span></span><br><span class="line">   <span class="keyword">return</span> ;</span><br><span class="line">&#125;</span><br><span class="line">## 处理业务逻辑</span><br><span class="line">update order set status=<span class="string">&#x27;完成&#x27;</span> where order_id=<span class="string">&#x27;666&#x27;</span> # 更新完成</span><br><span class="line">commit; # <span class="number">5.</span>提交事务</span><br></pre></td></tr></table></figure>
+<ul>
+<li>这里面order_id需要是索引或主键哈，要锁住这条记录就好，<code>如果不是索引或者主键，会锁表的！</code></li>
+<li>悲观锁在同一事务操作过程中，锁住了一行数据。别的请求过来只能等待，如果当前事务耗时比较长，就很影响接口性能。所以一般不建议用悲观锁。</li>
+</ul>
+<h4 id="乐观锁"><a href="#乐观锁" class="headerlink" title="乐观锁"></a>乐观锁</h4><p>表增加一列version版本号，每次更新记录version都升级一下（version&#x3D;version+1）。具体流程就是先查出当前的版本号version，然后去更新修改数据时，确认下是不是刚刚查出的版本号，如果是才执行更新<br>比如，我们更新前，先查下数据，查出的版本号是version &#x3D;1</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> order_id，version <span class="keyword">from</span> <span class="keyword">order</span> <span class="keyword">where</span> order_id<span class="operator">=</span><span class="string">&#x27;666&#x27;</span>；</span><br></pre></td></tr></table></figure>
+<p>然后使用version &#x3D;1和订单Id一起作为条件，再去更新</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">update</span> <span class="keyword">order</span> <span class="keyword">set</span> version <span class="operator">=</span> version <span class="operator">+</span> <span class="number">1</span>，status<span class="operator">=</span><span class="string">&#x27;P&#x27;</span> <span class="keyword">where</span>  order_id<span class="operator">=</span><span class="string">&#x27;666&#x27;</span> <span class="keyword">and</span> version <span class="operator">=</span> <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p>最后更新成功，才可以处理业务逻辑，如果更新失败，默认为重复请求，直接返回。</p>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="idempotentOpLock.png"/></div></div>
+
+<p><strong>为什么版本号建议自增的呢？</strong></p>
+<blockquote>
+<p>因为乐观锁存在ABA的问题，如果version版本一直是自增的就不会出现ABA的情况了</p>
+</blockquote>
+<h4 id="分布式锁"><a href="#分布式锁" class="headerlink" title="分布式锁"></a>分布式锁</h4><p>分布式锁实现幂等性的逻辑就是，请求过来时，先去尝试获得分布式锁，如果获得成功，就执行业务逻辑，反之获取失败的话，就舍弃请求直接返回成功。</p>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="idempotentDisLock.png"/></div></div>
+<ul>
+<li>分布式锁可以使用Redis，也可以使用ZooKeeper，不过还是Redis相对好点，因为较轻量级。</li>
+<li>Redis分布式锁，可以使用命令SET EX PX NX + 唯一流水号实现，分布式锁的key必须为业务的唯一标识哈</li>
+<li>Redis执行设置key的动作时，要设置过期时间哈，这个过期时间不能太短，太短拦截不了重复请求，也不能设置太长，会占存储空间。</li>
+</ul>
+<h4 id="HTTP的幂等"><a href="#HTTP的幂等" class="headerlink" title="HTTP的幂等"></a>HTTP的幂等</h4><p>接口一般都是基于http的，所以我们再来聊聊Http的幂等吧。HTTP 请求方法主要有以下这几种，我们看下各个接口是否都是幂等的。</p>
+<ul>
+<li>GET方法</li>
+<li>HEAD方法</li>
+<li>OPTIONS方法</li>
+<li>DELETE方法</li>
+<li>POST 方法</li>
+<li>PUT方法</li>
+</ul>
+<ol>
+<li><p>GET 方法<br>HTTP 的GET方法用于获取资源，可以类比于数据库的select查询，不应该有副作用，所以是<code>幂等</code>的。它不会改变资源的状态，不论你调用一次还是调用多次，效果一样的，都没有副作用。</p>
+<blockquote>
+<p>如果你的GET方法是获取最近最新的新闻，不同时间点调用，返回的资源内容虽然不一样，但是最终对资源本质是没有影响的哈，所以还是幂等的。</p>
+</blockquote>
+</li>
+<li><p>HEAD 方法<br>HTTP HEAD和GET有点像，主要区别是HEAD不含有呈现数据，而仅仅是HTTP的头信息，所以它也是<code>幂等</code>的。如果想判断某个资源是否存在，很多人会使用GET，实际上用HEAD则更加恰当。即HEAD方法通常用来做探活使用。</p>
+</li>
+<li><p>OPTIONS方法<br>HTTP OPTIONS 主要用于获取当前URL所支持的方法，也是有点像查询，因此也是<code>幂等</code>的。</p>
+</li>
+<li><p>DELETE方法<br>HTTP DELETE 方法用于删除资源，它是的<code>幂等</code>的。比如我们要删除id&#x3D;666的帖子，一次执行和多次执行，影响的效果是一样的呢。</p>
+</li>
+<li><p>POST 方法<br>HTTP POST 方法用于创建资源，可以类比于提交信息，显然一次和多次提交是有副作用，执行效果是不一样的，<code>不满足幂等性</code>。</p>
+<blockquote>
+<p> 比如：POST <a target="_blank" rel="noopener" href="http://www.tianluo.com/articles%E7%9A%84%E8%AF%AD%E4%B9%89%E6%98%AF%E5%9C%A8http://www.tianluo.com/articles%E4%B8%8B%E5%88%9B%E5%BB%BA%E4%B8%80%E7%AF%87%E5%B8%96%E5%AD%90%EF%BC%8CHTTP">http://www.tianluo.com/articles的语义是在http://www.tianluo.com/articles下创建一篇帖子，HTTP</a> 响应中应包含帖子的创建状态以及帖子的 URI。两次相同的POST请求会在服务器端创建两份资源，它们具有不同的 URI；所以，POST方法不具备幂等性。</p>
+</blockquote>
+</li>
+<li><p>PUT 方法<br>HTTP PUT 方法用于创建或更新操作，所对应的URI是要创建或更新的资源本身，有副作用，它应该满足<code>幂等</code>性。</p>
+<blockquote>
+<p>比如：PUT <a target="_blank" rel="noopener" href="http://www.tianluo.com/articles/666%E7%9A%84%E8%AF%AD%E4%B9%89%E6%98%AF%E5%88%9B%E5%BB%BA%E6%88%96%E6%9B%B4%E6%96%B0">http://www.tianluo.com/articles/666的语义是创建或更新</a> ID 为666的帖子。对同一 URI 进行多次 PUT 的副作用和一次 PUT 是相同的；因此，PUT 方法具有幂等性。</p>
+</blockquote>
+</li>
+</ol>
+
+
+
+<div class="article-footer reveal fs14">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    </div>
+
+</article>
+
+<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2024/01/01/%E9%99%90%E6%B5%81/">限流</a></div></section></div>
+
+
+
+
+
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>本站由 <a href="/">@anonymity</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar">Stellar</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  const stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')){
+        src = stellar.config.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.version = '1.21.0';
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.21.0';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+    root : '/',
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://gcore.jsdelivr.net/npm/jquery@3.6.2/dist/jquery.min.js'
+  };
+
+  if ('local_search') {
+    stellar.search = {};
+    stellar.search.service = 'local_search';
+    if (stellar.search.service == 'local_search') {
+      let service_obj = Object.assign({}, {"field":"all","path":"/search.json","content":true,"sort":"-date"});
+      stellar.search[stellar.search.service] = service_obj;
+    }
+  }
+
+  // stellar js
+  stellar.plugins.stellar = Object.assign({"sites":"/js/plugins/sites.js","friends":"/js/plugins/friends.js","ghinfo":"/js/plugins/ghinfo.js","timeline":"/js/plugins/timeline.js","linkcard":"/js/plugins/linkcard.js","fcircle":"/js/plugins/fcircle.js","weibo":"/js/plugins/weibo.js","memos":"/js/plugins/memos.js"});
+
+  stellar.plugins.marked = Object.assign("https://cdn.bootcdn.net/ajax/libs/marked/4.0.18/marked.min.js");
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@10.3/swiper-bundle.min.css","js":"https://unpkg.com/swiper@10.3/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://gcore.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://gcore.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://gcore.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img, .gallery img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti@0.9.2/umd/heti.min.css","js":"https://unpkg.com/heti@0.9.2/umd/heti-addon.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.copycode = Object.assign({"enable":true,"js":"/js/plugins/copycode.js","default_text":"Copy","success_text":"Copied"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+
+
+<!-- inject -->
+
+
+  </div>
+</body>
+</html>
