@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+  <meta name="generator" content="Hexo 7.0.0">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.21.0">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://gcore.jsdelivr.net'>
+  <link rel="preconnect" href="https://gcore.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  
+  <title>dependency-check检查依赖漏洞 - SSH</title>
+
+  
+    <meta name="description" content="dependency-check介绍 Dependency-Check 是 OWASP（Open Web Application Security Project）的一个实用开源程序，用于识别项目依赖项并检查是否存在任何已知的，公开披露的漏洞。目前，已支持Java、.NET、Ruby、Node.js、Python等语言编写的程序，并为C&#x2F;C++构建系统（autoconf和cmake）提供">
+<meta property="og:type" content="article">
+<meta property="og:title" content="dependency-check检查依赖漏洞">
+<meta property="og:url" content="https://sunshaohua0221.github.io/2024/01/08/dependency-check/index.html">
+<meta property="og:site_name" content="SSH">
+<meta property="og:description" content="dependency-check介绍 Dependency-Check 是 OWASP（Open Web Application Security Project）的一个实用开源程序，用于识别项目依赖项并检查是否存在任何已知的，公开披露的漏洞。目前，已支持Java、.NET、Ruby、Node.js、Python等语言编写的程序，并为C&#x2F;C++构建系统（autoconf和cmake）提供">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://sunshaohua0221.github.io/2024/01/08/dependency-check/cvssScore.png">
+<meta property="og:image" content="https://sunshaohua0221.github.io/2024/01/08/dependency-check/cvssV3Score.png">
+<meta property="og:image" content="https://sunshaohua0221.github.io/2024/01/08/dependency-check/download.png">
+<meta property="og:image" content="https://sunshaohua0221.github.io/2024/01/08/dependency-check/mavenPluginRun.png">
+<meta property="og:image" content="https://sunshaohua0221.github.io/2024/01/08/dependency-check/mavenPluginRunResult.png">
+<meta property="og:image" content="https://sunshaohua0221.github.io/2024/01/08/dependency-check/commandLine.png">
+<meta property="article:published_time" content="2024-01-08T12:34:43.192Z">
+<meta property="article:modified_time" content="2024-01-14T05:23:55.579Z">
+<meta property="article:author" content="ssh">
+<meta property="article:tag" content="技术、生活">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sunshaohua0221.github.io/2024/01/08/dependency-check/cvssScore.png">
+  
+  
+  
+  <meta name="keywords" content="技术、生活">
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+
+  
+
+  
+
+
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='post'>
+    
+
+  
+
+<header class="header"><div class="logo-wrap"><a class="title" href="/"><div class="main" ff="title">SSH</div><div class="sub cap">管好自己、但行好事、不度他人</div></a></div>
+
+<nav class="menu dis-select"></nav>
+</header>
+
+
+<div class="widgets">
+<widget class="widget-wrapper search"><div class="widget-body"><div class="search-wrapper" id="search"><form class="search-form"><input type="text" class="search-input" id="search-input" data-filter="/blog/" placeholder="文章搜索"><svg t="1670596976048" class="icon search-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2676" width="200" height="200"><path d="M938.2 832.6L723.8 618.1c-2.5-2.5-5.3-4.4-7.9-6.4 36.2-55.6 57.3-121.8 57.3-193.1C773.3 222.8 614.6 64 418.7 64S64 222.8 64 418.6c0 195.9 158.8 354.6 354.6 354.6 71.3 0 137.5-21.2 193.2-57.4 2 2.7 3.9 5.4 6.3 7.8L832.5 938c14.6 14.6 33.7 21.9 52.8 21.9 19.1 0 38.2-7.3 52.8-21.8 29.2-29.1 29.2-76.4 0.1-105.5M418.7 661.3C284.9 661.3 176 552.4 176 418.6 176 284.9 284.9 176 418.7 176c133.8 0 242.6 108.9 242.6 242.7 0 133.7-108.9 242.6-242.6 242.6" p-id="2677"></path></svg></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div></div></widget>
+
+
+<widget class="widget-wrapper toc single" id="data-toc"><div class="widget-header cap dis-select"><span class="name">dependency-check检查依赖漏洞</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#dependency-check%E4%BB%8B%E7%BB%8D"><span class="toc-text">dependency-check介绍</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#NVD"><span class="toc-text">NVD</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CVSS"><span class="toc-text">CVSS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CNNVD"><span class="toc-text">CNNVD</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#dependency-check%E6%8F%92%E4%BB%B6%E6%89%AB%E6%8F%8F"><span class="toc-text">dependency-check插件扫描</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%87%8D%E7%82%B9%E5%8F%82%E6%95%B0%E8%A7%A3%E6%9E%90"><span class="toc-text">重点参数解析</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8F%92%E4%BB%B6%E8%BF%90%E8%A1%8C"><span class="toc-text">插件运行</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#dependency-check%E5%91%BD%E4%BB%A4%E8%A1%8C%E6%89%AB%E6%8F%8F"><span class="toc-text">dependency-check命令行扫描</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%89%A7%E8%A1%8C%E5%91%BD%E4%BB%A4"><span class="toc-text">执行命令</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%AC%E5%9C%B0%E6%BC%8F%E6%B4%9E%E5%BA%93%E6%90%AD%E5%BB%BA"><span class="toc-text">本地漏洞库搭建</span></a></li></ol></div></div></widget>
+
+
+
+
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+
+
+<div class="bread-nav fs12"><div class="left"><div id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" href="/">文章</a></div><div id="post-meta">
+    <span>发布于&nbsp;<time datetime="2024-01-08T12:34:43.192Z">2024-01-08</time></span>
+    
+    <span>更新于&nbsp;<time datetime="2024-01-14T05:23:55.579Z">2024-01-14</time></span>
+    </div></div></div>
+
+<article class='md-text content post'>
+<h1 class="article-title"><span>dependency-check检查依赖漏洞</span></h1>
+<h3 id="dependency-check介绍"><a href="#dependency-check介绍" class="headerlink" title="dependency-check介绍"></a>dependency-check介绍</h3><ul>
+<li>Dependency-Check 是 OWASP（Open Web Application Security Project）的一个实用开源程序，用于识别项目依赖项并检查是否存在任何已知的，公开披露的漏洞。目前，已支持Java、.NET、Ruby、Node.js、Python等语言编写的程序，并为C&#x2F;C++构建系统（autoconf和cmake）提供了有限的支持。</li>
+<li>Dependency-Check 支持面广（支持多种语言）、可集成性强，作为一款开源工具，在多年来的发展中已经支持和许多主流的软件进行集成，比如：命令行、Ant、Maven、Gradle、Jenkins、Sonar等；具备使用方便，落地简单等优势。</li>
+</ul>
+<p>dependency-check官网下载地址: <a target="_blank" rel="noopener" href="https://owasp.org/www-project-dependency-check">https://owasp.org/www-project-dependency-check</a></p>
+<h3 id="NVD"><a href="#NVD" class="headerlink" title="NVD"></a>NVD</h3><p>Dependency-Check依赖NVD漏洞数据库（美国国家通用漏洞数据库）进行依赖漏洞检查（全球信息安全领域著名的漏洞数据库包括中国国家信息安全漏洞库，美国国家信息安全漏洞库NVD，赛门铁克漏洞库等等）官网：<a target="_blank" rel="noopener" href="https://nvd.nist.gov/">https://nvd.nist.gov/</a></p>
+<p>NVD的更新频率是出现问题实时更新，具体链接： <a target="_blank" rel="noopener" href="https://nvd.nist.gov/general/nvd-dashboard">https://nvd.nist.gov/general/nvd-dashboard</a></p>
+<h3 id="CVSS"><a href="#CVSS" class="headerlink" title="CVSS"></a>CVSS</h3><p>NVD评级依赖CVSS（CommonVulnerability Scoring System），即“通用漏洞评分系统”，是一个“行业公开标准，其被设计用来评测漏洞的严重程度，并帮助确定所需反应的紧急度和重要度，具体评分标准如下：  </p>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="cvssScore.png"/></div></div>
+
+<p>目前主要参考cvss v3.0，具体级别的漏洞数目如下图所示：</p>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="cvssV3Score.png"/></div></div>
+
+<h3 id="CNNVD"><a href="#CNNVD" class="headerlink" title="CNNVD"></a>CNNVD</h3><p>官网地址：国家信息安全漏洞库 (cnnvd.org.cn)</p>
+<p>CNNVD是我们国家的信息安全漏洞库，咱们这个漏洞库不仅仅收录了NVD的漏洞数据（CVE），还收录咱们国内的漏洞信息（CNNVD），也就是说同样一条漏洞信息，CNNVD的漏洞数据上面既有CVE漏洞编码，也有CNNVD编码，而且描述信息还是中文的。<br>获取方式：</p>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="download.png"/></div></div>
+
+<h3 id="dependency-check插件扫描"><a href="#dependency-check插件扫描" class="headerlink" title="dependency-check插件扫描"></a>dependency-check插件扫描</h3><p>在maven的pom.xml的插件配置中添加如下配置内容:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.owasp<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>dependency-check-maven<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">autoUpdate</span>&gt;</span>true<span class="tag">&lt;/<span class="name">autoUpdate</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">dataDirectory</span>&gt;</span>/Users/sunyucheng/Documents/CVE<span class="tag">&lt;/<span class="name">dataDirectory</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">versionCheckEnabled</span>&gt;</span>false<span class="tag">&lt;/<span class="name">versionCheckEnabled</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">retireJsForceUpdate</span>&gt;</span>false<span class="tag">&lt;/<span class="name">retireJsForceUpdate</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">ossindexAnalyzerUseCache</span>&gt;</span>true<span class="tag">&lt;/<span class="name">ossindexAnalyzerUseCache</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">skipRuntimeScope</span>&gt;</span>true<span class="tag">&lt;/<span class="name">skipRuntimeScope</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">skipProvidedScope</span>&gt;</span>true<span class="tag">&lt;/<span class="name">skipProvidedScope</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">skipSystemScope</span>&gt;</span>true<span class="tag">&lt;/<span class="name">skipSystemScope</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">skipTestScope</span>&gt;</span>true<span class="tag">&lt;/<span class="name">skipTestScope</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">executions</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">execution</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">goals</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">goal</span>&gt;</span>check<span class="tag">&lt;/<span class="name">goal</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">goals</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">execution</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">executions</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>以上配置了插件常用的一些参数，如果需要查看更多参数，可以使用如下命令查看:<br>mvn help:describe -Dcmd&#x3D;dependency-check:check -Ddetail</p>
+<h4 id="重点参数解析"><a href="#重点参数解析" class="headerlink" title="重点参数解析"></a>重点参数解析</h4><p><strong>autoUpdate</strong></p>
+<ul>
+<li>如果为true，每次执行漏洞检查时都会下载CVE漏洞数据</li>
+<li>如果为false，不会在线更新漏洞数据，相当于离线扫描</li>
+</ul>
+<p><strong>dataDirectory</strong><br>这是存放CVE漏洞数据的目录，如果autoUpdate为true，也会在这个目录下更新</p>
+<p>也可以参考<a target="_blank" rel="noopener" href="https://jeremylong.github.io/DependencyCheck/dependency-check-maven/index.html">这个</a>来配置</p>
+<h4 id="插件运行"><a href="#插件运行" class="headerlink" title="插件运行"></a>插件运行</h4><blockquote>
+<p>第一次执行的话，速度挺慢的，因为他需要从NIST托管的国家漏洞数据库下载漏洞数据到本地备份库。<br>在IDEA主界面的右边侧边栏上找到Maven模块，在Plugins目录Depedancy-check下双击depedancy-check:check即可成功运作。</p>
+</blockquote>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="mavenPluginRun.png"/></div></div>
+
+<p><strong>相关的结果报告将会输出在该模块的<code>target</code>目录下</strong></p>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="mavenPluginRunResult.png"/></div></div>
+
+<h3 id="dependency-check命令行扫描"><a href="#dependency-check命令行扫描" class="headerlink" title="dependency-check命令行扫描"></a>dependency-check命令行扫描</h3><p>在<a target="_blank" rel="noopener" href="https://owasp.org/www-project-dependency-check">官网</a>右边侧栏点击<code>Command Line</code>下载应用到本地即可</p>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="commandLine.png"/></div></div>
+
+<h4 id="执行命令"><a href="#执行命令" class="headerlink" title="执行命令"></a>执行命令</h4><p>文件解压后，进入bin目录，执行dependency-check.bat或者dependency-check.sh</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dependency-check.sh --disableRetireJS --disableNodeJS --project &quot;第三方依赖CVE漏洞扫描报告&quot; --scan D:\checkjar\ -n -f JSON -o D:\report\</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>–project 给这次扫描的项目起个名称<br>–scan    要扫描的jar文件路径，或者要扫描的maven私服库<br>-n       此次扫描不更新漏洞库：不加这个会先去更新漏洞库，然后再进行扫描<br>-f        要输出的报告格式，有HTML ，JSON等，不加默认是html<br>-o       扫描报告的存放路径<br>–disableRetireJS   不检查js<br>–disableNodeJS    不检查nodejs</p>
+</blockquote>
+<h3 id="本地漏洞库搭建"><a href="#本地漏洞库搭建" class="headerlink" title="本地漏洞库搭建"></a>本地漏洞库搭建</h3><p>NVD+CNNVD<br>待实现</p>
+
+
+
+<div class="article-footer reveal fs14">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    </div>
+
+</article>
+
+<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/2024/01/14/Jackson/">Jackson</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2024/01/04/kafka%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/">kafka常见问题总结</a></div></section></div>
+
+
+
+
+
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>本站由 <a href="/">@anonymity</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar">Stellar</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  const stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')){
+        src = stellar.config.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.version = '1.21.0';
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.21.0';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+    root : '/',
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://gcore.jsdelivr.net/npm/jquery@3.6.2/dist/jquery.min.js'
+  };
+
+  if ('local_search') {
+    stellar.search = {};
+    stellar.search.service = 'local_search';
+    if (stellar.search.service == 'local_search') {
+      let service_obj = Object.assign({}, {"field":"all","path":"/search.json","content":true,"sort":"-date"});
+      stellar.search[stellar.search.service] = service_obj;
+    }
+  }
+
+  // stellar js
+  stellar.plugins.stellar = Object.assign({"sites":"/js/plugins/sites.js","friends":"/js/plugins/friends.js","ghinfo":"/js/plugins/ghinfo.js","timeline":"/js/plugins/timeline.js","linkcard":"/js/plugins/linkcard.js","fcircle":"/js/plugins/fcircle.js","weibo":"/js/plugins/weibo.js","memos":"/js/plugins/memos.js"});
+
+  stellar.plugins.marked = Object.assign("https://cdn.bootcdn.net/ajax/libs/marked/4.0.18/marked.min.js");
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@10.3/swiper-bundle.min.css","js":"https://unpkg.com/swiper@10.3/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://gcore.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://gcore.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://gcore.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img, .gallery img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti@0.9.2/umd/heti.min.css","js":"https://unpkg.com/heti@0.9.2/umd/heti-addon.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.copycode = Object.assign({"enable":true,"js":"/js/plugins/copycode.js","default_text":"Copy","success_text":"Copied"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+
+
+<!-- inject -->
+
+
+  </div>
+</body>
+</html>

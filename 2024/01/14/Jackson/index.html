@@ -20,16 +20,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="theme-color" content="#f8f8f8">
   
-  <title>SSH</title>
+  <title>Jackson - SSH</title>
 
   
     <meta name="description" content="学无止境">
-<meta property="og:type" content="website">
-<meta property="og:title" content="SSH">
-<meta property="og:url" content="https://sunshaohua0221.github.io/page/3/index.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Jackson">
+<meta property="og:url" content="https://sunshaohua0221.github.io/2024/01/14/Jackson/index.html">
 <meta property="og:site_name" content="SSH">
 <meta property="og:description" content="学无止境">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-01-14T01:06:50.014Z">
+<meta property="article:modified_time" content="2024-01-14T01:07:19.599Z">
 <meta property="article:author" content="ssh">
 <meta property="article:tag" content="技术、生活">
 <meta name="twitter:card" content="summary">
@@ -61,8 +63,10 @@
   
 
 
+
+
   <div class='l_body' id='start'>
-    <aside class='l_left' layout=''>
+    <aside class='l_left' layout='post'>
     
 
   
@@ -73,79 +77,43 @@
 </header>
 
 
-<div class="widgets">
-<widget class="widget-wrapper search"><div class="widget-body"><div class="search-wrapper" id="search"><form class="search-form"><input type="text" class="search-input" id="search-input" placeholder="站内搜索"><svg t="1670596976048" class="icon search-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2676" width="200" height="200"><path d="M938.2 832.6L723.8 618.1c-2.5-2.5-5.3-4.4-7.9-6.4 36.2-55.6 57.3-121.8 57.3-193.1C773.3 222.8 614.6 64 418.7 64S64 222.8 64 418.6c0 195.9 158.8 354.6 354.6 354.6 71.3 0 137.5-21.2 193.2-57.4 2 2.7 3.9 5.4 6.3 7.8L832.5 938c14.6 14.6 33.7 21.9 52.8 21.9 19.1 0 38.2-7.3 52.8-21.8 29.2-29.1 29.2-76.4 0.1-105.5M418.7 661.3C284.9 661.3 176 552.4 176 418.6 176 284.9 284.9 176 418.7 176c133.8 0 242.6 108.9 242.6 242.7 0 133.7-108.9 242.6-242.6 242.6" p-id="2677"></path></svg></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div></div></widget>
-
-<widget class="widget-wrapper recent"><div class="widget-header cap theme dis-select"><span class="name">最近更新</span></div><div class="widget-body related-posts fs14"><a class="item title" href="/2024/01/08/dependency-check/"><span class="title">dependency-check检查依赖漏洞</span></a><a class="item title" href="/2024/01/14/Jackson/"><span class="title">Jackson</span></a><a class="item title" href="/2024/01/04/kafka%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/"><span class="title">kafka常见问题总结</span></a><a class="item title" href="/2024/01/02/%E5%B9%82%E7%AD%89/"><span class="title">幂等</span></a><a class="item title" href="/2024/01/01/%E9%99%90%E6%B5%81/"><span class="title">限流</span></a></div></widget>
-
-
-</div>
+<div class="widgets"></div>
 
 
     </aside>
     <div class='l_main list'>
       
-  
-
-<header class="header mobile-only"><div class="logo-wrap"><a class="title" href="/"><div class="main" ff="title">SSH</div><div class="sub cap">管好自己、但行好事、不度他人</div></a></div></header>
-
-
 
       
 
 
-  
 
-<div class="nav-wrap"><nav class="sub post cap"><a class="active" href="/">近期发布</a><a href="/archives">归档</a></nav></div>
-  <div class="post-list post"><a class="post-card post " href="/2020/04/09/log-mdc/">
-<article class="md-text"><h2 class="post-title">Slf4j MDC 实现日志追踪</h2><div class="excerpt"><p>
+<div class="bread-nav fs12"><div class="left"><div id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" href="/">文章</a></div><div id="post-meta">
+    <span>发布于&nbsp;<time datetime="2024-01-14T01:06:50.014Z">2024-01-14</time></span>
+    
+    <span>更新于&nbsp;<time datetime="2024-01-14T01:07:19.599Z">2024-01-14</time></span>
+    </div></div></div>
 
-背景随着项目的越来越大，应用处理用户请求越来越多的时候，查日志是个头疼的事，因为你要去海量日志里追踪某个用户的相关日志记录时，非常麻烦；刚开始用线程名称找，线程池的线程很快就被复用，还是很难区分，MDC就可以解决这个问题。
-什么是MDCMDC（Mapped Diagnostic Context，映射调试上下文）
-概括一下：
-
-MDC是一个与当前线程绑定的哈希表，可以往其中添加键值对
-MD...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2020-04-09T14:19:26.000Z">2020-04-09</time></span></div></article>
-</a><a class="post-card post " href="/2020/04/09/Hibernate-Validator/">
-<article class="md-text"><h2 class="post-title">Hibernate Validator 参数校验</h2><div class="excerpt"><p>背景在任何时候，当你要处理一个应用程序的业务逻辑，数据校验是你必须要考虑和面对的事情。应用程序必须通过某种手段来确保输入进来的数据从语义上来讲是正确的。在通常的情况下，应用程序是分层的，不同的层由不同的开发人员来完成。很多时候同样的数据验证逻辑会出现在不同的层，这样就会导致代码冗余和一些管理的问题，比如说语义的一致性等。为了避免这样的情况发生，最好是将验证逻辑与相应的域模型进行绑定。  
-以...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2020-04-09T14:14:14.000Z">2020-04-09</time></span></div></article>
-</a><a class="post-card post " href="/2020/04/09/Windows%E5%89%AA%E8%B4%B4%E6%9D%BF%E5%A2%9E%E5%BC%BA%E8%BD%AF%E4%BB%B6-ClipX/">
-<article class="md-text"><h2 class="post-title">Windows剪贴板增强软件-ClipX</h2><div class="excerpt"><p>效率神器-只限windows官网下载：http://bluemars.org/clipx/
-能干啥ClipX可以保存最近多次复制的内容，重复的内容不用来回复制了，支持文本、图片，而且复制的内容可以保存再本地，电脑重启后还能用
-使用，图标右键
-
-扩充剪贴板数量最多支持保存1024条记录，正常人够用了
+<article class='md-text content post'>
+<h1 class="article-title"><span>Jackson</span></h1>
 
 
-随时预览剪贴板内容
 
-可以编辑剪贴板内容
+<div class="article-footer reveal fs14">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    </div>
 
-数据本地存储还得手动，自动存储就好了
+</article>
+
+<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2024/01/08/dependency-check/">dependency-check检查依赖漏洞</a></div></section></div>
 
 
-快捷...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2020-04-09T14:11:52.000Z">2020-04-09</time></span></div></article>
-</a><a class="post-card post " href="/2020/04/09/APM-Pinpoint/">
-<article class="md-text"><h2 class="post-title">APM-Pinpoint</h2><div class="excerpt"><p>架构图
 
-单机模式安装准备安装包：
 
-Hbase
-hbase-2.1.5-bin.tar.gz
-hbase-create.hbase下载地址：http://apache.fayea.com/hbase/wget http://apache.fayea.com/hbase/2.1.5/hbase-2.1.5-bin.tar.gzhttps://github.com/naver/pinpoint...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2020-04-09T14:05:08.000Z">2020-04-09</time></span></div></article>
-</a><a class="post-card post " href="/2020/04/09/redis%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/">
-<article class="md-text"><h2 class="post-title">redis分布式锁</h2><div class="excerpt"><p>加锁伪代码
-123456789101112private static final String LOCK_SUCCESS = &quot;OK&quot;;public boolean acquireLock(String lockKey, String value) &#123;       logger.info(&quot;acquireLock lockKey:&#123;&#12...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2020-04-09T13:43:54.000Z">2020-04-09</time></span></div></article>
-</a><a class="post-card post " href="/2020/04/09/APM-Skywalking/">
-<article class="md-text"><h2 class="post-title">APM-Skywalking</h2><div class="excerpt"><p>简介官网：http://skywalking.apache.org/zh/
-安装：https://github.com/apache/skywalking/blob/5.x/docs/README_ZH.md
-mysql版本安装：https://blog.csdn.net/sinat_30126855/article/details/100895591
-查看效果：http://blog.wu...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2020-04-09T13:35:18.000Z">2020-04-09</time></span></div></article>
-</a></div>
-  
-  <div class='paginator-wrap dis-select'>
-  <a class="extend prev" rel="prev" href="/page/2/"></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><span class="extend next" rel="next"></span>
-  </div>
 
 
 
