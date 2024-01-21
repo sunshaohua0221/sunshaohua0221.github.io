@@ -76,7 +76,7 @@
 <div class="widgets">
 <widget class="widget-wrapper search"><div class="widget-body"><div class="search-wrapper" id="search"><form class="search-form"><input type="text" class="search-input" id="search-input" placeholder="站内搜索"><svg t="1670596976048" class="icon search-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2676" width="200" height="200"><path d="M938.2 832.6L723.8 618.1c-2.5-2.5-5.3-4.4-7.9-6.4 36.2-55.6 57.3-121.8 57.3-193.1C773.3 222.8 614.6 64 418.7 64S64 222.8 64 418.6c0 195.9 158.8 354.6 354.6 354.6 71.3 0 137.5-21.2 193.2-57.4 2 2.7 3.9 5.4 6.3 7.8L832.5 938c14.6 14.6 33.7 21.9 52.8 21.9 19.1 0 38.2-7.3 52.8-21.8 29.2-29.1 29.2-76.4 0.1-105.5M418.7 661.3C284.9 661.3 176 552.4 176 418.6 176 284.9 284.9 176 418.7 176c133.8 0 242.6 108.9 242.6 242.7 0 133.7-108.9 242.6-242.6 242.6" p-id="2677"></path></svg></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div></div></widget>
 
-<widget class="widget-wrapper recent"><div class="widget-header cap theme dis-select"><span class="name">最近更新</span></div><div class="widget-body related-posts fs14"><a class="item title" href="/2024/01/08/dependency-check/"><span class="title">dependency-check检查依赖漏洞</span></a><a class="item title" href="/2024/01/14/Jackson/"><span class="title">Jackson</span></a><a class="item title" href="/2024/01/04/kafka%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/"><span class="title">kafka常见问题总结</span></a><a class="item title" href="/2024/01/02/%E5%B9%82%E7%AD%89/"><span class="title">幂等</span></a><a class="item title" href="/2024/01/01/%E9%99%90%E6%B5%81/"><span class="title">限流</span></a></div></widget>
+<widget class="widget-wrapper recent"><div class="widget-header cap theme dis-select"><span class="name">最近更新</span></div><div class="widget-body related-posts fs14"><a class="item title" href="/2024/01/21/RestTemplate/"><span class="title">RestTemplate拦截器</span></a><a class="item title" href="/2024/01/14/Jackson/"><span class="title">Jackson</span></a><a class="item title" href="/2024/01/08/dependency-check/"><span class="title">dependency-check检查依赖漏洞</span></a><a class="item title" href="/2024/01/04/kafka%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/"><span class="title">kafka常见问题总结</span></a><a class="item title" href="/2024/01/02/%E5%B9%82%E7%AD%89/"><span class="title">幂等</span></a></div></widget>
 
 
 </div>
@@ -97,8 +97,19 @@
   
 
 <div class="nav-wrap"><nav class="sub post cap"><a class="active" href="/">近期发布</a><a href="/archives">归档</a></nav></div>
-  <div class="post-list post"><a class="post-card post " href="/2024/01/14/Jackson/">
-<article class="md-text"><h2 class="post-title">Jackson</h2><div class="excerpt"><p></p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2024-01-14T01:06:50.014Z">2024-01-14</time></span></div></article>
+  <div class="post-list post"><a class="post-card post " href="/2024/01/21/RestTemplate/">
+<article class="md-text"><h2 class="post-title">RestTemplate拦截器</h2><div class="excerpt"><p>拦截器的使用场景除了修改HTTP头之外，RestTemplate拦截器还可以用于下面的场景：
+
+打印请求和响应日志
+用可配置的回滚策略进行重试
+基于某些请求参数来拒绝请求
+改变请求的URL
+
+创建拦截器Spring RestTemplate允许我们添加实现了ClientHttpRequestInterceptor接口的拦截器。这个接口的intercept(HttpRequest, byte[...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2024-01-21T01:18:13.640Z">2024-01-21</time></span></div></article>
+</a><a class="post-card post " href="/2024/01/14/Jackson/">
+<article class="md-text"><h2 class="post-title">Jackson</h2><div class="excerpt"><p>Jackson 简介Jackson 是一个用于在Java对象和 json 数据之间进行转换的框架。它支持众多 json 数据格式，诸如 JSON-LD、SMILE 等。Jackson是一个流式处理 JSON 的工具，它很容易与其它 JSON 处理工具进行集成，同时在序列化和反序列化性能方面也表现得相当优异。
+核心包
+jackson-databind：提供了通用的数据绑定功能（将Java对象与...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2024-01-14T01:06:50.014Z">2024-01-14</time></span></div></article>
 </a><a class="post-card post " href="/2024/01/08/dependency-check/">
 <article class="md-text"><h2 class="post-title">dependency-check检查依赖漏洞</h2><div class="excerpt"><p>dependency-check介绍
 Dependency-Check 是 OWASP（Open Web Application Security Project）的一个实用开源程序，用于识别项目依赖项并检查是否存在任何已知的，公开披露的漏洞。目前，已支持Java、.NET、Ruby、Node.js、Python等语言编写的程序，并为C&#x2F;C++构建系统（autoconf和cmake...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2024-01-08T12:34:43.192Z">2024-01-08</time></span></div></article>
@@ -175,8 +186,6 @@ pom.xml里的仓库配置12345678910111213&lt;!--项目分发信息，在执行m
 摘自JavaGuide
 
 BASE简介BASE理论起源于2008年，由eBay的架构师Dan Pritchett在ACM上发表。BASE是Basically Available（基本可用）、Soft-state（软状态）和Eventually Consistent（最终一致性）三个短语的缩写。BASE理论是对CAP中一致性C和可用性A权衡的结果，其来源于对大规模互联网系统分布式实践的总结，...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2023-12-25T04:55:59.670Z">2023-12-25</time></span></div></article>
-</a><a class="post-card post " href="/2023/12/25/CAP/">
-<article class="md-text"><h2 class="post-title">CAP理论</h2><div class="excerpt"><p>CAP简介CAP（CAP  theorem）定理又被称作布鲁尔定理（Brewer’s theorem），是加州大学伯克利分校的计算机科学家埃里克·布鲁尔（Eric Brewer）在2000年的ACM  PODC上提出的一个猜想。2002年，麻省理工学院的赛斯·吉尔伯特（Seth Gilbert）和南希·林奇（Nancy Lynch）发表了布鲁尔猜想的证明，使之成为分布式计算领域公认的一个定理...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2023-12-25T04:49:39.299Z">2023-12-25</time></span></div></article>
 </a></div>
   
   <div class='paginator-wrap dis-select'>
