@@ -20,21 +20,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="theme-color" content="#f8f8f8">
   
-  <title>junit5+Mockito单元测试案例 - SSH</title>
+  <title>BASE理论 - SSH</title>
 
   
-    <meta name="description" content="MockMvc+Controller单元测试12345678910111213141516171819@Autowiredprivate WebApplicationContext wac;private MockMvc mockMvc;private HttpHeaders headers;@BeforeAllvoid setUp() throws Exception &#123;    moc">
+    <meta name="description" content="摘自JavaGuide  BASE简介BASE理论起源于2008年，由eBay的架构师Dan Pritchett在ACM上发表。BASE是Basically Available（基本可用）、Soft-state（软状态）和Eventually Consistent（最终一致性）三个短语的缩写。BASE理论是对CAP中一致性C和可用性A权衡的结果，其来源于对大规模互联网系统分布式实践的总结，是基于">
 <meta property="og:type" content="article">
-<meta property="og:title" content="junit5+Mockito单元测试案例">
-<meta property="og:url" content="https://sunshaohua0221.github.io/2024/01/23/junit5/index.html">
+<meta property="og:title" content="BASE理论">
+<meta property="og:url" content="https://sunshaohua0221.github.io/2023/12/26/BASE/index.html">
 <meta property="og:site_name" content="SSH">
-<meta property="og:description" content="MockMvc+Controller单元测试12345678910111213141516171819@Autowiredprivate WebApplicationContext wac;private MockMvc mockMvc;private HttpHeaders headers;@BeforeAllvoid setUp() throws Exception &#123;    moc">
+<meta property="og:description" content="摘自JavaGuide  BASE简介BASE理论起源于2008年，由eBay的架构师Dan Pritchett在ACM上发表。BASE是Basically Available（基本可用）、Soft-state（软状态）和Eventually Consistent（最终一致性）三个短语的缩写。BASE理论是对CAP中一致性C和可用性A权衡的结果，其来源于对大规模互联网系统分布式实践的总结，是基于">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2024-01-23T12:02:51.121Z">
-<meta property="article:modified_time" content="2024-01-27T08:33:35.388Z">
+<meta property="og:image" content="https://sunshaohua0221.github.io/2023/12/26/BASE/%E4%B8%89%E8%A6%81%E7%B4%A0.png">
+<meta property="article:published_time" content="2023-12-26T05:35:42.000Z">
+<meta property="article:modified_time" content="2023-12-26T05:35:42.000Z">
 <meta property="article:author" content="ssh">
 <meta property="article:tag" content="技术、生活">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sunshaohua0221.github.io/2023/12/26/BASE/%E4%B8%89%E8%A6%81%E7%B4%A0.png">
   
   
   
@@ -81,7 +83,7 @@
 <widget class="widget-wrapper search"><div class="widget-body"><div class="search-wrapper" id="search"><form class="search-form"><input type="text" class="search-input" id="search-input" data-filter="/blog/" placeholder="文章搜索"><svg t="1670596976048" class="icon search-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2676" width="200" height="200"><path d="M938.2 832.6L723.8 618.1c-2.5-2.5-5.3-4.4-7.9-6.4 36.2-55.6 57.3-121.8 57.3-193.1C773.3 222.8 614.6 64 418.7 64S64 222.8 64 418.6c0 195.9 158.8 354.6 354.6 354.6 71.3 0 137.5-21.2 193.2-57.4 2 2.7 3.9 5.4 6.3 7.8L832.5 938c14.6 14.6 33.7 21.9 52.8 21.9 19.1 0 38.2-7.3 52.8-21.8 29.2-29.1 29.2-76.4 0.1-105.5M418.7 661.3C284.9 661.3 176 552.4 176 418.6 176 284.9 284.9 176 418.7 176c133.8 0 242.6 108.9 242.6 242.7 0 133.7-108.9 242.6-242.6 242.6" p-id="2677"></path></svg></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div></div></widget>
 
 
-<widget class="widget-wrapper toc single" id="data-toc"><div class="widget-header cap dis-select"><span class="name">junit5+Mockito单元测试案例</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#MockMvc-Controller%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95"><span class="toc-text">MockMvc+Controller单元测试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Service%E5%B1%82%E6%B5%8B%E8%AF%95-%E9%97%B4%E6%8E%A5%E6%B3%A8%E5%85%A5"><span class="toc-text">Service层测试+间接注入</span></a></li></ol></div></div></widget>
+<widget class="widget-wrapper toc single" id="data-toc"><div class="widget-header cap dis-select"><span class="name">BASE理论</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#BASE%E7%AE%80%E4%BB%8B"><span class="toc-text">BASE简介</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#BASE%E7%90%86%E8%AE%BA%E7%9A%84%E6%A0%B8%E5%BF%83%E6%80%9D%E6%83%B3"><span class="toc-text">BASE理论的核心思想</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#BASE%E7%90%86%E8%AE%BA%E4%B8%89%E8%A6%81%E7%B4%A0"><span class="toc-text">BASE理论三要素</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E5%8F%AF%E7%94%A8"><span class="toc-text">基本可用</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E8%BD%AF%E7%8A%B6%E6%80%81"><span class="toc-text">软状态</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%9C%80%E7%BB%88%E4%B8%80%E8%87%B4%E6%80%A7"><span class="toc-text">最终一致性</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol></div></div></widget>
 
 
 
@@ -98,16 +100,56 @@
 
 
 <div class="bread-nav fs12"><div class="left"><div id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" href="/">文章</a></div><div id="post-meta">
-    <span>发布于&nbsp;<time datetime="2024-01-23T12:02:51.121Z">2024-01-23</time></span>
+    <span>发布于&nbsp;<time datetime="2023-12-26T05:35:42.000Z">2023-12-26</time></span>
     
-    <span>更新于&nbsp;<time datetime="2024-01-27T08:33:35.388Z">2024-01-27</time></span>
+    <span>更新于&nbsp;<time datetime="2023-12-26T05:35:42.000Z">2023-12-26</time></span>
     </div></div></div>
 
 <article class='md-text content post'>
-<h1 class="article-title"><span>junit5+Mockito单元测试案例</span></h1>
-<h3 id="MockMvc-Controller单元测试"><a href="#MockMvc-Controller单元测试" class="headerlink" title="MockMvc+Controller单元测试"></a>MockMvc+Controller单元测试</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="keyword">private</span> WebApplicationContext wac;</span><br><span class="line"><span class="keyword">private</span> MockMvc mockMvc;</span><br><span class="line"><span class="keyword">private</span> HttpHeaders headers;</span><br><span class="line"></span><br><span class="line"><span class="meta">@BeforeAll</span></span><br><span class="line"><span class="keyword">void</span> <span class="title function_">setUp</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">    mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();</span><br><span class="line">    MultiValueMap&lt;String, String&gt; headerMap = <span class="keyword">new</span> <span class="title class_">LinkedMultiValueMap</span>&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="type">MvcResult</span> <span class="variable">mvcResult</span> <span class="operator">=</span> mockMvc.perform(MockMvcRequestBuilders.post(<span class="string">&quot;/user/authentication&quot;</span>)</span><br><span class="line">            .content(<span class="string">&quot;&#123;\&quot;username\&quot;:\&quot;zhangsan\&quot;,\&quot;password\&quot;:\&quot;123456\&quot;&#125;&quot;</span>)</span><br><span class="line">            .contentType(MediaType.APPLICATION_JSON)).andExpect(MockMvcResultMatchers.status().isOk()).andReturn();</span><br><span class="line">    <span class="type">String</span> <span class="variable">loginContent</span> <span class="operator">=</span> mvcResult.getResponse().getContentAsString(StandardCharsets.UTF_8);</span><br><span class="line">    headerMap.add(<span class="string">&quot;Authorization&quot;</span>, JSON.parseObject(loginContent).getJSONObject(<span class="string">&quot;data&quot;</span>).getString(<span class="string">&quot;token&quot;</span>));</span><br><span class="line">    </span><br><span class="line">    headers = <span class="keyword">new</span> <span class="title class_">HttpHeaders</span>();</span><br><span class="line">    headers.addAll(headerMap);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 class="article-title"><span>BASE理论</span></h1>
+<blockquote>
+<p>摘自JavaGuide</p>
+</blockquote>
+<h4 id="BASE简介"><a href="#BASE简介" class="headerlink" title="BASE简介"></a>BASE简介</h4><p>BASE理论起源于2008年，由eBay的架构师Dan Pritchett在ACM上发表。<br>BASE是Basically Available（基本可用）、Soft-state（软状态）和Eventually Consistent（最终一致性）三个短语的缩写。BASE理论是对CAP中一致性C和可用性A权衡的结果，其来源于对大规模互联网系统分布式实践的总结，是基于CAP定理逐渐演化而来的，它大大降低了我们对系统的要求。</p>
+<h4 id="BASE理论的核心思想"><a href="#BASE理论的核心思想" class="headerlink" title="BASE理论的核心思想"></a>BASE理论的核心思想</h4><p>即使无法做到强一致性，但每个应用都可以根据自身的业务特点，采用适当的方式来达到最终一致性。</p>
+<blockquote>
+<p>也就是牺牲数据的一致性来满足系统的高可用性，系统中一部分数据不可用或者不一致时，仍需要保持系统的整体可用。</p>
+</blockquote>
+<p>BASE理论本质上是对CAP的延伸和补充，更具体的说，是对CAP中的AP方案的一个补充。</p>
+<p>为什么这么说呢&#x2F;</p>
+<p>CAP理论这节我们也说过了 </p>
+<blockquote>
+<p>如果系统没有发生“分区”的话，节点间的网络连接通信正常的话，也就不存在 P 了。这个时候，我们就可以同时保证 C 和 A 了。因此，如果系统发生“分区”，我们要考虑选择 CP 还是 AP。如果系统没有发生“分区”的话，我们要思考如何保证 CA 。</p>
+</blockquote>
+<p>因此，AP方案只是在系统发生分区的时候放弃一致性，而不是永远放弃一致性。在分区故障恢复后，系统应该达到最终一致性，这一点其实就是BASE理论延伸的地方。</p>
+<h4 id="BASE理论三要素"><a href="#BASE理论三要素" class="headerlink" title="BASE理论三要素"></a>BASE理论三要素</h4><div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="三要素.png"/></div></div>
 
-<h3 id="Service层测试-间接注入"><a href="#Service层测试-间接注入" class="headerlink" title="Service层测试+间接注入"></a>Service层测试+间接注入</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+<h5 id="基本可用"><a href="#基本可用" class="headerlink" title="基本可用"></a>基本可用</h5><p>基本可用是指分布式系统在出现不可预知故障的时候，允许损失部分可用性。但是，这绝不等价于系统不可用。<br><strong>什么叫允许损失部分可用性呢？</strong></p>
+<ul>
+<li>响应时间上的损失: 正常情况下，处理用户请求需要 0.5s 返回结果，但是由于系统出现故障，处理用户请求的时间变为 3 s。</li>
+<li>系统功能上的损失：正常情况下，用户可以使用系统的全部功能，但是由于系统访问量突然剧增，系统的部分非核心功能无法使用。</li>
+</ul>
+<h5 id="软状态"><a href="#软状态" class="headerlink" title="软状态"></a>软状态</h5><p>软状态指允许系统中的数据存在中间状态（CAP 理论中的数据不一致），并认为该中间状态的存在不会影响系统的整体可用性，即允许系统在不同节点的数据副本之间进行数据同步的过程存在延时。</p>
+<h5 id="最终一致性"><a href="#最终一致性" class="headerlink" title="最终一致性"></a>最终一致性</h5><p>最终一致性强调的是系统中所有的数据副本，在经过一段时间的同步后，最终能够达到一个一致的状态。因此，最终一致性的本质是需要系统保证最终数据能够达到一致，而不需要实时保证系统数据的强一致性。</p>
+<blockquote>
+<p>分布式一致性的 3 种级别：</p>
+<ol>
+<li>强一致性：系统写入了什么，读出来的就是什么。</li>
+<li>弱一致性：不一定可以读取到最新写入的值，也不保证多少时间之后读取到的数据是最新的，只是会尽量保证某个时刻达到数据一致的状态。</li>
+<li>最终一致性：弱一致性的升级版，系统会保证在一定时间内达到数据一致的状态。<br>业界比较推崇是最终一致性级别，但是某些对数据一致要求十分严格的场景比如银行转账还是要保证强一致性。</li>
+</ol>
+</blockquote>
+<p>那实现最终一致性的具体方式是什么呢? <a target="_blank" rel="noopener" href="https://time.geekbang.org/column/intro/100046101?code=QOf8FD2td/PQEJPVh1kLqgk9hHOwjVPCOS4GQ/48pdw=">《分布式协议与算法实战》</a> 中是这样介绍：</p>
+<blockquote>
+<ul>
+<li>读时修复 : 在读取数据时，检测数据的不一致，进行修复。比如 Cassandra 的 Read Repair 实现，具体来说，在向 Cassandra 系统查询数据的时候，如果检测到不同节点的副本数据不一致，系统就自动修复数据。</li>
+<li>写时修复 : 在写入数据，检测数据的不一致时，进行修复。比如 Cassandra 的 Hinted Handoff 实现。具体来说，Cassandra 集群的节点之间远程写数据的时候，如果写失败 就将数据缓存下来，然后定时重传，修复数据的不一致性。</li>
+<li>异步修复 : 这个是最常用的方式，通过定时对账检测副本数据的一致性，并修复。</li>
+</ul>
+</blockquote>
+<p>比较推荐 写时修复，这种方式对性能消耗比较低。</p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>ACID 是数据库事务完整性的理论，CAP 是分布式系统设计理论，BASE 是 CAP 理论中 AP 方案的延伸。</p>
+
 
 
 <div class="article-footer reveal fs14">
@@ -120,7 +162,7 @@
 
 </article>
 
-<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/2024/03/05/nacos%E6%97%A5%E5%BF%97%E4%B8%8D%E6%89%93%E5%8D%B0/">nacos日志不打印</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2024/01/21/RestTemplate/">RestTemplate拦截器</a></div></section></div>
+<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/2023/12/26/maven-deploy-401/">maven中deploy命令报401的原因及解决方案</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2023/12/26/CAP/">CAP理论</a></div></section></div>
 
 
 

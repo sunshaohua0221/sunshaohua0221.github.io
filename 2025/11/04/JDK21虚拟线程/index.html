@@ -26,22 +26,22 @@
     <meta name="description" content="传统线程在以前的JDK中，Java的线程模型其实比较简单，在大多数操作系统中，主要采用的是基于轻量级进程实现的一对一(1:1)的线程模型，简单来说就是每一个Java线程对应一个操作系统中的轻量级进程，这种线程模型中的线程创建、析构及同步等动作，都需要进行系统调用。而系统调用则需要在用户态（User Mode）和内核态（Kernel Mode）中来回切换，所以性能开销很大，这严重限制了应用程序的扩展">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JDK21虚拟线程">
-<meta property="og:url" content="https://sunshaohua0221.github.io/2025/01/21/JDK21%E8%99%9A%E6%8B%9F%E7%BA%BF%E7%A8%8B/index.html">
+<meta property="og:url" content="https://sunshaohua0221.github.io/2025/11/04/JDK21%E8%99%9A%E6%8B%9F%E7%BA%BF%E7%A8%8B/index.html">
 <meta property="og:site_name" content="SSH">
 <meta property="og:description" content="传统线程在以前的JDK中，Java的线程模型其实比较简单，在大多数操作系统中，主要采用的是基于轻量级进程实现的一对一(1:1)的线程模型，简单来说就是每一个Java线程对应一个操作系统中的轻量级进程，这种线程模型中的线程创建、析构及同步等动作，都需要进行系统调用。而系统调用则需要在用户态（User Mode）和内核态（Kernel Mode）中来回切换，所以性能开销很大，这严重限制了应用程序的扩展">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://sunshaohua0221.github.io/2025/01/21/JDK21%E8%99%9A%E6%8B%9F%E7%BA%BF%E7%A8%8B/VT3.png">
-<meta property="og:image" content="https://sunshaohua0221.github.io/2025/01/21/JDK21%E8%99%9A%E6%8B%9F%E7%BA%BF%E7%A8%8B/VT4.png">
-<meta property="og:image" content="https://sunshaohua0221.github.io/2025/01/21/JDK21%E8%99%9A%E6%8B%9F%E7%BA%BF%E7%A8%8B/VT5.png">
-<meta property="og:image" content="https://sunshaohua0221.github.io/2025/01/21/JDK21%E8%99%9A%E6%8B%9F%E7%BA%BF%E7%A8%8B/VT6.png">
-<meta property="og:image" content="https://sunshaohua0221.github.io/2025/01/21/JDK21%E8%99%9A%E6%8B%9F%E7%BA%BF%E7%A8%8B/VT7.png">
-<meta property="og:image" content="https://sunshaohua0221.github.io/2025/01/21/JDK21%E8%99%9A%E6%8B%9F%E7%BA%BF%E7%A8%8B/VT8.png">
-<meta property="article:published_time" content="2025-01-20T17:21:00.000Z">
-<meta property="article:modified_time" content="2025-11-04T02:57:51.666Z">
+<meta property="og:image" content="https://sunshaohua0221.github.io/2025/11/04/JDK21%E8%99%9A%E6%8B%9F%E7%BA%BF%E7%A8%8B/VT3.png">
+<meta property="og:image" content="https://sunshaohua0221.github.io/2025/11/04/JDK21%E8%99%9A%E6%8B%9F%E7%BA%BF%E7%A8%8B/VT4.png">
+<meta property="og:image" content="https://sunshaohua0221.github.io/2025/11/04/JDK21%E8%99%9A%E6%8B%9F%E7%BA%BF%E7%A8%8B/VT5.png">
+<meta property="og:image" content="https://sunshaohua0221.github.io/2025/11/04/JDK21%E8%99%9A%E6%8B%9F%E7%BA%BF%E7%A8%8B/VT6.png">
+<meta property="og:image" content="https://sunshaohua0221.github.io/2025/11/04/JDK21%E8%99%9A%E6%8B%9F%E7%BA%BF%E7%A8%8B/VT7.png">
+<meta property="og:image" content="https://sunshaohua0221.github.io/2025/11/04/JDK21%E8%99%9A%E6%8B%9F%E7%BA%BF%E7%A8%8B/VT8.png">
+<meta property="article:published_time" content="2025-11-04T02:57:51.000Z">
+<meta property="article:modified_time" content="2025-11-04T02:57:51.000Z">
 <meta property="article:author" content="ssh">
 <meta property="article:tag" content="技术、生活">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://sunshaohua0221.github.io/2025/01/21/JDK21%E8%99%9A%E6%8B%9F%E7%BA%BF%E7%A8%8B/VT3.png">
+<meta name="twitter:image" content="https://sunshaohua0221.github.io/2025/11/04/JDK21%E8%99%9A%E6%8B%9F%E7%BA%BF%E7%A8%8B/VT3.png">
   
   
   
@@ -105,9 +105,9 @@
 
 
 <div class="bread-nav fs12"><div class="left"><div id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" href="/">文章</a></div><div id="post-meta">
-    <span>发布于&nbsp;<time datetime="2025-01-20T17:21:00.000Z">2025-01-21</time></span>
+    <span>发布于&nbsp;<time datetime="2025-11-04T02:57:51.000Z">2025-11-04</time></span>
     
-    <span>更新于&nbsp;<time datetime="2025-11-04T02:57:51.666Z">2025-11-04</time></span>
+    <span>更新于&nbsp;<time datetime="2025-11-04T02:57:51.000Z">2025-11-04</time></span>
     </div></div></div>
 
 <article class='md-text content post'>
@@ -253,7 +253,7 @@
 
 </article>
 
-<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2024/03/05/nacos%E6%97%A5%E5%BF%97%E4%B8%8D%E6%89%93%E5%8D%B0/">nacos日志不打印</a></div></section></div>
+<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2025/11/04/Hibernate-Validator/">Hibernate Validator 参数校验</a></div></section></div>
 
 
 
