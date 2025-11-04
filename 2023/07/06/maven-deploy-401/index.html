@@ -20,25 +20,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="theme-color" content="#f8f8f8">
   
-  <title>CAP理论 - SSH</title>
+  <title>maven中deploy命令报401的原因及解决方案 - SSH</title>
 
   
-    <meta name="description" content="CAP简介CAP（CAP  theorem）定理又被称作布鲁尔定理（Brewer’s theorem），是加州大学伯克利分校的计算机科学家埃里克·布鲁尔（Eric Brewer）在2000年的ACM  PODC上提出的一个猜想。2002年，麻省理工学院的赛斯·吉尔伯特（Seth Gilbert）和南希·林奇（Nancy Lynch）发表了布鲁尔猜想的证明，使之成为分布式计算领域公认的一个定理。 C">
+    <meta name="description" content="idea使用过程中有时候会出现deploy时候报401错误，如下图   原因一、pom 文件李配置的私服仓库地址和settings.xml里配置的用户名和密码没有匹配上  pom.xml里的仓库配置12345678910111213&lt;!--项目分发信息，在执行mvn deploy后表示要发布的位置。有了这些信息就可以把网站部署到远程服务器或者把构件jar等部署到远程仓库 --&gt;&lt;">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CAP理论">
-<meta property="og:url" content="https://sunshaohua0221.github.io/2023/12/26/CAP/index.html">
+<meta property="og:title" content="maven中deploy命令报401的原因及解决方案">
+<meta property="og:url" content="https://sunshaohua0221.github.io/2023/07/06/maven-deploy-401/index.html">
 <meta property="og:site_name" content="SSH">
-<meta property="og:description" content="CAP简介CAP（CAP  theorem）定理又被称作布鲁尔定理（Brewer’s theorem），是加州大学伯克利分校的计算机科学家埃里克·布鲁尔（Eric Brewer）在2000年的ACM  PODC上提出的一个猜想。2002年，麻省理工学院的赛斯·吉尔伯特（Seth Gilbert）和南希·林奇（Nancy Lynch）发表了布鲁尔猜想的证明，使之成为分布式计算领域公认的一个定理。 C">
+<meta property="og:description" content="idea使用过程中有时候会出现deploy时候报401错误，如下图   原因一、pom 文件李配置的私服仓库地址和settings.xml里配置的用户名和密码没有匹配上  pom.xml里的仓库配置12345678910111213&lt;!--项目分发信息，在执行mvn deploy后表示要发布的位置。有了这些信息就可以把网站部署到远程服务器或者把构件jar等部署到远程仓库 --&gt;&lt;">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://sunshaohua0221.github.io/2023/12/26/CAP/cap.png">
-<meta property="og:image" content="https://sunshaohua0221.github.io/2023/12/26/CAP/naolie.png">
-<meta property="og:image" content="https://sunshaohua0221.github.io/2023/12/26/CAP/dubbo-architecture.png">
-<meta property="article:published_time" content="2023-12-26T05:26:36.000Z">
-<meta property="article:modified_time" content="2023-12-26T05:26:36.000Z">
+<meta property="og:image" content="https://sunshaohua0221.github.io/2023/07/06/maven-deploy-401/error.png">
+<meta property="og:image" content="https://sunshaohua0221.github.io/2023/07/06/maven-deploy-401/ideaSettingsConfig.png">
+<meta property="article:published_time" content="2023-07-06T06:35:16.000Z">
+<meta property="article:modified_time" content="2023-12-26T06:52:07.000Z">
 <meta property="article:author" content="ssh">
 <meta property="article:tag" content="技术、生活">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://sunshaohua0221.github.io/2023/12/26/CAP/cap.png">
+<meta name="twitter:image" content="https://sunshaohua0221.github.io/2023/07/06/maven-deploy-401/error.png">
   
   
   
@@ -85,7 +84,9 @@
 <widget class="widget-wrapper search"><div class="widget-body"><div class="search-wrapper" id="search"><form class="search-form"><input type="text" class="search-input" id="search-input" data-filter="/blog/" placeholder="文章搜索"><svg t="1670596976048" class="icon search-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2676" width="200" height="200"><path d="M938.2 832.6L723.8 618.1c-2.5-2.5-5.3-4.4-7.9-6.4 36.2-55.6 57.3-121.8 57.3-193.1C773.3 222.8 614.6 64 418.7 64S64 222.8 64 418.6c0 195.9 158.8 354.6 354.6 354.6 71.3 0 137.5-21.2 193.2-57.4 2 2.7 3.9 5.4 6.3 7.8L832.5 938c14.6 14.6 33.7 21.9 52.8 21.9 19.1 0 38.2-7.3 52.8-21.8 29.2-29.1 29.2-76.4 0.1-105.5M418.7 661.3C284.9 661.3 176 552.4 176 418.6 176 284.9 284.9 176 418.7 176c133.8 0 242.6 108.9 242.6 242.7 0 133.7-108.9 242.6-242.6 242.6" p-id="2677"></path></svg></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div></div></widget>
 
 
-<widget class="widget-wrapper toc single" id="data-toc"><div class="widget-header cap dis-select"><span class="name">CAP理论</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#CAP%E7%AE%80%E4%BB%8B"><span class="toc-text">CAP简介</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%8D%E6%98%AF%E6%89%80%E8%B0%93%E7%9A%84%E2%80%9D3%E9%80%892%E2%80%9D"><span class="toc-text">不是所谓的”3选2”</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#CAP%E5%AE%9E%E9%99%85%E5%BA%94%E7%94%A8%E6%A1%88%E4%BE%8B"><span class="toc-text">CAP实际应用案例</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol></div></div></widget>
+
+<widget class="widget-wrapper recent"><div class="widget-header cap theme dis-select"><span class="name">最近更新</span></div><div class="widget-body related-posts fs14"><a class="item title" href="/2025/02/04/JDK21%E8%99%9A%E6%8B%9F%E7%BA%BF%E7%A8%8B/"><span class="title">JDK21虚拟线程</span></a><a class="item title" href="/2022/05/04/Hibernate-Validator/"><span class="title">Hibernate Validator 参数校验</span></a><a class="item title" href="/2024/03/05/nacos%E6%97%A5%E5%BF%97%E4%B8%8D%E6%89%93%E5%8D%B0/"><span class="title">nacos日志不打印</span></a><a class="item title" href="/2024/05/25/RestTemplate/"><span class="title">RestTemplate拦截器</span></a><a class="item title" href="/2024/09/11/junit5/"><span class="title">junit5+Mockito单元测试案例</span></a></div></widget>
+
 
 
 
@@ -102,45 +103,25 @@
 
 
 <div class="bread-nav fs12"><div class="left"><div id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" href="/">文章</a></div><div id="post-meta">
-    <span>发布于&nbsp;<time datetime="2023-12-26T05:26:36.000Z">2023-12-26</time></span>
+    <span>发布于&nbsp;<time datetime="2023-07-06T06:35:16.000Z">2023-07-06</time></span>
     
-    <span>更新于&nbsp;<time datetime="2023-12-26T05:26:36.000Z">2023-12-26</time></span>
+    <span>更新于&nbsp;<time datetime="2023-12-26T06:52:07.000Z">2023-12-26</time></span>
     </div></div></div>
 
 <article class='md-text content post'>
-<h1 class="article-title"><span>CAP理论</span></h1>
-<h4 id="CAP简介"><a href="#CAP简介" class="headerlink" title="CAP简介"></a>CAP简介</h4><p>CAP（CAP  theorem）定理又被称作布鲁尔定理（Brewer’s theorem），是加州大学伯克利分校的计算机科学家埃里克·布鲁尔（Eric Brewer）在2000年的ACM  PODC上提出的一个猜想。2002年，麻省理工学院的赛斯·吉尔伯特（Seth Gilbert）和南希·林奇（Nancy Lynch）发表了布鲁尔猜想的证明，使之成为分布式计算领域公认的一个定理。</p>
-<p>CAP是Consistency（一致性）、Availability（可用性）、Partition Tolerance（分区容错性） 这三个单词首字母组合。</p>
-<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="cap.png"/></div></div>
+<h1 class="article-title"><span>maven中deploy命令报401的原因及解决方案</span></h1>
+<p>idea使用过程中有时候会出现deploy时候报401错误，如下图</p>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="error.png"/></div></div>
 
-
-<p>在一个分布式系统（指互相连接并共享数据的节点的集合）中，当涉及到读写操作时，只能同时满足一下三点中的两个：</p>
-<ul>
-<li>一致性：所有节点访问同一份最新的数据副本。</li>
-<li>可用性：非故障的节点在合理的时间内返回合理的响应（不是错误或者超时的响应）。</li>
-<li>分区容错性：分布式出现网络分区的时候，让能对外提供服务。</li>
-</ul>
-<p><strong>什么是网络分区？</strong><br>分布式系统中，多个节点之间的网络本来是连通的，但是因为某些故障（比如部分节点网络出现了问题）某些节点之间不连通了，整个网络就分成了几块区域，这就叫网络分区。</p>
-<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="naolie.png"/></div></div>
-
-<h4 id="不是所谓的”3选2”"><a href="#不是所谓的”3选2”" class="headerlink" title="不是所谓的”3选2”"></a>不是所谓的”3选2”</h4><p>大部分人解释这一定律时，常常简单的表述为”一致性、可用性、分区容错性，这三者只能同时达到两个，不可能同时达到”。实际上这是一个非常有误导性的说法，而且在CAP理论诞生12年之后，CAP之父也在2012年重写了之前的论文。</p>
-<blockquote>
-<p>当发生网络分区的时候，如果我们要继续提供服务，那么强一致性合可用性只能2选1。也就是说当网络分区之后P是前提，决定了P之后才有C和A的选择。也就是说分区容错性（Partition Tolerance）我们是必须要实现的。<br>简而言之就是：CAP理论中分区容错性P是一定要满足的，在此基础上，只能满足可用性A或者一致性C。</p>
-</blockquote>
-<p>因此，分布式系统理论上不可能选择CA架构，只能选择CP或者AP架构。比如<code>ZooKeeper</code>、<code>HBase</code>就是CP架构，<code>Cassandra</code>、<code>Eureka</code>就是AP架构，<code>Nacos</code>不仅支持CP也支持AP。</p>
-<p><strong>为啥不能选择CA架构呢？</strong><br>举个例子：若系统出现分区，系统中某个节点在进行写操作。为了保证C，必须要禁止其他节点的读写操作，这就和A发生冲突了。如果为了保证A，其他节点的读写操作正常的话，那就和C发生冲突了。<br></p>
-<p>选择CP和AP的关键在于当前的业务场景，没有定论，比如对于需要确保强一致性的场景如银行一般会选择CP。<br></p>
-<p>另外需要补充说明一点的是，如果网络分区正常的话，也就是说不需要保证P的时候，C和A能够同时保证。<br></p>
-<h4 id="CAP实际应用案例"><a href="#CAP实际应用案例" class="headerlink" title="CAP实际应用案例"></a>CAP实际应用案例</h4><p>以注册中心来探讨一下CAP的实际应用，下图是Dubbo的架构图，其中注册中心（Registry）负责服务地址的注册与查找，相当于目录服务，服务提供者和消费者只在启动时与注册中心交互，注册中心不转发请求，压力较小。</p>
-<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="dubbo-architecture.png"/></div></div>
-
-<p>常见的可以作为注册中心的有：Zookeeper、Eureka、Nacos等。</p>
+<p><strong>原因一、pom 文件李配置的私服仓库地址和settings.xml里配置的用户名和密码没有匹配上</strong></p>
 <ol>
-<li>Zookeeper保证的是CP。任何时刻对Zookeeper的读请求都能得到一致性的结果，但是，Zookeeper不保证每次请求的可用性，比如在Leader选举过程中或者半数以上的机器不可用的时候就是不可用的。</li>
-<li>Eureka保证的则是AP。Eureka在设计的时候就是优先保证A（可用性）。在Eureka中不存在什么Leader节点，每个节点都是一样的、平等的。因此Eureka不会像Zookeeper那样出现选举过程中或者半数以上的机器不可用的时候服务就是不可用的情况，Eureka保证即使大部分节点挂掉也不会影响正常提供服务，只要有一个节点是可用的就行了，只不过这个节点上的数据可能并不是最新的。</li>
-<li>Nacos不仅支持CP也支持AP。</li>
+<li>pom.xml里的仓库配置<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--项目分发信息，在执行mvn deploy后表示要发布的位置。有了这些信息就可以把网站部署到远程服务器或者把构件jar等部署到远程仓库 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">distributionManagement</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">repository</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">id</span>&gt;</span>releases<span class="tag">&lt;/<span class="name">id</span>&gt;</span><span class="comment">&lt;!-- 此处id和settings.xml的id保持一致 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>Release Deploy<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">url</span>&gt;</span>http://10.20.105.11:8081/repository/maven-releases/<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">repository</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">snapshotRepository</span>&gt;</span><span class="comment">&lt;!--构件的快照部署到哪里？如果没有配置该元素，默认部署到repository元素配置的仓库，参见distributionManagement/repository元素 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">id</span>&gt;</span>snapshots<span class="tag">&lt;/<span class="name">id</span>&gt;</span><span class="comment">&lt;!-- 此处id和settings.xml的id保持一致 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>Snapshot Deploy<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">url</span>&gt;</span>http://10.20.105.11:8081/repository/maven-snapshots/<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">snapshotRepository</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">distributionManagement</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li>此时对应的setting.xml里的配置信息为<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">servers</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">server</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">id</span>&gt;</span>snapshots<span class="tag">&lt;/<span class="name">id</span>&gt;</span><span class="comment">&lt;!-- 此处id和上面pom.xml的id保持一致 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">username</span>&gt;</span>zhangsan<span class="tag">&lt;/<span class="name">username</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">password</span>&gt;</span>123456<span class="tag">&lt;/<span class="name">password</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">server</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">server</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">id</span>&gt;</span>releases<span class="tag">&lt;/<span class="name">id</span>&gt;</span><span class="comment">&lt;!-- 此处id和上面pom.xml的id保持一致 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">username</span>&gt;</span>zhangsan<span class="tag">&lt;/<span class="name">username</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">password</span>&gt;</span>123456<span class="tag">&lt;/<span class="name">password</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">server</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">servers</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li>检查两者信息是否一致，就可以解决问题。如果还是报401问题，则可能是下面的原因。</li>
 </ol>
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>在进行分布式系统设计和开发时，我们不应该仅仅局限在 CAP 问题上，还要关注系统的扩展性、可用性等等<br>在系统发生“分区”的情况下，CAP 理论只能满足 CP 或者 AP。要注意的是，这里的前提是系统发生了“分区”<br>如果系统没有发生“分区”的话，节点间的网络连接通信正常的话，也就不存在 P 了。这个时候，我们就可以同时保证 C 和 A 了。<br>总结：如果系统发生“分区”，我们要考虑选择 CP 还是 AP。如果系统没有发生“分区”的话，我们要思考如何保证 CA 。</p>
+<p><strong>原因二、idea中自定义的settings.xml配置没有生效</strong></p>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="ideaSettingsConfig.png"/></div></div>
+
 
 
 
@@ -154,7 +135,7 @@
 
 </article>
 
-<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/2023/12/26/BASE/">BASE理论</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2022/07/26/Java%E9%94%81%E6%9C%BA%E5%88%B6/">Java锁机制</a></div></section></div>
+<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/2023/11/10/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/">分布式事务</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2023/05/17/BASE/">BASE理论</a></div></section></div>
 
 
 
