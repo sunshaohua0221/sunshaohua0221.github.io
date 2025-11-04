@@ -20,14 +20,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="theme-color" content="#f8f8f8">
   
-  <title>Innodb事务更新过程 - 技术笔记</title>
+  <title>Innodb事务更新过程 - Felix的技术笔记</title>
 
   
     <meta name="description" content="InnoDB事务更新过程 在Buffer Pool中读取数据：当InnoDB需要更新一条记录时，首先会在Buffer Pool中查找该记录是否在内存中。如果没有在内存中，则从磁盘读取该页到Buffer Pool中。 记录UndoLog：在修改操作前，InnoDB会在Undo Log中记录修改前的数据。Undo Log是用来保证事务原子性和一致性的一种机制，用于在发生事务回滚等情况时，将修改操作回滚">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Innodb事务更新过程">
 <meta property="og:url" content="https://sunshaohua0221.github.io/2025/03/16/Innodb%E4%BA%8B%E5%8A%A1%E6%9B%B4%E6%96%B0%E8%BF%87%E7%A8%8B/index.html">
-<meta property="og:site_name" content="技术笔记">
+<meta property="og:site_name" content="Felix的技术笔记">
 <meta property="og:description" content="InnoDB事务更新过程 在Buffer Pool中读取数据：当InnoDB需要更新一条记录时，首先会在Buffer Pool中查找该记录是否在内存中。如果没有在内存中，则从磁盘读取该页到Buffer Pool中。 记录UndoLog：在修改操作前，InnoDB会在Undo Log中记录修改前的数据。Undo Log是用来保证事务原子性和一致性的一种机制，用于在发生事务回滚等情况时，将修改操作回滚">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://sunshaohua0221.github.io/2025/03/16/Innodb%E4%BA%8B%E5%8A%A1%E6%9B%B4%E6%96%B0%E8%BF%87%E7%A8%8B/InnoDB.png">
@@ -74,7 +74,7 @@
 
   
 
-<header class="header"><div class="logo-wrap"><a class="title" href="/"><div class="main" ff="title">技术笔记</div><div class="sub cap">追求卓越，永无止境</div></a></div>
+<header class="header"><div class="logo-wrap"><a class="title" href="/"><div class="main" ff="title">Felix的技术笔记</div><div class="sub cap">学无止境,行以致远</div></a></div>
 
 <nav class="menu dis-select"></nav>
 </header>
