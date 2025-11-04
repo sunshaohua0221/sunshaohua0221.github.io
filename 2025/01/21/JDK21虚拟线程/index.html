@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+  <meta name="generator" content="Hexo 7.0.0">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.21.0">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://gcore.jsdelivr.net'>
+  <link rel="preconnect" href="https://gcore.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  
+  <title>JDK21虚拟线程 - SSH</title>
+
+  
+    <meta name="description" content="传统线程在以前的JDK中，Java的线程模型其实比较简单，在大多数操作系统中，主要采用的是基于轻量级进程实现的一对一(1:1)的线程模型，简单来说就是每一个Java线程对应一个操作系统中的轻量级进程，这种线程模型中的线程创建、析构及同步等动作，都需要进行系统调用。而系统调用则需要在用户态（User Mode）和内核态（Kernel Mode）中来回切换，所以性能开销很大，这严重限制了应用程序的扩展">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JDK21虚拟线程">
+<meta property="og:url" content="https://sunshaohua0221.github.io/2025/01/21/JDK21%E8%99%9A%E6%8B%9F%E7%BA%BF%E7%A8%8B/index.html">
+<meta property="og:site_name" content="SSH">
+<meta property="og:description" content="传统线程在以前的JDK中，Java的线程模型其实比较简单，在大多数操作系统中，主要采用的是基于轻量级进程实现的一对一(1:1)的线程模型，简单来说就是每一个Java线程对应一个操作系统中的轻量级进程，这种线程模型中的线程创建、析构及同步等动作，都需要进行系统调用。而系统调用则需要在用户态（User Mode）和内核态（Kernel Mode）中来回切换，所以性能开销很大，这严重限制了应用程序的扩展">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://sunshaohua0221.github.io/2025/01/21/JDK21%E8%99%9A%E6%8B%9F%E7%BA%BF%E7%A8%8B/VT3.png">
+<meta property="og:image" content="https://sunshaohua0221.github.io/2025/01/21/JDK21%E8%99%9A%E6%8B%9F%E7%BA%BF%E7%A8%8B/VT4.png">
+<meta property="og:image" content="https://sunshaohua0221.github.io/2025/01/21/JDK21%E8%99%9A%E6%8B%9F%E7%BA%BF%E7%A8%8B/VT5.png">
+<meta property="og:image" content="https://sunshaohua0221.github.io/2025/01/21/JDK21%E8%99%9A%E6%8B%9F%E7%BA%BF%E7%A8%8B/VT6.png">
+<meta property="og:image" content="https://sunshaohua0221.github.io/2025/01/21/JDK21%E8%99%9A%E6%8B%9F%E7%BA%BF%E7%A8%8B/VT7.png">
+<meta property="og:image" content="https://sunshaohua0221.github.io/2025/01/21/JDK21%E8%99%9A%E6%8B%9F%E7%BA%BF%E7%A8%8B/VT8.png">
+<meta property="article:published_time" content="2025-01-20T17:21:00.000Z">
+<meta property="article:modified_time" content="2025-11-04T02:57:51.666Z">
+<meta property="article:author" content="ssh">
+<meta property="article:tag" content="技术、生活">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sunshaohua0221.github.io/2025/01/21/JDK21%E8%99%9A%E6%8B%9F%E7%BA%BF%E7%A8%8B/VT3.png">
+  
+  
+  
+  <meta name="keywords" content="技术、生活">
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+
+  
+
+  
+
+
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='post'>
+    
+
+  
+
+<header class="header"><div class="logo-wrap"><a class="title" href="/"><div class="main" ff="title">SSH</div><div class="sub cap">管好自己、但行好事、不度他人</div></a></div>
+
+<nav class="menu dis-select"></nav>
+</header>
+
+
+<div class="widgets">
+<widget class="widget-wrapper search"><div class="widget-body"><div class="search-wrapper" id="search"><form class="search-form"><input type="text" class="search-input" id="search-input" data-filter="/blog/" placeholder="文章搜索"><svg t="1670596976048" class="icon search-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2676" width="200" height="200"><path d="M938.2 832.6L723.8 618.1c-2.5-2.5-5.3-4.4-7.9-6.4 36.2-55.6 57.3-121.8 57.3-193.1C773.3 222.8 614.6 64 418.7 64S64 222.8 64 418.6c0 195.9 158.8 354.6 354.6 354.6 71.3 0 137.5-21.2 193.2-57.4 2 2.7 3.9 5.4 6.3 7.8L832.5 938c14.6 14.6 33.7 21.9 52.8 21.9 19.1 0 38.2-7.3 52.8-21.8 29.2-29.1 29.2-76.4 0.1-105.5M418.7 661.3C284.9 661.3 176 552.4 176 418.6 176 284.9 284.9 176 418.7 176c133.8 0 242.6 108.9 242.6 242.7 0 133.7-108.9 242.6-242.6 242.6" p-id="2677"></path></svg></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div></div></widget>
+
+
+<widget class="widget-wrapper toc single" id="data-toc"><div class="widget-header cap dis-select"><span class="name">JDK21虚拟线程</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%A0%E7%BB%9F%E7%BA%BF%E7%A8%8B"><span class="toc-text">传统线程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BC%A0%E7%BB%9F%E7%BA%BF%E7%A8%8B%E6%A0%B8%E5%BF%83%E7%97%9B%E7%82%B9"><span class="toc-text">传统线程核心痛点</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%99%9A%E6%8B%9F%E7%BA%BF%E7%A8%8B"><span class="toc-text">虚拟线程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%99%9A%E6%8B%9F%E7%BA%BF%E7%A8%8B%E6%A0%B8%E5%BF%83%E4%BC%98%E5%8A%BF"><span class="toc-text">虚拟线程核心优势</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%99%9A%E6%8B%9F%E7%BA%BF%E7%A8%8B%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="toc-text">虚拟线程工作原理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81"><span class="toc-text">代码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-text">使用注意事项</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol></div></div></widget>
+
+
+
+
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+
+
+<div class="bread-nav fs12"><div class="left"><div id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" href="/">文章</a></div><div id="post-meta">
+    <span>发布于&nbsp;<time datetime="2025-01-20T17:21:00.000Z">2025-01-21</time></span>
+    
+    <span>更新于&nbsp;<time datetime="2025-11-04T02:57:51.666Z">2025-11-04</time></span>
+    </div></div></div>
+
+<article class='md-text content post'>
+<h1 class="article-title"><span>JDK21虚拟线程</span></h1>
+<h3 id="传统线程"><a href="#传统线程" class="headerlink" title="传统线程"></a>传统线程</h3><p>在以前的JDK中，Java的线程模型其实比较简单，在大多数操作系统中，主要采用的是基于轻量级进程实现的<code>一对一(1:1)</code>的线程模型，简单来说就是每一个Java线程对应一个操作系统中的轻量级进程，这种线程模型中的线程创建、析构及同步等动作，都需要进行系统调用。而系统调用则需要在<code>用户态（User Mode）</code>和<code>内核态（Kernel Mode）</code>中来回切换，所以性能开销很大，这严重限制了应用程序的扩展性。<br><br>为了解决这个问题，一些编程语言采用了更轻量级的并发原语-协程。比如 Go 语言的 <code>goroutine</code>、Python 的 <code>asyncio</code>，它们都能以极低的资源消耗支持大规模并发。而在 Java 世界中，随着<code> JDK 21</code> 的发布，<code>虚拟线程（Virtual Thread）</code>终于正式成为 Java 平台的一部分。<br><br>虚拟线程是一种<code>轻量级的线程实现</code>，它由 JVM 而不是操作系统来调度。通过将<code>大量虚拟线程复用在少量操作系统线程上</code>，通过有效的调度来避免那些上下文切换，使得 JVM 也可以支持数百万并发任务，同时保持了传统线程编程模型的简单性。这不仅大大提升了 Java 在高并发场景下的性能，也为构建现代云原生应用提供了更好的支持。</p>
+<h4 id="传统线程核心痛点"><a href="#传统线程核心痛点" class="headerlink" title="传统线程核心痛点"></a>传统线程核心痛点</h4><ol>
+<li>资源消耗巨大，每个平台线程都需要独立的栈空间（默认 1MB 以上）和内核资源，这导致一个进程能创建的线程数量非常有限。在常规服务器上，最多只能创建几千个平台线程，超过这个数量就会出现 OOM（内存溢出）或系统崩溃。</li>
+<li>调度成本高昂，操作系统调度线程时需要在用户态和内核态之间切换（上下文切换），每次切换耗时约 1-10 微秒。在高并发场景下，大量线程的频繁切换会严重消耗 CPU 资源，导致 “线程调度 overhead 超过实际任务执行时间” 的尴尬局面。</li>
+<li>并发编程门槛高，为了规避资源限制，开发者必须使用线程池手动控制线程数量，但线程池参数（核心线程数、最大线程数、队列大小）的调优极其复杂，稍有不慎就会出现 “线程耗尽” 或 “资源浪费” 的问题。</li>
+</ol>
+<h3 id="虚拟线程"><a href="#虚拟线程" class="headerlink" title="虚拟线程"></a>虚拟线程</h3><p>虚拟线程是 Java 21（JEP 444）引入的轻量级线程，基于 Project Loom 开发，旨在解决传统线程的局限。其核心理念是将线程从操作系统层面解耦，它不直接映射到操作系统内核线程，而是通过 <code>多对多（M:N）</code> 的方式映射到少量平台线程上：多个虚拟线程可以共享一个平台线程，由 JVM 负责在用户态完成调度，提供以下特性：</p>
+<ul>
+<li>轻量级：虚拟线程仅占用 2KB 内存，创建成本极低。</li>
+<li>高并发：支持百万级并发线程，适合高吞吐场景。</li>
+<li>简化编程：延续熟悉的线程模型，无需复杂异步代码。</li>
+<li>高效调度：由 JVM 而不是操作系统负责调度，避免了昂贵的内核态上下文切换。</li>
+</ul>
+<h4 id="虚拟线程核心优势"><a href="#虚拟线程核心优势" class="headerlink" title="虚拟线程核心优势"></a>虚拟线程核心优势</h4><ol>
+<li>极致轻量化</li>
+</ol>
+<ul>
+<li><input checked="" disabled="" type="checkbox"> 初始栈大小仅几百字节（平台线程是 MB 级）</li>
+<li><input checked="" disabled="" type="checkbox"> 支持创建百万级甚至千万级线程（平台线程仅支持几千级）</li>
+<li><input checked="" disabled="" type="checkbox"> 线程创建成本降低 99% 以上</li>
+</ul>
+<ol start="2">
+<li>智能调度机制，当虚拟线程执行阻塞操作（如网络 IO、文件读写）时，JVM 会自动将其 “挂起”，并将底层平台线程让给其他虚拟线程使用。这种 “阻塞即让出” 的特性，彻底解决了传统线程 “阻塞时浪费资源” 的问题。</li>
+<li>兼容现有代码，虚拟线程完全兼容Thread、Runnable、ExecutorService等现有并发 API，无需学习新框架就能上手，这意味着你可以用同步代码的写法，实现异步代码的性能。</li>
+</ol>
+<p><strong>对比</strong></p>
+<table>
+<thead>
+<tr>
+<th align="center">特性</th>
+<th align="center">传统线程</th>
+<th align="center">虚拟线程</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">底层映射关系</td>
+<td align="center">1:1（Java 线程→操作系统线程）</td>
+<td align="center">M:N（多个虚拟线程→少量操作系统线程）</td>
+</tr>
+<tr>
+<td align="center">资源占用</td>
+<td align="center">高（栈内存固定 1MB+）</td>
+<td align="center">低（栈内存动态分配，初始仅几百字节）</td>
+</tr>
+<tr>
+<td align="center">最大并发支持</td>
+<td align="center">几千个线程</td>
+<td align="center">百万级线程</td>
+</tr>
+<tr>
+<td align="center">调度方</td>
+<td align="center">操作系统内核（内核态调度）</td>
+<td align="center">JVM（用户态调度）</td>
+</tr>
+<tr>
+<td align="center">上下文切换成本</td>
+<td align="center">高（约 1-10 微秒，需内核态切换）</td>
+<td align="center">低（约 0.1 微秒，用户态内完成）</td>
+</tr>
+<tr>
+<td align="center">阻塞时资源利用率</td>
+<td align="center">低（线程阻塞时仍占用操作系统线程）</td>
+<td align="center">高（阻塞时自动释放底层线程资源）</td>
+</tr>
+<tr>
+<td align="center">适用场景</td>
+<td align="center">计算密集型任务</td>
+<td align="center">IO 密集型任务（网络、数据库、文件 IO）</td>
+</tr>
+<tr>
+<td align="center">创建成本</td>
+<td align="center">高（需操作系统调用）</td>
+<td align="center">极低（JVM 直接创建）</td>
+</tr>
+</tbody></table>
+<h4 id="虚拟线程工作原理"><a href="#虚拟线程工作原理" class="headerlink" title="虚拟线程工作原理"></a>虚拟线程工作原理</h4><div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="VT3.png"/></div></div><div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="VT4.png"/></div></div><div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="VT5.png"/></div></div>
+
+<p>虚拟线程的工作原理主要包含三个关键部分：</p>
+<ol>
+<li>调度机制</li>
+</ol>
+<ul>
+<li>JVM维护一个载体线程池（通常与CPU核心数相当）</li>
+<li>虚拟线程通过调度器动态分配到载体线程</li>
+<li>调度器负责虚拟线程的挂载和卸载</li>
+</ul>
+<ol start="2">
+<li>状态管理</li>
+</ol>
+<ul>
+<li>新建：创建虚拟线程</li>
+<li>就绪：等待被调度</li>
+<li>运行：在载体线程上执行</li>
+<li>阻塞：等待IO或同步操作</li>
+<li>终止：执行完成</li>
+</ul>
+<ol start="3">
+<li>执行流程</li>
+</ol>
+<ul>
+<li>挂载：获取载体线程</li>
+<li>执行：运行业务代码</li>
+<li>卸载：遇到阻塞时保存状态</li>
+<li>恢复：阻塞结束后重新调度</li>
+</ul>
+<h4 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.concurrent.Executors;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Test</span> &#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="comment">// 创建虚拟线程</span></span><br><span class="line">        Thread.ofVirtual().name(<span class="string">&quot;virtual-thread-1&quot;</span>).start(() -&gt; &#123;</span><br><span class="line">            <span class="comment">// 虚拟线程执行的代码</span></span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 创建并启动虚拟线程</span></span><br><span class="line">        <span class="type">Thread</span> <span class="variable">vThread</span> <span class="operator">=</span> Thread.startVirtualThread(() -&gt; &#123;</span><br><span class="line">            <span class="comment">// 虚拟线程执行的代码</span></span><br><span class="line">        &#125;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 使用 Executors.newVirtualThreadPerTaskExecutor() 创建虚拟线程池，注意只有明确需要限制并发数量时才建议使用虚拟线程池。</span></span><br><span class="line">        <span class="keyword">try</span> (<span class="type">var</span> <span class="variable">executor</span> <span class="operator">=</span> Executors.newVirtualThreadPerTaskExecutor()) &#123;</span><br><span class="line">            executor.submit(() -&gt; &#123;</span><br><span class="line">                <span class="comment">// 任务逻辑</span></span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="使用注意事项"><a href="#使用注意事项" class="headerlink" title="使用注意事项"></a>使用注意事项</h4><ol>
+<li>虚拟线程不要和线程池一起使用<br>在<a target="_blank" rel="noopener" href="https://openjdk.org/jeps/425">JEP425</a>中，关于虚拟线程的介绍中，多次提到，不要将虚拟线程池化。也就是说，不要把虚拟线程和线程池合着用。<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="VT6.png"/></div></div>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="VT7.png"/></div></div></li>
+</ol>
+<p>• 线程池的设计初衷是复用线程，因为传统线程的创建和销毁开销很大，但是虚拟线程的创建和销毁开销很小，所以自然没必要进行池化。<br>• 使用线程池反而会限制并发数，限制了虚拟线程轻量级、高并发的优势。<br>• 可能导致线程饥饿或死锁</p>
+<ol start="2">
+<li><p>避免使用ThreadLocal</p>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="VT8.png"/></div></div>
+<p>• 虚拟线程会频繁切换载体线程，ThreadLocal 的值可能会丢失或混乱，建议使用 ScopedValue。<br>• 会导致内存泄漏，因为虚拟线程数量可能非常大。</p>
+</li>
+<li><p>避免使用同步块或重量级锁（jdk25版本有优化）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// x 不推荐的做法</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SynchronizedExample</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">Object</span> <span class="variable">lock</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Object</span>();</span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> <span class="variable">counter</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">increment</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">try</span> (<span class="type">var</span> <span class="variable">executor</span> <span class="operator">=</span> Executors.newVirtualThreadPerTaskExecutor()) &#123;</span><br><span class="line">            executor.submit(() -&gt; &#123;</span><br><span class="line">                <span class="keyword">synchronized</span> (lock) &#123;  <span class="comment">// 使用同步块会阻塞载体线程</span></span><br><span class="line">                    counter++;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// √ 推荐的做法</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">LockFreeExample</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">AtomicInteger</span> <span class="variable">counter</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">AtomicInteger</span>(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">increment</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">try</span> (<span class="type">var</span> <span class="variable">executor</span> <span class="operator">=</span> Executors.newVirtualThreadPerTaskExecutor()) &#123;</span><br><span class="line">            executor.submit(() -&gt; &#123;</span><br><span class="line">                counter.incrementAndGet();  <span class="comment">// 使用无锁数据结构</span></span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>• 同步块会导致载体线程被阻塞，降低性能。<br>• 可能导致其他虚拟线程无法执行<br>• 应该使用无锁数据结构或更轻量级的并发控制机制</p>
+<ol start="4">
+<li>避免固定虚拟线程到载体线程<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// x 不推荐的做法</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">PinnedExample</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">doWork</span><span class="params">()</span> &#123;</span><br><span class="line">        Thread vThread= Thread.ofVirtual().start(() -&gt; &#123;</span><br><span class="line">            <span class="comment">// 这些操作会导致虚拟线程被固定到载体线程</span></span><br><span class="line">            <span class="keyword">synchronized</span> (<span class="built_in">this</span>) &#123;</span><br><span class="line">                heavyComputation();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// √ 推荐的做法</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">NonPinnedExample</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">doWork</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">Thread</span> <span class="variable">vThread</span> <span class="operator">=</span> Thread.ofVirtual().start(() -&gt; &#123;</span><br><span class="line">            <span class="comment">// 使用非阻塞操作或轻量级同步机制</span></span><br><span class="line">            CompletableFuture.runAsync(<span class="built_in">this</span>::heavyComputation);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>• 固定（pinning）会导致虚拟线程失去其轻量级特性<br>• 会降低整体性能和可伸缩性<br>• 应该尽量使用非阻塞操作或异步方式</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>这些注意事项的核心是：保持虚拟线程的轻量级特性，<code>避免池化</code>，<code>避免使用会导致阻塞（例如synchronized）或固定（pinning）的操作</code>，合理管理资源使用。遵循这些原则，才能充分发挥虚拟线程的优势。其实，虚拟线程的出现一部分原因也是为了让并发编程更加简单，让我们可以像编写普通代码一样编写多线程代码。</p>
+
+
+
+<div class="article-footer reveal fs14">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    </div>
+
+</article>
+
+<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2024/03/05/nacos%E6%97%A5%E5%BF%97%E4%B8%8D%E6%89%93%E5%8D%B0/">nacos日志不打印</a></div></section></div>
+
+
+
+
+
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>本站由 <a href="/">@anonymity</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar">Stellar</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  const stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')){
+        src = stellar.config.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.version = '1.21.0';
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.21.0';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+    root : '/',
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://gcore.jsdelivr.net/npm/jquery@3.6.2/dist/jquery.min.js'
+  };
+
+  if ('local_search') {
+    stellar.search = {};
+    stellar.search.service = 'local_search';
+    if (stellar.search.service == 'local_search') {
+      let service_obj = Object.assign({}, {"field":"all","path":"/search.json","content":true,"sort":"-date"});
+      stellar.search[stellar.search.service] = service_obj;
+    }
+  }
+
+  // stellar js
+  stellar.plugins.stellar = Object.assign({"sites":"/js/plugins/sites.js","friends":"/js/plugins/friends.js","ghinfo":"/js/plugins/ghinfo.js","timeline":"/js/plugins/timeline.js","linkcard":"/js/plugins/linkcard.js","fcircle":"/js/plugins/fcircle.js","weibo":"/js/plugins/weibo.js","memos":"/js/plugins/memos.js"});
+
+  stellar.plugins.marked = Object.assign("https://cdn.bootcdn.net/ajax/libs/marked/4.0.18/marked.min.js");
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@10.3/swiper-bundle.min.css","js":"https://unpkg.com/swiper@10.3/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://gcore.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://gcore.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://gcore.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img, .gallery img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti@0.9.2/umd/heti.min.css","js":"https://unpkg.com/heti@0.9.2/umd/heti-addon.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.copycode = Object.assign({"enable":true,"js":"/js/plugins/copycode.js","default_text":"Copy","success_text":"Copied"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+
+
+<!-- inject -->
+
+
+  </div>
+</body>
+</html>
