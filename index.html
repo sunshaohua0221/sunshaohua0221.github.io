@@ -99,10 +99,24 @@
 <div class="nav-wrap"><nav class="sub post cap"><a class="active" href="/">近期发布</a><a href="/archives">归档</a></nav></div>
   <div class="post-list post"><a class="post-card post " href="/2025/02/04/JDK21%E8%99%9A%E6%8B%9F%E7%BA%BF%E7%A8%8B/">
 <article class="md-text"><h2 class="post-title">JDK21虚拟线程</h2><div class="excerpt"><p>传统线程在以前的JDK中，Java的线程模型其实比较简单，在大多数操作系统中，主要采用的是基于轻量级进程实现的一对一(1:1)的线程模型，简单来说就是每一个Java线程对应一个操作系统中的轻量级进程，这种线程模型中的线程创建、析构及同步等动作，都需要进行系统调用。而系统调用则需要在用户态（User Mode）和内核态（Kernel Mode）中来回切换，所以性能开销很大，这严重限制了应用程序...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2025-02-04T03:04:21.000Z">2025-02-04</time></span></div></article>
+</a><a class="post-card post " href="/2024/04/05/dependency-check/">
+<article class="md-text"><h2 class="post-title">dependency-check检查依赖漏洞</h2><div class="excerpt"><p>dependency-check介绍
+Dependency-Check 是 OWASP（Open Web Application Security Project）的一个实用开源程序，用于识别项目依赖项并检查是否存在任何已知的，公开披露的漏洞。目前，已支持Java、.NET、Ruby、Node.js、Python等语言编写的程序，并为C&#x2F;C++构建系统（autoconf和cmake...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2024-04-05T12:13:23.000Z">2024-04-05</time></span></div></article>
+</a><a class="post-card post " href="/2024/03/20/kafka%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/">
+<article class="md-text"><h2 class="post-title">kafka常见问题总结</h2><div class="excerpt"><p>kafka消息模型队列模型：早期的消息模型
+使用队列（Queue）作为消息通信载体，满足生产者与消费者模式，一条消息只能被一个消费者使用，未被消费的消息在队列中保留直到被消费或超时。 比如：我们生产者发送 100 条消息的话，两个消费者来消费一般情况下两个消费者会按照消息发送的顺序各自消费一半（也就是你一个我一个的消费）
+队列模型存在的问题：假如我们存在这样一种情况：我们需要将生产者产生的消...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2024-03-20T13:08:49.000Z">2024-03-20</time></span></div></article>
 </a><a class="post-card post " href="/2024/03/05/nacos%E6%97%A5%E5%BF%97%E4%B8%8D%E6%89%93%E5%8D%B0/">
 <article class="md-text"><h2 class="post-title">nacos日志不打印</h2><div class="excerpt"><p>https://blog.51cto.com/jackwei/5407984
 https://blog.csdn.net/LCN29/article/details/103172375/
 </p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2024-03-05T09:27:59.000Z">2024-03-05</time></span></div></article>
+</a><a class="post-card post " href="/2024/02/15/%E5%B9%82%E7%AD%89/">
+<article class="md-text"><h2 class="post-title">幂等</h2><div class="excerpt"><p>什么是幂等幂等是一个数学与计算机科学概念
+
+在数学中，幂等用函数表达式就是：f(x) &#x3D; f(f(x))。比如求绝对值的函数就是幂等的，abs(x) &#x3D; abs(abs(x))。
+在计算机科学中，幂等表示一次或多次请求某一个资源应该具有同样的副作用，或者说，多次请求所产生的影响与一次请求所产生的影响效果相同。
+
+为什么需要幂等当前互联网的系统几乎都是解耦隔离的，会存在各个...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2024-02-15T06:14:23.000Z">2024-02-15</time></span></div></article>
 </a><a class="post-card post " href="/2024/01/27/RestTemplate/">
 <article class="md-text"><h2 class="post-title">RestTemplate拦截器</h2><div class="excerpt"><p>拦截器的使用场景除了修改HTTP头之外，RestTemplate拦截器还可以用于下面的场景：
 
@@ -118,20 +132,6 @@ https://blog.csdn.net/LCN29/article/details/103172375/
 <article class="md-text"><h2 class="post-title">Jackson</h2><div class="excerpt"><p>Jackson 简介Jackson 是一个用于在Java对象和 json 数据之间进行转换的框架。它支持众多 json 数据格式，诸如 JSON-LD、SMILE 等。Jackson是一个流式处理 JSON 的工具，它很容易与其它 JSON 处理工具进行集成，同时在序列化和反序列化性能方面也表现得相当优异。
 核心包
 jackson-databind：提供了通用的数据绑定功能（将Java对象与...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2024-01-14T11:44:55.000Z">2024-01-14</time></span></div></article>
-</a><a class="post-card post " href="/2024/01/14/dependency-check/">
-<article class="md-text"><h2 class="post-title">dependency-check检查依赖漏洞</h2><div class="excerpt"><p>dependency-check介绍
-Dependency-Check 是 OWASP（Open Web Application Security Project）的一个实用开源程序，用于识别项目依赖项并检查是否存在任何已知的，公开披露的漏洞。目前，已支持Java、.NET、Ruby、Node.js、Python等语言编写的程序，并为C&#x2F;C++构建系统（autoconf和cmake...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2024-01-14T05:23:55.000Z">2024-01-14</time></span></div></article>
-</a><a class="post-card post " href="/2024/01/05/kafka%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/">
-<article class="md-text"><h2 class="post-title">kafka常见问题总结</h2><div class="excerpt"><p>kafka消息模型队列模型：早期的消息模型
-使用队列（Queue）作为消息通信载体，满足生产者与消费者模式，一条消息只能被一个消费者使用，未被消费的消息在队列中保留直到被消费或超时。 比如：我们生产者发送 100 条消息的话，两个消费者来消费一般情况下两个消费者会按照消息发送的顺序各自消费一半（也就是你一个我一个的消费）
-队列模型存在的问题：假如我们存在这样一种情况：我们需要将生产者产生的消...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2024-01-05T03:29:13.000Z">2024-01-05</time></span></div></article>
-</a><a class="post-card post " href="/2024/01/02/%E5%B9%82%E7%AD%89/">
-<article class="md-text"><h2 class="post-title">幂等</h2><div class="excerpt"><p>什么是幂等幂等是一个数学与计算机科学概念
-
-在数学中，幂等用函数表达式就是：f(x) &#x3D; f(f(x))。比如求绝对值的函数就是幂等的，abs(x) &#x3D; abs(abs(x))。
-在计算机科学中，幂等表示一次或多次请求某一个资源应该具有同样的副作用，或者说，多次请求所产生的影响与一次请求所产生的影响效果相同。
-
-为什么需要幂等当前互联网的系统几乎都是解耦隔离的，会存在各个...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2024-01-02T08:36:09.000Z">2024-01-02</time></span></div></article>
 </a><a class="post-card post " href="/2024/01/01/%E9%99%90%E6%B5%81/">
 <article class="md-text"><h2 class="post-title">限流</h2><div class="excerpt"><p>面对越来越多的高并发场景，限流显的由为重要，限流有多种实现的方式，下面介绍下通过Redis的限流方式
 常见的4种限流算法计数器算法在指定周期内累加访问次数，当访问次数达到设定的阀值时，触发限流策略，当进行下一个时间周期时进行访问次数清零，如果所示，我们要求3s内的请求不要超过150次
