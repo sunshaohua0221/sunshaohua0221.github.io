@@ -31,7 +31,7 @@
 <meta property="og:description" content="Jackson 简介Jackson 是一个用于在Java对象和 json 数据之间进行转换的框架。它支持众多 json 数据格式，诸如 JSON-LD、SMILE 等。Jackson是一个流式处理 JSON 的工具，它很容易与其它 JSON 处理工具进行集成，同时在序列化和反序列化性能方面也表现得相当优异。 核心包 jackson-databind：提供了通用的数据绑定功能（将Java对象与JSO">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-11-23T13:10:56.000Z">
-<meta property="article:modified_time" content="2024-01-14T11:44:55.000Z">
+<meta property="article:modified_time" content="2025-11-05T23:23:57.467Z">
 <meta property="article:author" content="ssh">
 <meta property="article:tag" content="技术、生活">
 <meta name="twitter:card" content="summary">
@@ -81,7 +81,7 @@
 <widget class="widget-wrapper search"><div class="widget-body"><div class="search-wrapper" id="search"><form class="search-form"><input type="text" class="search-input" id="search-input" data-filter="/blog/" placeholder="文章搜索"><svg t="1670596976048" class="icon search-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2676" width="200" height="200"><path d="M938.2 832.6L723.8 618.1c-2.5-2.5-5.3-4.4-7.9-6.4 36.2-55.6 57.3-121.8 57.3-193.1C773.3 222.8 614.6 64 418.7 64S64 222.8 64 418.6c0 195.9 158.8 354.6 354.6 354.6 71.3 0 137.5-21.2 193.2-57.4 2 2.7 3.9 5.4 6.3 7.8L832.5 938c14.6 14.6 33.7 21.9 52.8 21.9 19.1 0 38.2-7.3 52.8-21.8 29.2-29.1 29.2-76.4 0.1-105.5M418.7 661.3C284.9 661.3 176 552.4 176 418.6 176 284.9 284.9 176 418.7 176c133.8 0 242.6 108.9 242.6 242.7 0 133.7-108.9 242.6-242.6 242.6" p-id="2677"></path></svg></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div></div></widget>
 
 
-<widget class="widget-wrapper toc single" id="data-toc"><div class="widget-header cap dis-select"><span class="name">Jackson</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Jackson-%E7%AE%80%E4%BB%8B"><span class="toc-text">Jackson 简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E5%8C%85"><span class="toc-text">核心包</span></a></li></ol></div></div></widget>
+<widget class="widget-wrapper toc single" id="data-toc"><div class="widget-header cap dis-select"><span class="name">Jackson</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Jackson-%E7%AE%80%E4%BB%8B"><span class="toc-text">Jackson 简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E5%8C%85"><span class="toc-text">核心包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%80%89%E6%8B%A9Jackson"><span class="toc-text">为什么选择Jackson</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%86Java%E5%AF%B9%E8%B1%A1%E8%BD%AC%E6%8D%A2%E4%B8%BAJSON%E5%AD%97%E7%AC%A6%E4%B8%B2%EF%BC%88%E5%BA%8F%E5%88%97%E5%8C%96%EF%BC%89"><span class="toc-text">将Java对象转换为JSON字符串（序列化）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%86JSON%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BD%AC%E6%8D%A2%E4%B8%BAJava%E5%AF%B9%E8%B1%A1%EF%BC%88%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%EF%BC%89"><span class="toc-text">将JSON字符串转换为Java对象（反序列化）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E8%A7%A3%EF%BC%88%E5%A6%82-JsonProperty-JsonIgnore%EF%BC%89"><span class="toc-text">注解（如@JsonProperty, @JsonIgnore）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E7%9A%84JSON%E5%BA%93"><span class="toc-text">其他的JSON库</span></a></li></ol></div></div></widget>
 
 
 
@@ -100,7 +100,7 @@
 <div class="bread-nav fs12"><div class="left"><div id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" href="/">文章</a></div><div id="post-meta">
     <span>发布于&nbsp;<time datetime="2024-11-23T13:10:56.000Z">2024-11-23</time></span>
     
-    <span>更新于&nbsp;<time datetime="2024-01-14T11:44:55.000Z">2024-01-14</time></span>
+    <span>更新于&nbsp;<time datetime="2025-11-05T23:23:57.467Z">2025-11-06</time></span>
     </div></div></div>
 
 <article class='md-text content post'>
@@ -111,8 +111,50 @@
 <li>jackson-core：提供了核心的低级JSON处理API（例如JsonParser和JsonGenerator）</li>
 <li>jackson-annotations：提供了用于配置数据绑定的注解</li>
 </ol>
-<p><a target="_blank" rel="noopener" href="https://www.nowcoder.com/discuss/486490921744330752">https://www.nowcoder.com/discuss/486490921744330752</a></p>
-<p><a target="_blank" rel="noopener" href="https://pythonjishu.com/czlgdtvjjllafvp/">https://pythonjishu.com/czlgdtvjjllafvp/</a></p>
+<h3 id="为什么选择Jackson"><a href="#为什么选择Jackson" class="headerlink" title="为什么选择Jackson"></a>为什么选择Jackson</h3><p>尽管Java生态系统中有其他处理JSON数据的库（如Gson和JSON-java），但Jackson仍然是许多开发者的首选，原因包括：</p>
+<ol>
+<li>性能：Jackson性能优越，对内存和CPU的使用都相对较低。许多性能基准测试表明，Jackson在序列化和反序列化方面都比其他库更快。</li>
+<li>功能丰富：Jackson提供了许多功能，包括注解、自定义序列化和反序列化、动态解析等，使其非常灵活和强大。</li>
+<li>易于使用：Jackson的API简单易用，使得开发者可以轻松地在他们的应用程序中集成和使用。</li>
+<li>社区支持：Jackson拥有庞大的开发者社区，这意味着有更多的文档、教程和问题解答可供参考。</li>
+<li>模块化：Jackson支持通过模块扩展其功能，例如Java 8时间库、Joda-Time和Kotlin等。</li>
+<li>兼容性：Jackson可以很好地与其他流行的Java框架（如Spring）集成。</li>
+</ol>
+<h3 id="将Java对象转换为JSON字符串（序列化）"><a href="#将Java对象转换为JSON字符串（序列化）" class="headerlink" title="将Java对象转换为JSON字符串（序列化）"></a>将Java对象转换为JSON字符串（序列化）</h3><p>序列化是将Java对象转换为JSON字符串的过程。这在许多场景中非常有用，例如在将数据发送到Web客户端时，或者在将数据存储到文件或数据库时。Jackson通过ObjectMapper类来实现序列化。以下是一个简单的示例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Person</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> String name;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> age;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Person</span><span class="params">(String name, <span class="type">int</span> age)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.name = name;</span><br><span class="line">        <span class="built_in">this</span>.age = age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">ObjectMapper</span> <span class="variable">objectMapper</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ObjectMapper</span>();</span><br><span class="line">        <span class="type">Person</span> <span class="variable">person</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Person</span>(<span class="string">&quot;Alice&quot;</span>, <span class="number">30</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="type">String</span> <span class="variable">jsonString</span> <span class="operator">=</span> objectMapper.writeValueAsString(person);</span><br><span class="line">            System.out.println(jsonString); <span class="comment">// 输出：&#123;&quot;name&quot;:&quot;Alice&quot;,&quot;age&quot;:30&#125;</span></span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="将JSON字符串转换为Java对象（反序列化）"><a href="#将JSON字符串转换为Java对象（反序列化）" class="headerlink" title="将JSON字符串转换为Java对象（反序列化）"></a>将JSON字符串转换为Java对象（反序列化）</h3><p>反序列化是将JSON字符串转换回Java对象的过程。这在从Web客户端接收数据或从文件或数据库读取数据时非常有用。同样，Jackson使用ObjectMapper类来实现反序列化。以下是一个简单的示例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Person</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> String name;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> age;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Person</span><span class="params">()</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">ObjectMapper</span> <span class="variable">objectMapper</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ObjectMapper</span>();</span><br><span class="line">        <span class="type">String</span> <span class="variable">jsonString</span> <span class="operator">=</span> <span class="string">&quot;&#123;\&quot;name\&quot;:\&quot;Alice\&quot;,\&quot;age\&quot;:30&#125;&quot;</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="type">Person</span> <span class="variable">person</span> <span class="operator">=</span> objectMapper.readValue(jsonString, Person.class);</span><br><span class="line">            System.out.println(<span class="string">&quot;Name: &quot;</span> + person.name + <span class="string">&quot;, Age: &quot;</span> + person.age); <span class="comment">// 输出：Name: Alice, Age: 30</span></span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这些示例展示了Jackson库的基本功能，由于Jackson库的API非常多，以下是Jackson库的一些主要API和组件：</p>
+<ol>
+<li>ObjectMapper：这是Jackson库的核心类，用于序列化和反序列化操作。主要方法有：writeValueAsString(Object)：将Java对象序列化为JSON字符串。readValue(String, Class)：将JSON字符串反序列化为Java对象。</li>
+<li>JsonParser：用于从JSON数据源（如文件、输入流或字符串）解析JSON数据。主要方法有：nextToken()：获取下一个JSON令牌（如START_OBJECT、FIELD_NAME等）。getValueAsString()：将当前令牌作为字符串返回。getValueAsInt()：将当前令牌作为整数返回。</li>
+<li>JsonGenerator：用于将JSON数据写入数据源（如文件、输出流或字符串缓冲区）。主要方法有：writeStartObject()：写入开始对象标记（{）。writeFieldName(String)：写入字段名称。writeString(String)：写入字符串值。writeEndObject()：写入结束对象标记（}）。</li>
+<li>JsonNode：用于表示JSON树模型中的节点，可以是对象、数组、字符串、数字等。主要方法有：get(String)：获取指定字段的子节点。path(String)：获取指定字段的子节点，如果不存在则返回一个“missing”节点。isObject()：检查当前节点是否是一个对象。isArray()：检查当前节点是否是一个数组。</li>
+<li>注解：Jackson提供了一系列注解来配置序列化和反序列化过程。一些常用注解包括：@JsonProperty：指定字段在JSON数据中的名称。@JsonIgnore：指定字段在序列化和反序列化过程中被忽略。@JsonCreator：指定用于反序列化的构造函数或工厂方法。@JsonSerialize：指定用于序列化特定字段或类的自定义序列化器。@JsonDeserialize：指定用于反序列化特定字段或类的自定义反序列化器。</li>
+</ol>
+<h3 id="注解（如-JsonProperty-JsonIgnore）"><a href="#注解（如-JsonProperty-JsonIgnore）" class="headerlink" title="注解（如@JsonProperty, @JsonIgnore）"></a>注解（如@JsonProperty, @JsonIgnore）</h3><p>Jackson库提供了一系列注解，可以帮助你在序列化和反序列化过程中对字段和类进行配置。以下是一些常用注解的示例：</p>
+<ul>
+<li>@JsonProperty 注解：该注解用于指定 Java 属性与 JSON 属性之间的映射关系，常用的参数有：value：用于指定 JSON 属性的名称，当 Java 属性和 JSON 属性名称不一致时使用。access：用于指定该属性的访问方式，常用的取值有 JsonAccess.READ_ONLY（只读），JsonAccess.WRITE_ONLY（只写）和 JsonAccess.READ_WRITE（可读可写）。</li>
+<li>@JsonIgnore 注解：该注解用于禁用 Java 属性的序列化和反序列化，常用的参数有：无参数。</li>
+<li>@JsonFormat 注解：该注解用于指定 Java 属性的日期和时间格式，常用的参数有：shape：用于指定日期和时间的格式，可选的取值有 JsonFormat.Shape.STRING（以字符串形式表示）和 JsonFormat.Shape.NUMBER（以时间戳形式表示）。pattern：用于指定日期和时间的格式模板，例如 “yyyy-MM-dd HH:mm:ss”。</li>
+<li>@JsonInclude 注解：该注解用于指定序列化 Java 对象时包含哪些属性，常用的参数有：value：用于指定包含哪些属性，可选的取值有 JsonInclude.Include.ALWAYS（始终包含）、JsonInclude.Include.NON_NULL（值不为 null 时包含）、JsonInclude.Include.NON_DEFAULT（值不为默认值时包含）、JsonInclude.Include.NON_EMPTY（值不为空时包含）和 JsonInclude.Include.CUSTOM（自定义条件）。content：用于指定自定义条件的实现类。</li>
+<li>@JsonCreator 注解：该注解用于指定反序列化时使用的构造方法或工厂方法，常用的参数有：无参数。</li>
+<li>@JsonSetter 注解：该注解用于指定反序列化时使用的方法，常用的参数有：value：用于指定 JSON 属性的名称，当方法名和 JSON 属性名称不一致时使用。</li>
+<li>@JsonGetter 注解：该注解用于指定序列化时使用的方法，常用的参数有：value：用于指定 JSON 属性的名称，当方法名和 JSON 属性名称不一致时使用。</li>
+<li>@JsonAnySetter 注解：该注解用于指定反序列化时使用的方法，用于处理 JSON 中未知的属性，常用的参数有：无参数。</li>
+<li>@JsonAnyGetter 注解：该注解用于指定序列化时使用的方法，用于处理 Java 对象中未知的属性，常用的参数有：无参数。</li>
+<li>@JsonTypeInfo 注解：该注解用于指定 Java 对象在序列化和反序列化时的类型信息，常用的参数有：use：用于指定类型信息的使用方式，可选的取值有 JsonTypeInfo.Id.CLASS（使用 Java 类的全限定名）、JsonTypeInfo.Id.NAME（使用名称）和 JsonTypeInfo.Id.NONE（不使用类型信息）。include：用于指定类型信息的包含方式，可选的取值有 JsonTypeInfo.As.PROPERTY（作为 JSON 属性）和 JsonTypeInfo.As.EXTERNAL_PROPERTY（作为外部属性）。property：用于指定包含类型信息的属性名，当 include 的值为 JsonTypeInfo.As.PROPERTY 时使用。visible：用于指定类型信息是否可见。</li>
+</ul>
+<h3 id="其他的JSON库"><a href="#其他的JSON库" class="headerlink" title="其他的JSON库"></a>其他的JSON库</h3><p>除了Jackson之外，还有其他一些流行的Java JSON处理库。以下是一些常见的库：</p>
+<ol>
+<li>Gson：Gson是Google开发的一个Java库，用于将Java对象转换为JSON表示以及将JSON字符串转换为等效的Java对象。Gson的API简洁易用，性能也相当不错。官方网站：github.com&#x2F;google&#x2F;gson</li>
+<li>Fastjson：Fastjson是Alibaba开发的一个高性能的JSON库。Fastjson提供了灵活的API和丰富的功能，同时注重性能优化。然而，它在安全性方面存在一些问题，因此在使用时需要谨慎。官方网站：github.com&#x2F;alibaba&#x2F;fas…</li>
+<li>JSON-java（org.json）：JSON-java库，也称为org.json库，是一个非常轻量级的JSON处理库。它提供了基本的JSON编码和解码功能，但不支持对象映射等高级功能。官方网站：github.com&#x2F;stleary&#x2F;JSO…</li>
+<li>Moshi：Moshi是Square公司开发的一个现代化的JSON库，具有简单易用的API和良好的性能。Moshi支持Kotlin协程，并与Kotlin编程语言非常兼容。官方网站：github.com&#x2F;square&#x2F;mosh…</li>
+<li>Boon：Boon是另一个高性能的JSON处理库。它具有易用的API，支持流式处理和速度优化。然而，Boon的社区和文档相对较少。官方网站：github.com&#x2F;boonproject…</li>
+</ol>
 
 
 
