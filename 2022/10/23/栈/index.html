@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+  <meta name="generator" content="Hexo 7.0.0">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.21.0">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://gcore.jsdelivr.net'>
+  <link rel="preconnect" href="https://gcore.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  
+  <title>栈 - Felix的技术笔记</title>
+
+  
+    <meta name="description" content="队列实现栈1234567891011121314151617181920212223242526272829303132333435363738394041424344public class QueueToStack&lt;E&gt; &#123;    private Queue&lt;E&gt; queue;    private Queue&lt;E&gt; tempQueue;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="栈">
+<meta property="og:url" content="https://sunshaohua0221.github.io/2022/10/23/%E6%A0%88/index.html">
+<meta property="og:site_name" content="Felix的技术笔记">
+<meta property="og:description" content="队列实现栈1234567891011121314151617181920212223242526272829303132333435363738394041424344public class QueueToStack&lt;E&gt; &#123;    private Queue&lt;E&gt; queue;    private Queue&lt;E&gt; tempQueue;">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-10-23T02:39:34.000Z">
+<meta property="article:modified_time" content="2025-11-06T13:22:06.000Z">
+<meta property="article:author" content="ssh">
+<meta property="article:tag" content="技术、生活">
+<meta name="twitter:card" content="summary">
+  
+  
+  
+  <meta name="keywords" content="技术、生活">
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+
+  
+
+  
+
+
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='post'>
+    
+
+  
+
+<header class="header"><div class="logo-wrap"><a class="title" href="/"><div class="main" ff="title">Felix的技术笔记</div><div class="sub cap">学无止境,行以致远</div></a></div>
+
+<nav class="menu dis-select"></nav>
+</header>
+
+
+<div class="widgets">
+<widget class="widget-wrapper search"><div class="widget-body"><div class="search-wrapper" id="search"><form class="search-form"><input type="text" class="search-input" id="search-input" data-filter="/blog/" placeholder="文章搜索"><svg t="1670596976048" class="icon search-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2676" width="200" height="200"><path d="M938.2 832.6L723.8 618.1c-2.5-2.5-5.3-4.4-7.9-6.4 36.2-55.6 57.3-121.8 57.3-193.1C773.3 222.8 614.6 64 418.7 64S64 222.8 64 418.6c0 195.9 158.8 354.6 354.6 354.6 71.3 0 137.5-21.2 193.2-57.4 2 2.7 3.9 5.4 6.3 7.8L832.5 938c14.6 14.6 33.7 21.9 52.8 21.9 19.1 0 38.2-7.3 52.8-21.8 29.2-29.1 29.2-76.4 0.1-105.5M418.7 661.3C284.9 661.3 176 552.4 176 418.6 176 284.9 284.9 176 418.7 176c133.8 0 242.6 108.9 242.6 242.7 0 133.7-108.9 242.6-242.6 242.6" p-id="2677"></path></svg></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div></div></widget>
+
+
+
+<widget class="widget-wrapper recent"><div class="widget-header cap theme dis-select"><span class="name">最近更新</span></div><div class="widget-body related-posts fs14"><a class="item title" href="/2025/11/07/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/"><span class="title">动态规划</span></a><a class="item title" href="/2022/10/23/%E9%98%9F%E5%88%97/"><span class="title">队列</span></a><a class="item title" href="/2022/10/23/%E7%AE%97%E6%B3%95-%E5%85%B6%E4%BB%96/"><span class="title">算法-其他</span></a><a class="item title" href="/2022/11/05/%E7%BA%BF%E7%A8%8B%E5%8D%8F%E4%BD%9C/"><span class="title">线程协作</span></a><a class="item title" href="/2022/08/12/%E6%95%B0%E7%BB%84/"><span class="title">数组</span></a></div></widget>
+
+
+
+
+
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+
+
+<div class="bread-nav fs12"><div class="left"><div id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" href="/">文章</a></div><div id="post-meta">
+    <span>发布于&nbsp;<time datetime="2022-10-23T02:39:34.000Z">2022-10-23</time></span>
+    
+    <span>更新于&nbsp;<time datetime="2025-11-06T13:22:06.000Z">2025-11-06</time></span>
+    </div></div></div>
+
+<article class='md-text content post'>
+<h1 class="article-title"><span>栈</span></h1>
+<ol>
+<li>队列实现栈<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">QueueToStack</span>&lt;E&gt; &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Queue&lt;E&gt; queue;</span><br><span class="line">    <span class="keyword">private</span> Queue&lt;E&gt; tempQueue;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">QueueToStack</span><span class="params">()</span> &#123;</span><br><span class="line">        queue = <span class="keyword">new</span> <span class="title class_">LinkedList</span>&lt;&gt;();</span><br><span class="line">        tempQueue = <span class="keyword">new</span> <span class="title class_">LinkedList</span>&lt;&gt;();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">offer</span><span class="params">(E element)</span>&#123;</span><br><span class="line">        queue.offer(element);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> E <span class="title function_">poll</span><span class="params">()</span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (queue.isEmpty()) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">EmptyStackException</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span> (queue.size() &gt; <span class="number">1</span>) &#123;</span><br><span class="line">            tempQueue.offer(queue.poll());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">E</span> <span class="variable">element</span> <span class="operator">=</span> queue.poll();</span><br><span class="line">        Queue&lt;E&gt; temp = queue;</span><br><span class="line">        queue = tempQueue;</span><br><span class="line">        tempQueue = temp;</span><br><span class="line">        <span class="keyword">return</span> element;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> E <span class="title function_">peek</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (queue.isEmpty()) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">EmptyStackException</span>();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> (queue.size() &gt; <span class="number">1</span>) &#123;</span><br><span class="line">            tempQueue.offer(queue.poll());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">E</span> <span class="variable">element</span> <span class="operator">=</span> queue.poll();</span><br><span class="line">        tempQueue.offer(element);</span><br><span class="line">        Queue&lt;E&gt; temp = queue;</span><br><span class="line">        queue = tempQueue;</span><br><span class="line">        tempQueue = temp;</span><br><span class="line">        <span class="keyword">return</span> element;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>逆波兰表达式求值<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//根据 逆波兰表示法，求表达式的值。</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//有效的运算符包括 + ,  - ,  * ,  / 。每个运算对象可以是整数，也可以是另一个逆波兰表达式。</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//说明：</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//整数除法只保留整数部分。 给定逆波兰表达式总是有效的。换句话说，表达式总会得出有效数值且不存在除数为 0 的情况。</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//示例 1：</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//输入: [&quot;2&quot;, &quot;1&quot;, &quot;+&quot;, &quot;3&quot;, &quot;*&quot;]</span></span><br><span class="line"><span class="comment">//输出: 9</span></span><br><span class="line"><span class="comment">//解释: 该算式转化为常见的中缀算术表达式为：((2 + 1) * 3) = 9</span></span><br><span class="line"><span class="comment">//示例 2：</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//输入: [&quot;4&quot;, &quot;13&quot;, &quot;5&quot;, &quot;/&quot;, &quot;+&quot;]</span></span><br><span class="line"><span class="comment">//输出: 6</span></span><br><span class="line"><span class="comment">//解释: 该算式转化为常见的中缀算术表达式为：(4 + (13 / 5)) = 6</span></span><br><span class="line"><span class="comment">//示例 3：</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//输入: [&quot;10&quot;, &quot;6&quot;, &quot;9&quot;, &quot;3&quot;, &quot;+&quot;, &quot;-11&quot;, &quot;*&quot;, &quot;/&quot;, &quot;*&quot;, &quot;17&quot;, &quot;+&quot;, &quot;5&quot;, &quot;+&quot;]</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//输出: 22</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//解释:该算式转化为常见的中缀算术表达式为：</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//((10 * (6 / ((9 + 3) * -11))) + 17) + 5</span></span><br><span class="line"><span class="comment">//= ((10 * (6 / (12 * -11))) + 17) + 5</span></span><br><span class="line"><span class="comment">//= ((10 * (6 / -132)) + 17) + 5</span></span><br><span class="line"><span class="comment">//= ((10 * 0) + 17) + 5</span></span><br><span class="line"><span class="comment">//= (0 + 17) + 5</span></span><br><span class="line"><span class="comment">//= 17 + 5</span></span><br><span class="line"><span class="comment">//= 22</span></span><br><span class="line"><span class="comment">//逆波兰表达式：是一种后缀表达式，所谓后缀就是指运算符写在后面。</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//平常使用的算式则是一种中缀表达式，如 ( 1 + 2 ) * ( 3 + 4 ) 。</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//该算式的逆波兰表达式写法为 ( ( 1 2 + ) ( 3 4 + ) * ) 。</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//逆波兰表达式主要有以下两个优点：</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//去掉括号后表达式无歧义，上式即便写成 1 2 + 3 4 + * 也可以依据次序计算出正确结果。</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//适合用栈操作运算：遇到数字则入栈；遇到运算符则取出栈顶两个数字进行计算，并将结果压入栈中。</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.Deque;</span><br><span class="line"><span class="keyword">import</span> java.util.LinkedList;</span><br><span class="line"></span><br><span class="line"><span class="comment">//题外话</span></span><br><span class="line"><span class="comment">//我们习惯看到的表达式都是中缀表达式，因为符合我们的习惯，但是中缀表达式对于计算机来说就不是很友好了。</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//例如：4 + 13 / 5，这就是中缀表达式，计算机从左到右去扫描的话，扫到13，还要判断13后面是什么运算符，还要比较一下优先级，然后13还和后面的5做运算，做完运算之后，还要向前回退到 4 的位置，继续做加法，你说麻不麻烦！</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//那么将中缀表达式，转化为后缀表达式之后：[&quot;4&quot;, &quot;13&quot;, &quot;5&quot;, &quot;/&quot;, &quot;+&quot;] ，就不一样了，计算机可以利用栈来顺序处理，不需要考虑优先级了。也不用回退了， 所以后缀表达式对计算机来说是非常友好的。</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//可以说本题不仅仅是一道好题，也展现出计算机的思考方式。</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//在1970年代和1980年代，惠普在其所有台式和手持式计算器中都使用了RPN（后缀表达式），直到2020年代仍在某些模型中使用了RPN。</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//参考维基百科如下：</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//During the 1970s and 1980s, Hewlett-Packard used RPN in all of their desktop and hand-held calculators, and continued to use it in some models into the 2020s</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">EvalRPN</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">evalRPN</span><span class="params">(String[] array)</span> &#123;</span><br><span class="line">        Deque&lt;Integer&gt; deque = <span class="keyword">new</span> <span class="title class_">LinkedList</span>&lt;&gt;();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (String s : array) &#123;</span><br><span class="line">            <span class="keyword">if</span> (<span class="string">&quot;+&quot;</span>.equals(s)) &#123;</span><br><span class="line">                deque.push(deque.pop() + deque.pop());</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="string">&quot;-&quot;</span>.equals(s)) &#123;</span><br><span class="line">                deque.push(-deque.pop() + deque.pop());</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="string">&quot;*&quot;</span>.equals(s)) &#123;</span><br><span class="line">                deque.push(deque.pop() * deque.pop());</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="string">&quot;/&quot;</span>.equals(s)) &#123;</span><br><span class="line">                <span class="type">Integer</span> <span class="variable">i1</span> <span class="operator">=</span> deque.pop();</span><br><span class="line">                <span class="type">Integer</span> <span class="variable">i2</span> <span class="operator">=</span> deque.pop();</span><br><span class="line">                deque.push(i2 / i1);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                deque.push(Integer.valueOf(s));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> deque.pop();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        System.out.println(Integer.getInteger(<span class="string">&quot;2&quot;</span>));</span><br><span class="line">        <span class="type">EvalRPN</span> <span class="variable">evalRPN</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">EvalRPN</span>();</span><br><span class="line">        System.out.println(evalRPN.evalRPN(<span class="keyword">new</span> <span class="title class_">String</span>[]&#123;<span class="string">&quot;2&quot;</span>, <span class="string">&quot;1&quot;</span>, <span class="string">&quot;+&quot;</span>, <span class="string">&quot;3&quot;</span>, <span class="string">&quot;*&quot;</span>&#125;));</span><br><span class="line">        System.out.println(evalRPN.evalRPN(<span class="keyword">new</span> <span class="title class_">String</span>[]&#123;<span class="string">&quot;10&quot;</span>, <span class="string">&quot;6&quot;</span>, <span class="string">&quot;9&quot;</span>, <span class="string">&quot;3&quot;</span>, <span class="string">&quot;+&quot;</span>, <span class="string">&quot;-11&quot;</span>, <span class="string">&quot;*&quot;</span>, <span class="string">&quot;/&quot;</span>, <span class="string">&quot;*&quot;</span>, <span class="string">&quot;17&quot;</span>, <span class="string">&quot;+&quot;</span>, <span class="string">&quot;5&quot;</span>, <span class="string">&quot;+&quot;</span>&#125;));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>删除字符串中的所有相邻重复项<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//给出由小写字母组成的字符串 S，重复项删除操作会选择两个相邻且相同的字母，并删除它们。</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//在 S 上反复执行重复项删除操作，直到无法继续删除。</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//在完成所有重复项删除操作后返回最终的字符串。答案保证唯一。</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//示例：</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//输入：&quot;abbaca&quot;</span></span><br><span class="line"><span class="comment">//输出：&quot;ca&quot;</span></span><br><span class="line"><span class="comment">//解释：例如，在 &quot;abbaca&quot; 中，我们可以删除 &quot;bb&quot; 由于两字母相邻且相同，这是此时唯一可以执行删除操作的重复项。之后我们得到字符串 &quot;aaca&quot;，其中又只有 &quot;aa&quot; 可以执行重复项删除操作，所以最后的字符串为 &quot;ca&quot;。</span></span><br><span class="line"><span class="comment">//提示：</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//1 &lt;= S.length &lt;= 20000</span></span><br><span class="line"><span class="comment">//S 仅由小写英文字母组成</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.ArrayDeque;</span><br><span class="line"></span><br><span class="line"><span class="comment">//题外话</span></span><br><span class="line"><span class="comment">//这道题目就像是我们玩过的游戏对对碰，如果相同的元素挨在一起就要消除。</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//可能我们在玩游戏的时候感觉理所当然应该消除，但程序又怎么知道该如何消除呢，特别是消除之后又有新的元素可能挨在一起。</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//此时游戏的后端逻辑就可以用一个栈来实现（我没有实际考察对对碰或者爱消除游戏的代码实现，仅从原理上进行推断）。</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//游戏开发可能使用栈结构，编程语言的一些功能实现也会使用栈结构，实现函数递归调用就需要栈，但不是每种编程语言都支持递归，例如：</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RemoveDuplicates</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">removeDuplicates1</span><span class="params">(String s)</span> &#123;</span><br><span class="line">        <span class="comment">//ArrayDeque会比LinkedList在除了删除元素这一点外会快一点</span></span><br><span class="line">        <span class="comment">//参考：https://stackoverflow.com/questions/6163166/why-is-arraydeque-better-than-linkedlist</span></span><br><span class="line">        ArrayDeque&lt;Character&gt; deque = <span class="keyword">new</span> <span class="title class_">ArrayDeque</span>&lt;&gt;();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; s.length(); i++) &#123;</span><br><span class="line">            <span class="type">char</span> <span class="variable">c</span> <span class="operator">=</span> s.charAt(i);</span><br><span class="line">            <span class="keyword">if</span> (deque.isEmpty() || c != deque.peek()) &#123;</span><br><span class="line">                deque.push(c);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                deque.pop();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="type">StringBuilder</span> <span class="variable">result</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">        <span class="comment">//剩余的元素即为不重复的元素</span></span><br><span class="line">        <span class="keyword">while</span> (!deque.isEmpty()) &#123;</span><br><span class="line">            result.insert(<span class="number">0</span>, deque.pop());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result.toString();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">removeDuplicates2</span><span class="params">(String s)</span> &#123;</span><br><span class="line">        <span class="comment">// 将 res 当做栈</span></span><br><span class="line">        <span class="comment">// 也可以用 StringBuffer 来修改字符串</span></span><br><span class="line">        <span class="comment">// StringBuffer res = new StringBuffer();</span></span><br><span class="line">        <span class="type">StringBuilder</span> <span class="variable">res</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">        <span class="comment">// top为 res 的长度</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">top</span> <span class="operator">=</span> -<span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; s.length(); i++) &#123;</span><br><span class="line">            <span class="type">char</span> <span class="variable">c</span> <span class="operator">=</span> s.charAt(i);</span><br><span class="line">            <span class="comment">// 当 top &gt;= 0,即栈中有字符时，当前字符如果和栈中字符相等，弹出栈顶字符，同时 top--</span></span><br><span class="line">            <span class="keyword">if</span> (top &gt;= <span class="number">0</span> &amp;&amp; s.charAt(top) == c) &#123;</span><br><span class="line">                res.deleteCharAt(top);</span><br><span class="line">                top--;</span><br><span class="line">                <span class="comment">// 否则，将该字符 入栈，同时top++</span></span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                res.append(c);</span><br><span class="line">                top++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res.toString();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">RemoveDuplicates</span> <span class="variable">removeDuplicates</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">RemoveDuplicates</span>();</span><br><span class="line">        System.out.println(removeDuplicates.removeDuplicates1(<span class="string">&quot;accabv&quot;</span>));</span><br><span class="line">        System.out.println(removeDuplicates.removeDuplicates2(<span class="string">&quot;accabv&quot;</span>));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>给定一个整数数组 temperatures ，表示每天的温度，返回一个数组 answer ，其中 answer[i] 是指对于第 i 天，下一个更高温度出现在几天后。如果气温在这之后都不会升高，请在该位置用 0 来代替。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Temperatures</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span>[] dailyTemperatures(<span class="type">int</span>[] temperatures) &#123;</span><br><span class="line">        Deque&lt;Integer&gt; deque = <span class="keyword">new</span> <span class="title class_">LinkedList</span>&lt;&gt;();</span><br><span class="line">        <span class="type">int</span>[] answers = <span class="keyword">new</span> <span class="title class_">int</span>[temperatures.length];</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; temperatures.length; i++) &#123;</span><br><span class="line">            <span class="keyword">while</span> (!deque.isEmpty() &amp;&amp; temperatures[i] &gt; temperatures[deque.peek()]) &#123;</span><br><span class="line">                <span class="type">int</span> <span class="variable">index</span> <span class="operator">=</span> deque.pop();</span><br><span class="line">                answers[index] = i - index;</span><br><span class="line">            &#125;</span><br><span class="line">            deque.push(i);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> answers;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">int</span>[] temperatures = &#123;<span class="number">73</span>,<span class="number">74</span>,<span class="number">75</span>,<span class="number">71</span>,<span class="number">69</span>,<span class="number">72</span>,<span class="number">76</span>,<span class="number">73</span>&#125;;</span><br><span class="line">        <span class="type">Temperatures</span> <span class="variable">t</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Temperatures</span>();</span><br><span class="line">        System.out.println(Arrays.toString(t.dailyTemperatures(temperatures)));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>前 K 个高频元素<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//给定一个非空的整数数组，返回其中出现频率前 k 高的元素。</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//示例 1:</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//输入: nums = [1,1,1,2,2,3], k = 2</span></span><br><span class="line"><span class="comment">//输出: [1,2]</span></span><br><span class="line"><span class="comment">//示例 2:</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//输入: nums = [1], k = 1</span></span><br><span class="line"><span class="comment">//输出: [1]</span></span><br><span class="line"><span class="comment">//提示：</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//你可以假设给定的 k 总是合理的，且 1 ≤ k ≤ 数组中不相同的元素的个数。</span></span><br><span class="line"><span class="comment">//你的算法的时间复杂度必须优于 $O(n \log n)$ , n 是数组的大小。</span></span><br><span class="line"><span class="comment">//题目数据保证答案唯一，换句话说，数组中前 k 个高频元素的集合是唯一的。</span></span><br><span class="line"><span class="comment">//你可以按任意顺序返回答案</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">TopKFrequent</span> &#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span>[] topKFrequent(<span class="type">int</span>[] nums, <span class="type">int</span> k) &#123;</span><br><span class="line">        Map&lt;Integer, Integer&gt; map = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> num : nums) &#123;</span><br><span class="line">            map.put(num, map.getOrDefault(num, <span class="number">0</span>) + <span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        PriorityQueue&lt;<span class="type">int</span>[]&gt; queue = <span class="keyword">new</span> <span class="title class_">PriorityQueue</span>&lt;&gt;(Comparator.comparingInt(pair -&gt; pair[<span class="number">1</span>]));</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (Map.Entry&lt;Integer, Integer&gt; entry : map.entrySet()) &#123;</span><br><span class="line">            <span class="keyword">if</span> (queue.size() &lt; k) &#123;</span><br><span class="line">                queue.add(<span class="keyword">new</span> <span class="title class_">int</span>[]&#123;entry.getKey(), entry.getValue()&#125;);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">if</span> (entry.getValue() &gt; queue.peek()[<span class="number">1</span>]) &#123;</span><br><span class="line">                    queue.poll();</span><br><span class="line">                    queue.add(<span class="keyword">new</span> <span class="title class_">int</span>[]&#123;entry.getKey(), entry.getValue()&#125;);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="type">int</span>[] ans = <span class="keyword">new</span> <span class="title class_">int</span>[k];</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> k - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">            ans[i] = queue.poll()[<span class="number">0</span>];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">TopKFrequent</span> <span class="variable">topKFrequent</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">TopKFrequent</span>();</span><br><span class="line">        System.out.println(Arrays.toString(topKFrequent.topKFrequent(<span class="keyword">new</span> <span class="title class_">int</span>[]&#123;<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">3</span>&#125;, <span class="number">2</span>)));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>有效的括号 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//给定一个只包括 &#x27;(&#x27;，&#x27;)&#x27;，&#x27;&#123;&#x27;，&#x27;&#125;&#x27;，&#x27;[&#x27;，&#x27;]&#x27; 的字符串，判断字符串是否有效。</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//有效字符串需满足：</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//左括号必须用相同类型的右括号闭合。</span></span><br><span class="line"><span class="comment">//左括号必须以正确的顺序闭合。</span></span><br><span class="line"><span class="comment">//注意空字符串可被认为是有效字符串。</span></span><br><span class="line"><span class="comment">//示例 1:</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//输入: &quot;()&quot;</span></span><br><span class="line"><span class="comment">//输出: true</span></span><br><span class="line"><span class="comment">//示例 2:</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//输入: &quot;()[]&#123;&#125;&quot;</span></span><br><span class="line"><span class="comment">//输出: true</span></span><br><span class="line"><span class="comment">//示例 3:</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//输入: &quot;(]&quot;</span></span><br><span class="line"><span class="comment">//输出: false</span></span><br><span class="line"><span class="comment">//示例 4:</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//输入: &quot;([)]&quot;</span></span><br><span class="line"><span class="comment">//输出: false</span></span><br><span class="line"><span class="comment">//示例 5:</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//输入: &quot;&#123;[]&#125;&quot;</span></span><br><span class="line"><span class="comment">//输出: true</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Valid</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isValid1</span><span class="params">(String s)</span> &#123;</span><br><span class="line">        <span class="type">char</span>[] chars = s.toCharArray();</span><br><span class="line">        Deque&lt;Character&gt; deque = <span class="keyword">new</span> <span class="title class_">LinkedList</span>&lt;&gt;();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">char</span> c : chars) &#123;</span><br><span class="line">            <span class="keyword">if</span> (c == <span class="string">&#x27;(&#x27;</span>) &#123;</span><br><span class="line">                deque.push(<span class="string">&#x27;)&#x27;</span>);</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (c == <span class="string">&#x27;&#123;&#x27;</span>) &#123;</span><br><span class="line">                deque.push(<span class="string">&#x27;&#125;&#x27;</span>);</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (c == <span class="string">&#x27;[&#x27;</span>) &#123;</span><br><span class="line">                deque.push(<span class="string">&#x27;]&#x27;</span>);</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (deque.isEmpty() || c != deque.peek()) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                deque.pop();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> deque.isEmpty();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 对应的另一半一定在栈顶</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isValid2</span><span class="params">(String s)</span> &#123;</span><br><span class="line">        Stack&lt;Character&gt; stack = <span class="keyword">new</span> <span class="title class_">Stack</span>&lt;&gt;();</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; s.length(); i++) &#123;</span><br><span class="line">            <span class="comment">// 有对应的另一半就直接消消乐</span></span><br><span class="line">            <span class="type">char</span> <span class="variable">c</span> <span class="operator">=</span> s.charAt(i);</span><br><span class="line">            <span class="keyword">if</span> (c == <span class="string">&#x27;)&#x27;</span> &amp;&amp; !stack.isEmpty() &amp;&amp; stack.peek() == <span class="string">&#x27;(&#x27;</span>) &#123;</span><br><span class="line">                stack.pop();</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (c == <span class="string">&#x27;]&#x27;</span> &amp;&amp; !stack.isEmpty() &amp;&amp; stack.peek() == <span class="string">&#x27;[&#x27;</span>) &#123;</span><br><span class="line">                stack.pop();</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (c == <span class="string">&#x27;&#125;&#x27;</span> &amp;&amp; !stack.isEmpty() &amp;&amp; stack.peek() == <span class="string">&#x27;&#123;&#x27;</span>) &#123;</span><br><span class="line">                stack.pop();</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                stack.push(c);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> stack.isEmpty();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">Valid</span> <span class="variable">valid</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Valid</span>();</span><br><span class="line">        System.out.println(valid.isValid1(<span class="string">&quot;(())&#123;&#123;[[]]&#125;&#125;&quot;</span>));</span><br><span class="line">        System.out.println(valid.isValid2(<span class="string">&quot;(())&#123;&#123;[[]]&#125;&#125;&quot;</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+
+
+
+<div class="article-footer reveal fs14">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    </div>
+
+</article>
+
+<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/2022/10/23/%E5%AD%97%E7%AC%A6%E4%B8%B2/">字符串</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2022/10/23/%E7%AE%97%E6%B3%95-%E5%85%B6%E4%BB%96/">算法-其他</a></div></section></div>
+
+
+
+
+
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>本站由 <a href="/">@anonymity</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar">Stellar</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  const stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')){
+        src = stellar.config.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.version = '1.21.0';
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.21.0';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+    root : '/',
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://gcore.jsdelivr.net/npm/jquery@3.6.2/dist/jquery.min.js'
+  };
+
+  if ('local_search') {
+    stellar.search = {};
+    stellar.search.service = 'local_search';
+    if (stellar.search.service == 'local_search') {
+      let service_obj = Object.assign({}, {"field":"all","path":"/search.json","content":true,"sort":"-date"});
+      stellar.search[stellar.search.service] = service_obj;
+    }
+  }
+
+  // stellar js
+  stellar.plugins.stellar = Object.assign({"sites":"/js/plugins/sites.js","friends":"/js/plugins/friends.js","ghinfo":"/js/plugins/ghinfo.js","timeline":"/js/plugins/timeline.js","linkcard":"/js/plugins/linkcard.js","fcircle":"/js/plugins/fcircle.js","weibo":"/js/plugins/weibo.js","memos":"/js/plugins/memos.js"});
+
+  stellar.plugins.marked = Object.assign("https://cdn.bootcdn.net/ajax/libs/marked/4.0.18/marked.min.js");
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@10.3/swiper-bundle.min.css","js":"https://unpkg.com/swiper@10.3/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://gcore.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://gcore.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://gcore.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img, .gallery img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti@0.9.2/umd/heti.min.css","js":"https://unpkg.com/heti@0.9.2/umd/heti-addon.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.copycode = Object.assign({"enable":true,"js":"/js/plugins/copycode.js","default_text":"Copy","success_text":"Copied"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+
+
+<!-- inject -->
+
+
+  </div>
+</body>
+</html>

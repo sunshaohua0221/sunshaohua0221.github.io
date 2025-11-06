@@ -76,7 +76,7 @@
 <div class="widgets">
 <widget class="widget-wrapper search"><div class="widget-body"><div class="search-wrapper" id="search"><form class="search-form"><input type="text" class="search-input" id="search-input" placeholder="站内搜索"><svg t="1670596976048" class="icon search-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2676" width="200" height="200"><path d="M938.2 832.6L723.8 618.1c-2.5-2.5-5.3-4.4-7.9-6.4 36.2-55.6 57.3-121.8 57.3-193.1C773.3 222.8 614.6 64 418.7 64S64 222.8 64 418.6c0 195.9 158.8 354.6 354.6 354.6 71.3 0 137.5-21.2 193.2-57.4 2 2.7 3.9 5.4 6.3 7.8L832.5 938c14.6 14.6 33.7 21.9 52.8 21.9 19.1 0 38.2-7.3 52.8-21.8 29.2-29.1 29.2-76.4 0.1-105.5M418.7 661.3C284.9 661.3 176 552.4 176 418.6 176 284.9 284.9 176 418.7 176c133.8 0 242.6 108.9 242.6 242.7 0 133.7-108.9 242.6-242.6 242.6" p-id="2677"></path></svg></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div></div></widget>
 
-<widget class="widget-wrapper recent"><div class="widget-header cap theme dis-select"><span class="name">最近更新</span></div><div class="widget-body related-posts fs14"><a class="item title" href="/2024/11/23/Jackson/"><span class="title">Jackson</span></a><a class="item title" href="/2024/03/05/nacos%E6%97%A5%E5%BF%97%E4%B8%8D%E6%89%93%E5%8D%B0/"><span class="title">nacos日志不打印</span></a><a class="item title" href="/2025/03/16/Innodb%E4%BA%8B%E5%8A%A1%E6%9B%B4%E6%96%B0%E8%BF%87%E7%A8%8B/"><span class="title">Innodb事务更新过程</span></a><a class="item title" href="/2025/03/12/Innodb%E7%9A%84RR%E5%88%B0%E5%BA%95%E6%9C%89%E6%B2%A1%E6%9C%89%E8%A7%A3%E5%86%B3%E5%B9%BB%E8%AF%BB/"><span class="title">Innodb的RR到底有没有解决幻读</span></a><a class="item title" href="/2025/02/04/JDK21%E8%99%9A%E6%8B%9F%E7%BA%BF%E7%A8%8B/"><span class="title">JDK21虚拟线程</span></a></div></widget>
+<widget class="widget-wrapper recent"><div class="widget-header cap theme dis-select"><span class="name">最近更新</span></div><div class="widget-body related-posts fs14"><a class="item title" href="/2025/11/07/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/"><span class="title">动态规划</span></a><a class="item title" href="/2022/10/23/%E9%98%9F%E5%88%97/"><span class="title">队列</span></a><a class="item title" href="/2022/10/23/%E7%AE%97%E6%B3%95-%E5%85%B6%E4%BB%96/"><span class="title">算法-其他</span></a><a class="item title" href="/2022/11/05/%E7%BA%BF%E7%A8%8B%E5%8D%8F%E4%BD%9C/"><span class="title">线程协作</span></a><a class="item title" href="/2022/08/12/%E6%95%B0%E7%BB%84/"><span class="title">数组</span></a></div></widget>
 
 
 </div>
@@ -97,98 +97,45 @@
   
 
 <div class="nav-wrap"><nav class="sub post cap"><a class="active" href="/">近期发布</a><a href="/archives">归档</a></nav></div>
-  <div class="post-list post"><a class="post-card post " href="/2020/12/03/MySQL%20JDBC%E7%9A%84queryTimeout%E7%9A%84%E4%B8%80%E4%B8%AA%E5%9D%91/">
-<article class="md-text"><h2 class="post-title">ThreadPoolExecutor的拒绝策略CallerRunsPolicy的一个潜在的大坑</h2><div class="excerpt"><p>https://blog.csdn.net/xieyuooo/article/details/39898449?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-1.control&amp;depth_1-utm_source=distribute.pc_relevant.none...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2020-12-03T10:49:50.000Z">2020-12-03</time></span></div></article>
-</a><a class="post-card post " href="/2020/08/31/TiDB-SQL%E7%9B%91%E6%8E%A7%E5%8F%8A%E5%85%B8%E5%9E%8B%E7%9A%84%E4%BC%98%E5%8C%96%E6%A1%88%E4%BE%8B/">
-<article class="md-text"><h2 class="post-title">TiDB SQL监控及典型的优化案例</h2><div class="excerpt"><p>TiDB读请求的执行流程SQL的一生
+  <div class="post-list post"><a class="post-card post " href="/2023/07/06/maven-deploy-401/">
+<article class="md-text"><h2 class="post-title">maven中deploy命令报401的原因及解决方案</h2><div class="excerpt"><p>idea使用过程中有时候会出现deploy时候报401错误，如下图
 
 
-从客户端的Socket读取一条SQL
+原因一、pom 文件李配置的私服仓库地址和settings.xml里配置的用户名和密码没有匹配上
 
-获取一个token
+pom.xml里的仓库配置12345678910111213&lt;!--项目分发信息，在执行mvn deploy后表示要发布的位置。有了这些信息就可以把网站部署到远程服务器或者把构件jar等部署到远程仓库 --&gt;&...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2023-07-06T06:35:16.000Z">2023-07-06</time></span></div></article>
+</a><a class="post-card post " href="/2023/05/17/BASE/">
+<article class="md-text"><h2 class="post-title">BASE理论</h2><div class="excerpt"><p>
+摘自JavaGuide
 
-从PD获取TSO（事务的时间戳）
-
-使用Parser将SQL parse为AST
-
-将AST compile为执行计划   
-
-Logical Optimizer
-
-Physical  Optimizer
-
-Execute Plan
-
-
-
-根据对应的执行计划，最底层的Executor会根据...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2020-08-31T02:04:56.000Z">2020-08-31</time></span></div></article>
-</a><a class="post-card post " href="/2020/07/20/SQL%E4%BC%98%E5%8C%96/">
-<article class="md-text"><h2 class="post-title">SQL诊断优化-持续更新</h2><div class="excerpt"><p>Explain诊断Explain各参数的含义如下：
-
-
-
-列名
-说明
-
-
-
-id
-执行编号，标识select所属的行，如果语句中没有子查询或者关联查询，只有唯一的select，执行编号显示1，否则，内层的select语句一般会顺序编号，对应于其在原始语句的位置
-
-
-select_key
-显示本行是简单或者复杂select，如果查询有任何复杂的子查询，则最外层标记为PRIMARY（DERIVE...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2020-07-20T13:18:50.000Z">2020-07-20</time></span></div></article>
-</a><a class="post-card post " href="/2020/07/10/String.valueOf%E6%85%8E%E7%94%A8/">
-<article class="md-text"><h2 class="post-title">String.valueOf慎用</h2><div class="excerpt"><p>Java API中String.valueOf(Object obj)方法，当传入的参数为一个引用，并且引用为null时，方法会返回字符串&quot;null&quot;，这样就会引发一些你意向不到的”血案”
-jdk1.8.0_181中String.valueOf(Object obj)源码：
-123456789101112/** * Returns the string represent...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2020-07-10T06:18:30.000Z">2020-07-10</time></span></div></article>
-</a><a class="post-card post " href="/2020/05/11/Spring%E4%BA%8B%E5%8A%A1%E4%BC%A0%E6%92%AD%E6%9C%BA%E5%88%B6%E5%AE%9E%E6%88%98/">
-<article class="md-text"><h2 class="post-title">Spring事务传播机制实战</h2><div class="excerpt"><p>背景前段时间项目中做了一次大升级，其中包括数据库分库，由于分了库，原来的单库事务就变成了跨库事务，所以用到了分布式事务，引入了阿里开源的seata；由于业务的特殊性，是属于定点执行任务，在某一时间集中处理业务，所以在压力测试时，seata-server端由于事务并发量大导致seata-server的表有死锁问题，一直重试。显然不可接受，所以决定暂时舍弃seata，还是采用Spring的事务来...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2020-05-11T11:18:36.000Z">2020-05-11</time></span></div></article>
-</a><a class="post-card post " href="/2020/05/09/%E4%B8%80%E6%AC%A1%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5%E7%BB%8F%E5%8E%86/">
-<article class="md-text"><h2 class="post-title">一次系统启动失败经历</h2><div class="excerpt"><p>最近遇到一个很头疼的问题，在一次合代码后，系统启不来了，确切的说，本地可以起来，生成容器镜像后启不来，报了一大堆创建Spring bean异常，本地能启动，镜像启不来，这是不是很怀疑人生，通过各种排除法手段合并代码、删除代码，但就是不行，第二天又重新倒腾了一下（merge），好了，也不知道为啥就好了。    
-接着又有新需求了，从master上拉新的分支，吭哧吭哧干完了，编译、打包、生成镜像...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2020-05-09T02:11:22.000Z">2020-05-09</time></span></div></article>
-</a><a class="post-card post " href="/2020/04/10/Sharding-JDBC/">
-<article class="md-text"><h2 class="post-title">Sharding JDBC生产问题</h2><div class="excerpt"><p>最近项目中在使用数据库中间件，采用ShardingSphere中的Sharding-JDBC，总结下最近出现的问题
-ShardingSphere官网
-分布式主键重复问题问题描述告警双写失败，库中新增metering和last_billing_record违反唯一主键约束
-问题分析因为涉及到分库分表，数据是分散存放的，为了避免分表中的主键不重复，所以使用分布式主键算法生成主键，目前使用的是Sh...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2020-04-10T00:15:54.000Z">2020-04-10</time></span></div></article>
-</a><a class="post-card post " href="/2020/04/09/log-mdc/">
-<article class="md-text"><h2 class="post-title">Slf4j MDC 实现日志追踪</h2><div class="excerpt"><p>
-
-背景随着项目的越来越大，应用处理用户请求越来越多的时候，查日志是个头疼的事，因为你要去海量日志里追踪某个用户的相关日志记录时，非常麻烦；刚开始用线程名称找，线程池的线程很快就被复用，还是很难区分，MDC就可以解决这个问题。
-什么是MDCMDC（Mapped Diagnostic Context，映射调试上下文）
-概括一下：
-
-MDC是一个与当前线程绑定的哈希表，可以往其中添加键值对
-MD...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2020-04-09T14:19:26.000Z">2020-04-09</time></span></div></article>
-</a><a class="post-card post " href="/2020/04/09/Windows%E5%89%AA%E8%B4%B4%E6%9D%BF%E5%A2%9E%E5%BC%BA%E8%BD%AF%E4%BB%B6-ClipX/">
-<article class="md-text"><h2 class="post-title">Windows剪贴板增强软件-ClipX</h2><div class="excerpt"><p>效率神器-只限windows官网下载：http://bluemars.org/clipx/
-能干啥ClipX可以保存最近多次复制的内容，重复的内容不用来回复制了，支持文本、图片，而且复制的内容可以保存再本地，电脑重启后还能用
-使用，图标右键
-
-扩充剪贴板数量最多支持保存1024条记录，正常人够用了
-
-
-随时预览剪贴板内容
-
-可以编辑剪贴板内容
-
-数据本地存储还得手动，自动存储就好了
-
-
-快捷...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2020-04-09T14:11:52.000Z">2020-04-09</time></span></div></article>
-</a><a class="post-card post " href="/2020/04/09/APM-Pinpoint/">
-<article class="md-text"><h2 class="post-title">APM-Pinpoint</h2><div class="excerpt"><p>架构图
-
-单机模式安装准备安装包：
-
-Hbase
-hbase-2.1.5-bin.tar.gz
-hbase-create.hbase下载地址：http://apache.fayea.com/hbase/wget http://apache.fayea.com/hbase/2.1.5/hbase-2.1.5-bin.tar.gzhttps://github.com/naver/pinpoint...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2020-04-09T14:05:08.000Z">2020-04-09</time></span></div></article>
+BASE简介BASE理论起源于2008年，由eBay的架构师Dan Pritchett在ACM上发表。BASE是Basically Available（基本可用）、Soft-state（软状态）和Eventually Consistent（最终一致性）三个短语的缩写。BASE理论是对CAP中一致性C和可用性A权衡的结果，其来源于对大规模互联网系统分布式实践的总结，...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2023-05-17T05:20:46.000Z">2023-05-17</time></span></div></article>
+</a><a class="post-card post " href="/2023/05/15/CAP/">
+<article class="md-text"><h2 class="post-title">CAP理论</h2><div class="excerpt"><p>CAP简介CAP（CAP  theorem）定理又被称作布鲁尔定理（Brewer’s theorem），是加州大学伯克利分校的计算机科学家埃里克·布鲁尔（Eric Brewer）在2000年的ACM  PODC上提出的一个猜想。2002年，麻省理工学院的赛斯·吉尔伯特（Seth Gilbert）和南希·林奇（Nancy Lynch）发表了布鲁尔猜想的证明，使之成为分布式计算领域公认的一个定理...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2023-05-15T13:10:56.000Z">2023-05-15</time></span></div></article>
+</a><a class="post-card post " href="/2022/11/05/%E7%BA%BF%E7%A8%8B%E5%8D%8F%E4%BD%9C/">
+<article class="md-text"><h2 class="post-title">线程协作</h2><div class="excerpt"><p>
+10个线程模拟赛马，所有马就绪后才能开跑，所有马到达终点后裁判宣布赛马成绩1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859public class HorseRace &#123;    //记录赛马成绩    priva...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2022-11-05T02:39:34.000Z">2022-11-05</time></span></div></article>
+</a><a class="post-card post " href="/2022/10/23/%E5%AD%97%E7%AC%A6%E4%B8%B2/">
+<article class="md-text"><h2 class="post-title">字符串</h2><div class="excerpt"><p>
+替换数字123456789101112131415161718192021222324252627282930313233343536373839404142434445//给定一个字符串 s，它包含小写字母和数字字符，请编写一个函数，将字符串中的字母字符保持不变，而将每个数字字符替换为number。//例如，对于输入字符串 &quot;a1b2c3&quot;，函数应该将其转换为 &qu...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2022-10-23T02:39:34.000Z">2022-10-23</time></span></div></article>
+</a><a class="post-card post " href="/2022/10/23/%E6%A0%88/">
+<article class="md-text"><h2 class="post-title">栈</h2><div class="excerpt"><p>
+队列实现栈1234567891011121314151617181920212223242526272829303132333435363738394041424344public class QueueToStack&lt;E&gt; &#123;    private Queue&lt;E&gt; queue;    private Queue&lt;E&gt; tempQueue; ...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2022-10-23T02:39:34.000Z">2022-10-23</time></span></div></article>
+</a><a class="post-card post " href="/2022/10/23/%E7%AE%97%E6%B3%95-%E5%85%B6%E4%BB%96/">
+<article class="md-text"><h2 class="post-title">算法-其他</h2><div class="excerpt"><p>
+手写LRU缓存1234567891011121314151617181920212223242526272829303132333435public class LRUCache3&lt;K, V&gt; &#123;    private int capacity;    private Map&lt;K, V&gt; cache;    private LinkedList&lt;K&...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2022-10-23T02:39:34.000Z">2022-10-23</time></span></div></article>
+</a><a class="post-card post " href="/2022/10/23/%E9%98%9F%E5%88%97/">
+<article class="md-text"><h2 class="post-title">队列</h2><div class="excerpt"><p>
+栈实现队列123456789101112131415161718192021222324public class StackToQueue&lt;T&gt; &#123;    private Stack&lt;T&gt; inStack;    private Stack&lt;T&gt; outStack;    public StackToQueue() &#123;        ...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2022-10-23T02:39:34.000Z">2022-10-23</time></span></div></article>
+</a><a class="post-card post " href="/2022/08/30/%E4%BA%8C%E5%8F%89%E6%A0%91/">
+<article class="md-text"><h2 class="post-title">二叉树</h2><div class="excerpt"><p>定义树
+1234567891011public class TreeNode &#123;    int val;    TreeNode left;    TreeNode right;    public TreeNode (int val, TreeNode left, TreeNode right) &#123;        this.val = val;        this....</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2022-08-30T07:32:50.000Z">2022-08-30</time></span></div></article>
+</a><a class="post-card post " href="/2022/08/12/%E5%8D%95%E4%BE%8B/">
+<article class="md-text"><h2 class="post-title">单例</h2><div class="excerpt"><p>单例的实现方式
+饿汉，类初始化的时候就把单例对象创建出来了123456789public class Singleton &#123;    private Singleton()&#123;&#125;    private static final Singleton instance = new Singleton();    public static Singleton getIn...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2022-08-12T04:03:12.000Z">2022-08-12</time></span></div></article>
 </a></div>
   
   <div class='paginator-wrap dis-select'>
-  <a class="extend prev" rel="prev" href="/page/2/"></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/4/"></a>
+  <a class="extend prev" rel="prev" href="/page/2/"></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/4/"></a>
   </div>
 
 

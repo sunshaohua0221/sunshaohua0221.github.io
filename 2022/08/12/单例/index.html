@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+  <meta name="generator" content="Hexo 7.0.0">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.21.0">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://gcore.jsdelivr.net'>
+  <link rel="preconnect" href="https://gcore.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  
+  <title>单例 - Felix的技术笔记</title>
+
+  
+    <meta name="description" content="单例的实现方式 饿汉，类初始化的时候就把单例对象创建出来了123456789public class Singleton &#123;    private Singleton()&#123;&#125;    private static final Singleton instance &#x3D; new Singleton();    public static Singleton getInsta">
+<meta property="og:type" content="article">
+<meta property="og:title" content="单例">
+<meta property="og:url" content="https://sunshaohua0221.github.io/2022/08/12/%E5%8D%95%E4%BE%8B/index.html">
+<meta property="og:site_name" content="Felix的技术笔记">
+<meta property="og:description" content="单例的实现方式 饿汉，类初始化的时候就把单例对象创建出来了123456789public class Singleton &#123;    private Singleton()&#123;&#125;    private static final Singleton instance &#x3D; new Singleton();    public static Singleton getInsta">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://sunshaohua0221.github.io/2022/08/12/%E5%8D%95%E4%BE%8B/singleton1.png">
+<meta property="og:image" content="https://sunshaohua0221.github.io/2022/08/12/%E5%8D%95%E4%BE%8B/singleton2.png">
+<meta property="article:published_time" content="2022-08-12T04:03:12.000Z">
+<meta property="article:modified_time" content="2025-11-06T12:19:01.000Z">
+<meta property="article:author" content="ssh">
+<meta property="article:tag" content="技术、生活">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sunshaohua0221.github.io/2022/08/12/%E5%8D%95%E4%BE%8B/singleton1.png">
+  
+  
+  
+  <meta name="keywords" content="技术、生活">
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+
+  
+
+  
+
+
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='post'>
+    
+
+  
+
+<header class="header"><div class="logo-wrap"><a class="title" href="/"><div class="main" ff="title">Felix的技术笔记</div><div class="sub cap">学无止境,行以致远</div></a></div>
+
+<nav class="menu dis-select"></nav>
+</header>
+
+
+<div class="widgets">
+<widget class="widget-wrapper search"><div class="widget-body"><div class="search-wrapper" id="search"><form class="search-form"><input type="text" class="search-input" id="search-input" data-filter="/blog/" placeholder="文章搜索"><svg t="1670596976048" class="icon search-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2676" width="200" height="200"><path d="M938.2 832.6L723.8 618.1c-2.5-2.5-5.3-4.4-7.9-6.4 36.2-55.6 57.3-121.8 57.3-193.1C773.3 222.8 614.6 64 418.7 64S64 222.8 64 418.6c0 195.9 158.8 354.6 354.6 354.6 71.3 0 137.5-21.2 193.2-57.4 2 2.7 3.9 5.4 6.3 7.8L832.5 938c14.6 14.6 33.7 21.9 52.8 21.9 19.1 0 38.2-7.3 52.8-21.8 29.2-29.1 29.2-76.4 0.1-105.5M418.7 661.3C284.9 661.3 176 552.4 176 418.6 176 284.9 284.9 176 418.7 176c133.8 0 242.6 108.9 242.6 242.7 0 133.7-108.9 242.6-242.6 242.6" p-id="2677"></path></svg></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div></div></widget>
+
+
+<widget class="widget-wrapper toc single" id="data-toc"><div class="widget-header cap dis-select"><span class="name">单例</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%95%E4%BE%8B%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F"><span class="toc-text">单例的实现方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%AF%B4%E6%9E%9A%E4%B8%BE%E6%98%AF%E5%AE%9E%E7%8E%B0%E5%8D%95%E4%BE%8B%E6%9C%80%E5%A5%BD%E7%9A%84%E6%96%B9%E5%BC%8F"><span class="toc-text">为什么说枚举是实现单例最好的方式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9E%9A%E4%B8%BE%E5%AE%9E%E7%8E%B0%E7%9A%84%E5%8D%95%E4%BE%8B%E5%86%99%E6%B3%95%E7%AE%80%E5%8D%95"><span class="toc-text">枚举实现的单例写法简单</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9E%9A%E4%B8%BE%E5%8F%AF%E8%A7%A3%E5%86%B3%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E9%97%AE%E9%A2%98"><span class="toc-text">枚举可解决线程安全问题</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%9E%9A%E4%B8%BE%E5%AE%9E%E7%8E%B0%E7%9A%84%E5%8D%95%E4%BE%8B%E5%8F%AF%E9%81%BF%E5%85%8D%E8%A2%AB%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E7%A0%B4%E5%9D%8F"><span class="toc-text">枚举实现的单例可避免被反序列化破坏</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E7%A0%B4%E5%9D%8F%E5%8D%95%E4%BE%8B"><span class="toc-text">如何破坏单例</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%8D%E5%B0%84%E7%A0%B4%E5%9D%8F%E5%8D%95%E4%BE%8B"><span class="toc-text">反射破坏单例</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%9D%8F%E5%8D%95%E4%BE%8B"><span class="toc-text">反序列化坏单例</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ObjectInputStream"><span class="toc-text">ObjectInputStream</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E9%81%BF%E5%85%8D%E5%8D%95%E4%BE%8B%E8%A2%AB%E7%A0%B4%E5%9D%8F"><span class="toc-text">如何避免单例被破坏</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%81%BF%E5%85%8D%E5%8F%8D%E5%B0%84%E7%A0%B4%E5%9D%8F%E5%8D%95%E4%BE%8B"><span class="toc-text">避免反射破坏单例</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%81%BF%E5%85%8D%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E7%A0%B4%E5%9D%8F%E5%8D%95%E4%BE%8B"><span class="toc-text">避免反序列化破坏单例</span></a></li></ol></li></ol></div></div></widget>
+
+
+
+
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+
+
+<div class="bread-nav fs12"><div class="left"><div id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" href="/">文章</a></div><div id="post-meta">
+    <span>发布于&nbsp;<time datetime="2022-08-12T04:03:12.000Z">2022-08-12</time></span>
+    
+    <span>更新于&nbsp;<time datetime="2025-11-06T12:19:01.000Z">2025-11-06</time></span>
+    </div></div></div>
+
+<article class='md-text content post'>
+<h1 class="article-title"><span>单例</span></h1>
+<h3 id="单例的实现方式"><a href="#单例的实现方式" class="headerlink" title="单例的实现方式"></a>单例的实现方式</h3><ol>
+<li>饿汉，类初始化的时候就把单例对象创建出来了<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Singleton</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">Singleton</span><span class="params">()</span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">Singleton</span> <span class="variable">instance</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Singleton</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title function_">getInstance</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>懒汉，需要的时候才去创建对象，好处是避免提前创建浪费资源，缺点也很明显，就是第一次创建的时候浪费时间<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Singleton</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">Singleton</span><span class="params">()</span> &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Singleton singleton;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">static</span> Singleton <span class="title function_">getInstance</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (singleton == <span class="literal">null</span>) &#123;</span><br><span class="line">            singleton = <span class="keyword">new</span> <span class="title class_">Singleton</span>();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> singleton;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>双重校验锁<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Singleton</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">Singleton</span><span class="params">()</span> &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">volatile</span> Singleton singleton;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title function_">getInstance</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (singleton == <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">synchronized</span> (Singleton.class) &#123;</span><br><span class="line">                <span class="keyword">if</span> (singleton == <span class="literal">null</span>) &#123;</span><br><span class="line">                    singleton = <span class="keyword">new</span> <span class="title class_">Singleton</span>();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> singleton;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>双重校验锁-防止反射创建实例<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Singleton</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">Singleton</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="comment">// 防止通过反射创建实例</span></span><br><span class="line">        <span class="keyword">if</span> (instance != <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">RuntimeException</span>(<span class="string">&quot;Use getInstance() method to get the single instance of this class.&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">volatile</span> Singleton instance;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title function_">getInstance</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="comment">// 第一次检查，避免不必要的同步</span></span><br><span class="line">        <span class="keyword">if</span> (instance == <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">synchronized</span> (Singleton.class) &#123;</span><br><span class="line">                <span class="comment">// 第二次检查，确保只有一个实例被创建</span></span><br><span class="line">                <span class="keyword">if</span> (instance == <span class="literal">null</span>) &#123;</span><br><span class="line">                    instance = <span class="keyword">new</span> <span class="title class_">Singleton</span>();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>内部类<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Singleton</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">Singleton</span><span class="params">()</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">SingletonHolder</span> &#123;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">Singleton</span> <span class="variable">instance</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Singleton</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title function_">getInstance</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> SingletonHolder.instance;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li>枚举 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> <span class="title class_">Singleton4</span> &#123;</span><br><span class="line"></span><br><span class="line">    INSTANCE;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">methodA</span><span class="params">()</span> &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="为什么说枚举是实现单例最好的方式"><a href="#为什么说枚举是实现单例最好的方式" class="headerlink" title="为什么说枚举是实现单例最好的方式"></a>为什么说枚举是实现单例最好的方式</h3><p>《Effective Java》一书中，明确表达过一种观点：</p>
+<blockquote>
+<p>使用枚举实现单例的方法虽然还没有广泛采用，但是单元素的枚举类型已经成为实现Singleton的最佳方法。  </p>
+</blockquote>
+<p>究其原因，主要有以下三个好处：</p>
+<h4 id="枚举实现的单例写法简单"><a href="#枚举实现的单例写法简单" class="headerlink" title="枚举实现的单例写法简单"></a>枚举实现的单例写法简单</h4><p>简单对比下“双重校验锁”方式和枚举的方式，就会发现，枚举实现单例的方式精简很多。<br><br>上面的双重锁校验的代码之所以很臃肿，是因为大部分代码都是在保证线程安全。为了在保证线程安全和锁粒度之间做权衡，代码难免会写的复杂些。但是，这段代码还是有问题的，因为他无法解决反序列化会破坏单例的问题。</p>
+<h4 id="枚举可解决线程安全问题"><a href="#枚举可解决线程安全问题" class="headerlink" title="枚举可解决线程安全问题"></a>枚举可解决线程安全问题</h4><p>上面的双重锁校验的代码之所以很臃肿，是因为大部分代码都是在保证线程安全。为了在保证线程安全和锁粒度之间做权衡，代码难免会写的复杂些。但是，这段代码还是有问题的，因为他无法解决反序列化会破坏单例的问题。<br><br>其实，并不是使用枚举就不需要保证线程安全，只不过线程安全的保证不需要我们关心而已。也就是说，其实在“底层”还是做了线程安全方面的保证的。<br><br>那么，“底层”到底指的是什么？这就要说到关于枚举的实现了：<br><br>定义枚举时使用enum和class一样，是Java中的一个关键字。就像class对应用一个Class类一样，enum也对应有一个Enum类。<br><br>通过将定义好的枚举反编译，我们就能发现，其实枚举在经过javac的编译之后，会被转换成形如public final class T extends Enum的定义。而且，枚举中的各个枚举项同时通过static来定义的。如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> <span class="title class_">T</span> &#123;</span><br><span class="line">    SPRING,SUMMER,AUTUMN,WINTER;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>反编译后代码为：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">class</span> <span class="title class_">T</span> <span class="keyword">extends</span> <span class="title class_">Enum</span></span><br><span class="line">&#123;</span><br><span class="line">        <span class="comment">//省略部分内容</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> T SPRING;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> T SUMMER;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> T AUTUMN;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> T WINTER;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> T ENUM$VALUES[];</span><br><span class="line">    <span class="keyword">static</span></span><br><span class="line">    &#123;</span><br><span class="line">         SPRING = <span class="keyword">new</span> <span class="title class_">T</span>(<span class="string">&quot;SPRING&quot;</span>, <span class="number">0</span>);</span><br><span class="line">         SUMMER = <span class="keyword">new</span> <span class="title class_">T</span>(<span class="string">&quot;SUMMER&quot;</span>, <span class="number">1</span>);</span><br><span class="line">         AUTUMN = <span class="keyword">new</span> <span class="title class_">T</span>(<span class="string">&quot;AUTUMN&quot;</span>, <span class="number">2</span>);</span><br><span class="line">         WINTER = <span class="keyword">new</span> <span class="title class_">T</span>(<span class="string">&quot;WINTER&quot;</span>, <span class="number">3</span>);</span><br><span class="line">         ENUM$VALUES = (<span class="keyword">new</span> <span class="title class_">T</span>[] &#123;</span><br><span class="line">               SPRING, SUMMER, AUTUMN, WINTER</span><br><span class="line">         &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>了解JVM的类加载机制的朋友应该对这部分比较清楚。<code>static</code>类型的属性会在类被加载过程中被初始化，当一个Java类第一次被真正使用到的时候静态资源被初始化、Java类的加载和初始化过程都是线程安全的（因为虚拟机在加载枚举的类的时候，会使用ClassLoader的loadClass方法，而这个方法使用同步代码块保证了线程安全）。所以，创建一个enum类型是线程安全的。<br><br>也就是说，我们定义的一个枚举，在第一次被真正用到的时候，会被虚拟机加载并初始化，而这个初始化过程是线程安全的。而我们知道，解决单例的并发问题，主要解决的就是初始化过程中的线程安全问题。<br><br>所以，由于枚举的以上特性，枚举实现的单例是天生线程安全的。</p>
+<h4 id="枚举实现的单例可避免被反序列化破坏"><a href="#枚举实现的单例可避免被反序列化破坏" class="headerlink" title="枚举实现的单例可避免被反序列化破坏"></a>枚举实现的单例可避免被反序列化破坏</h4><p><code>所以，由于枚举的以上特性，枚举实现的单例是天生线程安全的。</code>这意味着即使类的构造函数是私有的，反序列化仍然可以创建该类的实例，因为它不依赖于常规的构造过程。<br><br>但是，枚举的反序列化并不是通过Unsafe，也不是通过反射实现的。所以，也就不会发生由于反序列化导致的单例破坏问题。</p>
+<h3 id="如何破坏单例"><a href="#如何破坏单例" class="headerlink" title="如何破坏单例"></a>如何破坏单例</h3><p>单例模式主要是通过把一个类的构造方法私有化，来避免重复创建多个对象的。那么，想要破坏单例，只要想办法能够执行到这个私有的构造方法就行了。<br><br>一般来说做法有使用反射及使用反序列化都可以破坏单例。</p>
+<h4 id="反射破坏单例"><a href="#反射破坏单例" class="headerlink" title="反射破坏单例"></a>反射破坏单例</h4><p>以上面的双重校验锁代码为例，我们尝试通过反射技术，来破坏单例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Singleton</span> <span class="variable">singleton1</span> <span class="operator">=</span> Singleton.getSingleton();</span><br><span class="line"></span><br><span class="line"><span class="comment">//通过反射获取到构造函数  </span></span><br><span class="line">Constructor&lt;Singleton&gt; constructor = Singleton.class.getDeclaredConstructor();</span><br><span class="line"><span class="comment">//将构造函数设置为可访问类型</span></span><br><span class="line">constructor.setAccessible(<span class="literal">true</span>);</span><br><span class="line"><span class="comment">//调用构造函数的newInstance创建一个对象</span></span><br><span class="line"><span class="type">Singleton</span> <span class="variable">singleton2</span> <span class="operator">=</span> constructor.newInstance();</span><br><span class="line"><span class="comment">//判断反射创建的对象和之前的对象是不是同一个对象</span></span><br><span class="line">System.out.println(s1 == s2);</span><br></pre></td></tr></table></figure>
+<p>以上代码，输出结果为false，也就是说通过反射技术，我们给单例对象创建出来了一个”兄弟”。</p>
+<blockquote>
+<p>setAccessible(true)，使得反射对象在使用时应该取消 Java 语言访问检查，使得私有的构造函数能够被访问。</p>
+</blockquote>
+<h4 id="反序列化坏单例"><a href="#反序列化坏单例" class="headerlink" title="反序列化坏单例"></a>反序列化坏单例</h4><p>我们尝试通过序列化+反序列化来破坏一下单例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.hollis;</span><br><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SerializableDemo1</span> &#123;</span><br><span class="line">    <span class="comment">//为了便于理解，忽略关闭流操作及删除文件操作。真正编码时千万不要忘记</span></span><br><span class="line">    <span class="comment">//Exception直接抛出</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException, ClassNotFoundException &#123;</span><br><span class="line">        <span class="comment">//Write Obj to file</span></span><br><span class="line">        <span class="type">ObjectOutputStream</span> <span class="variable">oos</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ObjectOutputStream</span>(<span class="keyword">new</span> <span class="title class_">FileOutputStream</span>(<span class="string">&quot;tempFile&quot;</span>));</span><br><span class="line">        oos.writeObject(Singleton.getSingleton());</span><br><span class="line">        <span class="comment">//Read Obj from file</span></span><br><span class="line">        <span class="type">File</span> <span class="variable">file</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">File</span>(<span class="string">&quot;tempFile&quot;</span>);</span><br><span class="line">        <span class="type">ObjectInputStream</span> <span class="variable">ois</span> <span class="operator">=</span>  <span class="keyword">new</span> <span class="title class_">ObjectInputStream</span>(<span class="keyword">new</span> <span class="title class_">FileInputStream</span>(file));</span><br><span class="line">        <span class="type">Singleton</span> <span class="variable">newInstance</span> <span class="operator">=</span> (Singleton) ois.readObject();</span><br><span class="line">        <span class="comment">//判断是否是同一个对象</span></span><br><span class="line">        System.out.println(newInstance == Singleton.getSingleton());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//false</span></span><br></pre></td></tr></table></figure>
+<p>输出结构为false，说明：</p>
+<blockquote>
+<p>通过对Singleton的序列化与反序列化得到的对象是一个新的对象，这就破坏了Singleton的单例性。</p>
+</blockquote>
+<p>这里，在介绍如何解决这个问题之前，我们先来深入分析一下，为什么会这样？在反序列化的过程中到底发生了什么。</p>
+<h4 id="ObjectInputStream"><a href="#ObjectInputStream" class="headerlink" title="ObjectInputStream"></a>ObjectInputStream</h4><p>对象的序列化过程通过ObjectOutputStream和ObjectInputStream来实现的，那么带着刚刚的问题，分析一下ObjectInputStream的<code>readObject</code>方法执行情况到底是怎样的。<br><br>为了节省篇幅，这里给出ObjectInputStream的<code>readObject</code>的调用栈：</p>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="singleton1.png"/></div></div>
+<p>这里看一下重点代码，<code>readOrdinaryObject</code>方法的代码片段：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> Object <span class="title function_">readOrdinaryObject</span><span class="params">(<span class="type">boolean</span> unshared)</span> <span class="keyword">throws</span> IOException&#123;</span><br><span class="line">    <span class="comment">//此处省略部分代码</span></span><br><span class="line">    Object obj;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        obj = desc.isInstantiable() ? desc.newInstance() : <span class="literal">null</span>;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception ex)&#123;</span><br><span class="line">        <span class="keyword">throw</span> (IOException) <span class="keyword">new</span> <span class="title class_">InvalidClassException</span>(</span><br><span class="line">                desc.forClass().getName(),</span><br><span class="line">                <span class="string">&quot;unable to create instance&quot;</span>).initCause(ex);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//此处省略部分代码</span></span><br><span class="line">    <span class="keyword">if</span> (obj != <span class="literal">null</span> &amp;&amp;</span><br><span class="line">            handles.lookupException(passHandle) == <span class="literal">null</span> &amp;&amp;</span><br><span class="line">            desc.hasReadResolveMethod())</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">Object</span> <span class="variable">rep</span> <span class="operator">=</span> desc.invokeReadResolve(obj);</span><br><span class="line">        <span class="keyword">if</span> (unshared &amp;&amp; rep.getClass().isArray())&#123;</span><br><span class="line">            rep =cloneArray(rep);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (rep != obj)&#123;</span><br><span class="line">            handles.setObject(passHandle, obj =rep);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> obj;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以上中主要贴出两部分代码。先分析第一部分：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Object obj;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        obj = desc.isInstantiable() ? desc.newInstance() : <span class="literal">null</span>;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception ex)&#123;</span><br><span class="line">        <span class="keyword">throw</span> (IOException) <span class="keyword">new</span> <span class="title class_">InvalidClassException</span>(desc.forClass().getName(),<span class="string">&quot;unable to create instance&quot;</span>).initCause(ex);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>这里创建的这个obj对象，就是本方法要返回的对象，也可以暂时理解为是ObjectInputStream的<code>readObject</code>返回的对象。</p>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="singleton2.png"/></div></div>
+
+<blockquote>
+<p>isInstantiable：如果一个serializable&#x2F;externalizable的类可以在运行时被实例化，那么该方法就返回true。针对serializable和externalizable我会在其他文章中介绍。<br>desc.newInstance：该方法通过反射的方式新建一个对象。</p>
+</blockquote>
+<p>然后看一下<code>newInstance</code>的源码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> T <span class="title function_">newInstance</span><span class="params">(Object ... initargs)</span></span><br><span class="line">        <span class="keyword">throws</span> InstantiationException, IllegalAccessException,</span><br><span class="line">        IllegalArgumentException, InvocationTargetException</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (!override) &#123;</span><br><span class="line">        <span class="keyword">if</span> (!Reflection.quickCheckMemberAccess(clazz, modifiers)) &#123;</span><br><span class="line">            Class&lt;?&gt; caller = Reflection.getCallerClass();</span><br><span class="line">            checkAccess(caller, clazz, <span class="literal">null</span>, modifiers);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> ((clazz.getModifiers() &amp; Modifier.ENUM) != <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>(<span class="string">&quot;Cannot reflectively create enum objects&quot;</span>);</span><br><span class="line">    <span class="type">ConstructorAccessor</span> <span class="variable">ca</span> <span class="operator">=</span> constructorAccessor;   <span class="comment">// read volatile</span></span><br><span class="line">    <span class="keyword">if</span> (ca == <span class="literal">null</span>) &#123;</span><br><span class="line">        ca = acquireConstructorAccessor();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@SuppressWarnings(&quot;unchecked&quot;)</span></span><br><span class="line">    <span class="type">T</span> <span class="variable">inst</span> <span class="operator">=</span> (T) ca.newInstance(initargs);</span><br><span class="line">    <span class="keyword">return</span> inst;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中关键的就是<code>T inst = (T) ca.newInstance(initargs);</code>这一步，这里实现的话在BootstrapConstructorAccessorImpl中，实现如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> Object <span class="title function_">newInstance</span><span class="params">(Object[] args)</span></span><br><span class="line">        <span class="keyword">throws</span> IllegalArgumentException, InvocationTargetException</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> UnsafeFieldAccessorImpl.unsafe.</span><br><span class="line">            allocateInstance(constructor.getDeclaringClass());</span><br><span class="line">    &#125; <span class="keyword">catch</span> (InstantiationException e) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">InvocationTargetException</span>(e);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到，<code>这里通过Java 的 Unsafe 机制来创建对象的，而不是通过调用构造函数。</code>这意味着即使类的构造函数是私有的，反序列化仍然可以创建该类的实例，因为它不依赖于常规的构造过程。<br><br>所以。到目前为止，也就可以解释，为什么序列化可以破坏单例了？</p>
+<blockquote>
+<p>答：序列化会通过Unsafe直接分配内存的方式来创建一个新的对象。</p>
+</blockquote>
+<h3 id="如何避免单例被破坏"><a href="#如何避免单例被破坏" class="headerlink" title="如何避免单例被破坏"></a>如何避免单例被破坏</h3><h4 id="避免反射破坏单例"><a href="#避免反射破坏单例" class="headerlink" title="避免反射破坏单例"></a>避免反射破坏单例</h4><p>反射是调用默认的构造函数创建出来的，只需要我们改造下构造函数，使其在反射调用的时候识别出来对象是不是被创建过就行了</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="title function_">Singleton</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (singleton != <span class="literal">null</span>)&#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">RuntimeException</span>(<span class="string">&quot;单例对象只能创建一次... &quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="避免反序列化破坏单例"><a href="#避免反序列化破坏单例" class="headerlink" title="避免反序列化破坏单例"></a>避免反序列化破坏单例</h4><p>解决反序列化的破坏单例，只需要我们自定义反序列化的策略就行了，就是说我们不要让他走默认逻辑一直调用到Unsafe创建对象，而是我们干预他的这个过程，干预方式就是在Singleton类中定义<code>readResolve</code>，这样就可以解决该问题：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Singleton</span> <span class="keyword">implements</span> <span class="title class_">Serializable</span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="title function_">Singleton</span><span class="params">()</span> &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">volatile</span> Singleton singleton;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title function_">getInstance</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (singleton == <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">synchronized</span> (Singleton.class) &#123;</span><br><span class="line">                <span class="keyword">if</span> (singleton == <span class="literal">null</span>) &#123;</span><br><span class="line">                    singleton = <span class="keyword">new</span> <span class="title class_">Singleton</span>();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> singleton;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Object <span class="title function_">readResolve</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> singleton;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>还是运行以下测试类：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.hollis;</span><br><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SerializableDemo1</span> &#123;</span><br><span class="line">    <span class="comment">//为了便于理解，忽略关闭流操作及删除文件操作。真正编码时千万不要忘记</span></span><br><span class="line">    <span class="comment">//Exception直接抛出</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException, ClassNotFoundException &#123;</span><br><span class="line">        <span class="comment">//Write Obj to file</span></span><br><span class="line">        <span class="type">ObjectOutputStream</span> <span class="variable">oos</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ObjectOutputStream</span>(<span class="keyword">new</span> <span class="title class_">FileOutputStream</span>(<span class="string">&quot;tempFile&quot;</span>));</span><br><span class="line">        oos.writeObject(Singleton.getSingleton());</span><br><span class="line">        <span class="comment">//Read Obj from file</span></span><br><span class="line">        <span class="type">File</span> <span class="variable">file</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">File</span>(<span class="string">&quot;tempFile&quot;</span>);</span><br><span class="line">        <span class="type">ObjectInputStream</span> <span class="variable">ois</span> <span class="operator">=</span>  <span class="keyword">new</span> <span class="title class_">ObjectInputStream</span>(<span class="keyword">new</span> <span class="title class_">FileInputStream</span>(file));</span><br><span class="line">        <span class="type">Singleton</span> <span class="variable">newInstance</span> <span class="operator">=</span> (Singleton) ois.readObject();</span><br><span class="line">        <span class="comment">//判断是否是同一个对象</span></span><br><span class="line">        System.out.println(newInstance == Singleton.getSingleton());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//true</span></span><br></pre></td></tr></table></figure>
+<p>本次输出结果为true。具体原理，我们回过头继续分析code 3中的第二段代码:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (obj != <span class="literal">null</span> &amp;&amp;</span><br><span class="line">        handles.lookupException(passHandle) == <span class="literal">null</span> &amp;&amp;</span><br><span class="line">        desc.hasReadResolveMethod())</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="type">Object</span> <span class="variable">rep</span> <span class="operator">=</span> desc.invokeReadResolve(obj);</span><br><span class="line">            <span class="keyword">if</span> (unshared &amp;&amp; rep.getClass().isArray())&#123;</span><br><span class="line">                rep =cloneArray(rep);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (rep != obj)&#123;</span><br><span class="line">                handles.setObject(passHandle, obj =rep);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<p><code>hasReadResolveMethod</code>:如果实现了serializable 或者 externalizable接口的类中包含<code>readResolve</code>则返回true<br><br><code>invokeReadResolve</code>:通过反射的方式调用要被反序列化的类的readResolve方法。<br><br>所以，原理也就清楚了，只要在Singleton中定义readResolve方法，并在该方法中指定要返回的对象的生成策略，就可以防止单例被破坏。</p>
+
+
+
+<div class="article-footer reveal fs14">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    </div>
+
+</article>
+
+<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/2022/08/30/%E4%BA%8C%E5%8F%89%E6%A0%91/">二叉树</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2022/08/12/%E6%95%B0%E7%BB%84/">数组</a></div></section></div>
+
+
+
+
+
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>本站由 <a href="/">@anonymity</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar">Stellar</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  const stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')){
+        src = stellar.config.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.version = '1.21.0';
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.21.0';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+    root : '/',
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://gcore.jsdelivr.net/npm/jquery@3.6.2/dist/jquery.min.js'
+  };
+
+  if ('local_search') {
+    stellar.search = {};
+    stellar.search.service = 'local_search';
+    if (stellar.search.service == 'local_search') {
+      let service_obj = Object.assign({}, {"field":"all","path":"/search.json","content":true,"sort":"-date"});
+      stellar.search[stellar.search.service] = service_obj;
+    }
+  }
+
+  // stellar js
+  stellar.plugins.stellar = Object.assign({"sites":"/js/plugins/sites.js","friends":"/js/plugins/friends.js","ghinfo":"/js/plugins/ghinfo.js","timeline":"/js/plugins/timeline.js","linkcard":"/js/plugins/linkcard.js","fcircle":"/js/plugins/fcircle.js","weibo":"/js/plugins/weibo.js","memos":"/js/plugins/memos.js"});
+
+  stellar.plugins.marked = Object.assign("https://cdn.bootcdn.net/ajax/libs/marked/4.0.18/marked.min.js");
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@10.3/swiper-bundle.min.css","js":"https://unpkg.com/swiper@10.3/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://gcore.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://gcore.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://gcore.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img, .gallery img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti@0.9.2/umd/heti.min.css","js":"https://unpkg.com/heti@0.9.2/umd/heti-addon.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.copycode = Object.assign({"enable":true,"js":"/js/plugins/copycode.js","default_text":"Copy","success_text":"Copied"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+
+
+<!-- inject -->
+
+
+  </div>
+</body>
+</html>
