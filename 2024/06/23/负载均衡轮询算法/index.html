@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+  <meta name="generator" content="Hexo 7.0.0">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.21.0">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://gcore.jsdelivr.net'>
+  <link rel="preconnect" href="https://gcore.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  
+  <title>负载均衡算法 - Felix的技术笔记</title>
+
+  
+    <meta name="description" content="负载均衡会根据配置的调度算法，将来自客户端的请求按照对应的算法规则转发至相应的后端服务器。负载均衡支持轮询、加权轮询、加权最小连接数、一致性哈希等多种调度算法，用于支持不同的业务场景。 基础轮询算法轮询算法按照访问顺序将外部请求依序分发到后端服务器。轮询算法常用于短连接服务，例如HTTP等服务。例如负载均衡后端服务器组挂载了2个ECS，则客户端新请求将在后端服务器之间轮流分发。 123456789">
+<meta property="og:type" content="article">
+<meta property="og:title" content="负载均衡算法">
+<meta property="og:url" content="https://sunshaohua0221.github.io/2024/06/23/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E8%BD%AE%E8%AF%A2%E7%AE%97%E6%B3%95/index.html">
+<meta property="og:site_name" content="Felix的技术笔记">
+<meta property="og:description" content="负载均衡会根据配置的调度算法，将来自客户端的请求按照对应的算法规则转发至相应的后端服务器。负载均衡支持轮询、加权轮询、加权最小连接数、一致性哈希等多种调度算法，用于支持不同的业务场景。 基础轮询算法轮询算法按照访问顺序将外部请求依序分发到后端服务器。轮询算法常用于短连接服务，例如HTTP等服务。例如负载均衡后端服务器组挂载了2个ECS，则客户端新请求将在后端服务器之间轮流分发。 123456789">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-06-23T03:09:22.000Z">
+<meta property="article:modified_time" content="2025-11-08T02:50:45.000Z">
+<meta property="article:author" content="ssh">
+<meta property="article:tag" content="技术、生活">
+<meta name="twitter:card" content="summary">
+  
+  
+  
+  <meta name="keywords" content="技术、生活">
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+
+  
+
+  
+
+
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='post'>
+    
+
+  
+
+<header class="header"><div class="logo-wrap"><a class="title" href="/"><div class="main" ff="title">Felix的技术笔记</div><div class="sub cap">学无止境,行以致远</div></a></div>
+
+<nav class="menu dis-select"></nav>
+</header>
+
+
+<div class="widgets">
+<widget class="widget-wrapper search"><div class="widget-body"><div class="search-wrapper" id="search"><form class="search-form"><input type="text" class="search-input" id="search-input" data-filter="/blog/" placeholder="文章搜索"><svg t="1670596976048" class="icon search-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2676" width="200" height="200"><path d="M938.2 832.6L723.8 618.1c-2.5-2.5-5.3-4.4-7.9-6.4 36.2-55.6 57.3-121.8 57.3-193.1C773.3 222.8 614.6 64 418.7 64S64 222.8 64 418.6c0 195.9 158.8 354.6 354.6 354.6 71.3 0 137.5-21.2 193.2-57.4 2 2.7 3.9 5.4 6.3 7.8L832.5 938c14.6 14.6 33.7 21.9 52.8 21.9 19.1 0 38.2-7.3 52.8-21.8 29.2-29.1 29.2-76.4 0.1-105.5M418.7 661.3C284.9 661.3 176 552.4 176 418.6 176 284.9 284.9 176 418.7 176c133.8 0 242.6 108.9 242.6 242.7 0 133.7-108.9 242.6-242.6 242.6" p-id="2677"></path></svg></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div></div></widget>
+
+
+<widget class="widget-wrapper toc single" id="data-toc"><div class="widget-header cap dis-select"><span class="name">负载均衡算法</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E8%BD%AE%E8%AF%A2%E7%AE%97%E6%B3%95"><span class="toc-text">基础轮询算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A0%E6%9D%83%E8%BD%AE%E8%AF%A2%E7%AE%97%E6%B3%95"><span class="toc-text">加权轮询算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A0%E6%9D%83%E6%9C%80%E5%B0%8F%E8%BF%9E%E6%8E%A5%E6%95%B0%E7%AE%97%E6%B3%95"><span class="toc-text">加权最小连接数算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E8%87%B4%E6%80%A7%E5%93%88%E5%B8%8C%E7%AE%97%E6%B3%95"><span class="toc-text">一致性哈希算法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BC%98%E7%82%B9"><span class="toc-text">优点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BC%BA%E7%82%B9"><span class="toc-text">缺点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%82%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-text">适用场景</span></a></li></ol></li></ol></div></div></widget>
+
+
+
+
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+
+
+<div class="bread-nav fs12"><div class="left"><div id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" href="/">文章</a></div><div id="post-meta">
+    <span>发布于&nbsp;<time datetime="2024-06-23T03:09:22.000Z">2024-06-23</time></span>
+    
+    <span>更新于&nbsp;<time datetime="2025-11-08T02:50:45.000Z">2025-11-08</time></span>
+    </div></div></div>
+
+<article class='md-text content post'>
+<h1 class="article-title"><span>负载均衡算法</span></h1>
+<p>负载均衡会根据配置的调度算法，将来自客户端的请求按照对应的算法规则转发至相应的后端服务器。负载均衡支持<code>轮询、加权轮询、加权最小连接数、一致性哈希</code>等多种调度算法，用于支持不同的业务场景。</p>
+<h3 id="基础轮询算法"><a href="#基础轮询算法" class="headerlink" title="基础轮询算法"></a>基础轮询算法</h3><p>轮询算法按照访问顺序将外部请求依序分发到后端服务器。轮询算法常用于<code>短连接服务</code>，例如HTTP等服务。<br>例如负载均衡后端服务器组挂载了2个ECS，则客户端新请求将在后端服务器之间轮流分发。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.atomic.AtomicInteger;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RoundRobinLoadBalancer</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> List&lt;String&gt; servers;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> AtomicInteger currentIndex;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">RoundRobinLoadBalancer</span><span class="params">(List&lt;String&gt; servers)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.servers = servers;</span><br><span class="line">        <span class="built_in">this</span>.currentIndex = <span class="keyword">new</span> <span class="title class_">AtomicInteger</span>(<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getNextServer</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (servers.isEmpty()) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalStateException</span>(<span class="string">&quot;No servers available&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="type">int</span> <span class="variable">index</span> <span class="operator">=</span> currentIndex.getAndIncrement() % servers.size();</span><br><span class="line">        <span class="keyword">if</span> (index &lt; <span class="number">0</span>) &#123;</span><br><span class="line">            index = Math.abs(index) % servers.size();</span><br><span class="line">            currentIndex.set(<span class="number">0</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> servers.get(index);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Nginx配置</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">http</span> &#123;</span><br><span class="line">  <span class="string">upstream</span> <span class="string">myapp1</span> &#123;</span><br><span class="line"></span><br><span class="line">  <span class="string">server</span> <span class="string">srv1.example.com;</span></span><br><span class="line">  <span class="string">server</span> <span class="string">srv2.example.com;</span></span><br><span class="line">  <span class="string">server</span> <span class="string">srv3.example.com;</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="string">server</span> &#123;</span><br><span class="line">      <span class="string">location</span> <span class="string">/</span> &#123;</span><br><span class="line">        <span class="string">proxy_pass</span> <span class="string">http://myapp1;</span></span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="加权轮询算法"><a href="#加权轮询算法" class="headerlink" title="加权轮询算法"></a>加权轮询算法</h3><p>加权轮询算法在轮询算法的基础上引入了<code>权重</code>的概念，对服务器的负载分配更加灵活。权重值越高的后端服务器，被轮询到的概率也越高。加权轮询算法常用于<code>短连接服务</code>，例如HTTP等服务。</p>
+<p>例如负载均衡后端服务器组挂载了2个ECS，分配的权重分别为60、40，则客户端新请求转发到相应后端服务器的概率为60%、40%。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.atomic.AtomicInteger;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">WeightedRoundRobinLoadBalancer</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> List&lt;Server&gt; servers;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> AtomicInteger currentIndex;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> maxWeight;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="type">int</span> gcd;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">WeightedRoundRobinLoadBalancer</span><span class="params">(Map&lt;String, Integer&gt; serverWeights)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.servers = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">        <span class="built_in">this</span>.currentIndex = <span class="keyword">new</span> <span class="title class_">AtomicInteger</span>(<span class="number">0</span>);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 初始化服务器列表</span></span><br><span class="line">        <span class="keyword">for</span> (Map.Entry&lt;String, Integer&gt; entry : serverWeights.entrySet()) &#123;</span><br><span class="line">            servers.add(<span class="keyword">new</span> <span class="title class_">Server</span>(entry.getKey(), entry.getValue()));</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="built_in">this</span>.maxWeight = getMaxWeight();</span><br><span class="line">        <span class="built_in">this</span>.gcd = getGCD();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getNextServer</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (servers.isEmpty()) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalStateException</span>(<span class="string">&quot;No servers available&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">while</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">            <span class="type">int</span> <span class="variable">index</span> <span class="operator">=</span> currentIndex.getAndIncrement() % servers.size();</span><br><span class="line">            <span class="keyword">if</span> (index &lt; <span class="number">0</span>) &#123;</span><br><span class="line">                index = Math.abs(index) % servers.size();</span><br><span class="line">                currentIndex.set(<span class="number">0</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            <span class="type">Server</span> <span class="variable">server</span> <span class="operator">=</span> servers.get(index);</span><br><span class="line">            server.currentWeight += server.effectiveWeight;</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> (server.currentWeight &gt; maxWeight) &#123;</span><br><span class="line">                server.currentWeight -= gcd;</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">return</span> server.address;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> <span class="title function_">getMaxWeight</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> servers.stream()</span><br><span class="line">                .mapToInt(s -&gt; s.weight)</span><br><span class="line">                .max()</span><br><span class="line">                .orElse(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> <span class="title function_">getGCD</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">result</span> <span class="operator">=</span> servers.get(<span class="number">0</span>).weight;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>; i &lt; servers.size(); i++) &#123;</span><br><span class="line">            result = gcd(result, servers.get(i).weight);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> <span class="title function_">gcd</span><span class="params">(<span class="type">int</span> a, <span class="type">int</span> b)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> b == <span class="number">0</span> ? a : gcd(b, a % b);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 更新服务器状态（成功/失败）</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">updateServerStatus</span><span class="params">(String address, <span class="type">boolean</span> success)</span> &#123;</span><br><span class="line">        <span class="keyword">for</span> (Server server : servers) &#123;</span><br><span class="line">            <span class="keyword">if</span> (server.address.equals(address)) &#123;</span><br><span class="line">                <span class="keyword">if</span> (success) &#123;</span><br><span class="line">                    server.effectiveWeight = Math.min(server.effectiveWeight + <span class="number">1</span>, server.weight);</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    server.effectiveWeight = Math.max(server.effectiveWeight - <span class="number">1</span>, <span class="number">1</span>);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">Server</span> &#123;</span><br><span class="line">        String address;</span><br><span class="line">        <span class="type">int</span> weight;           <span class="comment">// 配置权重</span></span><br><span class="line">        <span class="type">int</span> effectiveWeight;  <span class="comment">// 有效权重</span></span><br><span class="line">        <span class="type">int</span> currentWeight;    <span class="comment">// 当前权重</span></span><br><span class="line">        </span><br><span class="line">        Server(String address, <span class="type">int</span> weight) &#123;</span><br><span class="line">            <span class="built_in">this</span>.address = address;</span><br><span class="line">            <span class="built_in">this</span>.weight = weight;</span><br><span class="line">            <span class="built_in">this</span>.effectiveWeight = weight;</span><br><span class="line">            <span class="built_in">this</span>.currentWeight = <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Nginx配置</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">http</span> &#123;</span><br><span class="line">    <span class="string">upstream</span> <span class="string">myapp1</span> &#123;</span><br><span class="line">   </span><br><span class="line">        <span class="string">server</span> <span class="string">srv1.example.com</span> <span class="string">weight=3;</span></span><br><span class="line">        <span class="string">server</span> <span class="string">srv2.example.com</span> <span class="string">weight=2;</span></span><br><span class="line">        <span class="string">server</span> <span class="string">srv3.example.com</span> <span class="string">weight=1;</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="string">server</span> &#123;</span><br><span class="line">        <span class="string">location</span> <span class="string">/</span> &#123;</span><br><span class="line">            <span class="string">proxy_pass</span> <span class="string">http://myapp1;</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="加权最小连接数算法"><a href="#加权最小连接数算法" class="headerlink" title="加权最小连接数算法"></a>加权最小连接数算法</h3><p>加权最小连接数算法除了根据每台后端服务器设定的权重值来进行轮询，同时还考虑负载均衡服务与后端服务器的实际连接数。当权重值相同时，当前连接数越小的后端服务器被轮询到的次数（概率）也越高。加权最小连接数算法常用于<code>长连接服务</code>，例如数据库连接等服务。</p>
+<p>Nginx配置：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">http</span> &#123;</span><br><span class="line">    <span class="string">upstream</span> <span class="string">myapp1</span> &#123;</span><br><span class="line">   </span><br><span class="line">        <span class="string">least_conn;</span></span><br><span class="line">        <span class="string">server</span> <span class="string">srv1.example.com;</span></span><br><span class="line">        <span class="string">server</span> <span class="string">srv2.example.com;</span></span><br><span class="line">        <span class="string">server</span> <span class="string">srv3.example.com;</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="string">server</span> &#123;</span><br><span class="line">        <span class="string">location</span> <span class="string">/</span> &#123;</span><br><span class="line">            <span class="string">proxy_pass</span> <span class="string">http://myapp1;</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="一致性哈希算法"><a href="#一致性哈希算法" class="headerlink" title="一致性哈希算法"></a>一致性哈希算法</h3><p>一致性哈希算法根据不同的<code>哈希因子</code>将访问请求均匀地分配到后端服务器，并在后端服务器个数发生变化时，依然保持均匀分配。<code>相同哈希因子计算结果的请求，将会调度到相同的后端服务器</code>。</p>
+<p>包括如下哈希因子：</p>
+<ul>
+<li>源IP哈希：根据请求的源IP地址进行哈希计算。相同源IP的请求会分发到同一台后端服务器。</li>
+<li>四元组哈希：根据请求的四元组（源IP、源端口、目标IP、目标端口）进行哈希计算。相同四元组的请求会分发到同一台后端服务器。</li>
+<li>QUIC ID哈希：根据请求的QUIC ID进行哈希计算。由于QUIC ID是QUIC连接的唯一标识符，使用它进行负载均衡可以实现基于连接级别的负载分配。相同QUIC连接的请求会分发到同一台后端服务器。</li>
+<li>URL参数哈希：根据请求的URL参数进行哈希计算。相同URL参数的请求会分发到同一台后端服务器。</li>
+</ul>
+<h4 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h4><ol>
+<li><code>会话保持</code>：一致性哈希算法可以确保同一hash值的请求会被分配到同一台服务器上，从而实现了会话的保持。这对于需要保持用户状态或会话的应用非常重要。</li>
+<li><code>均衡性</code>：一致性哈希算法能够提供较好的负载均衡效果，因为相同的哈希因子经过哈希计算后，会被分配到同一台服务器上，使得负载相对均衡。</li>
+</ol>
+<h4 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h4><ol>
+<li>后端服务器变动可能导致数据不均衡：一致性哈希算法在服务器数量变动时，算法会尽力保障请求一致性，部分请求会重新调度，当后端服务器数量越多时，重新调度的请求会越少。当后端服务器数量较少时，重新分配过程中有可能导致数据不均衡的情况发生。</li>
+<li>扩展复杂性增加：由于一致性哈希算法将请求根据哈希因子进行哈希计算，当有新的服务器加入或旧的服务器离开时，会导致一部分请求需要重新分配，这会引入一定的复杂性。</li>
+</ol>
+<h4 id="适用场景"><a href="#适用场景" class="headerlink" title="适用场景"></a>适用场景</h4><ol>
+<li><code>会话保持</code>：对于需要保持用户状态或会话的应用，一致性哈希算法可以确保相同哈希因子的请求会被分配到同一台服务器上，实现会话的连续性。</li>
+<li>均衡性要求较高：对于负载均衡要求较高的场景，一致性哈希算法能够提供相对均衡的负载分配效果，减少服务器的负载差异。</li>
+<li>需要保持数据一致性：对于某些应用场景，需要保持数据的一致性，将相同哈希因子的请求分配到同一台服务器上可以避免数据不一致的问题。</li>
+</ol>
+<p>Nginx配置：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">http</span> &#123;</span><br><span class="line">    <span class="string">upstream</span> <span class="string">myapp1</span> &#123;</span><br><span class="line">   </span><br><span class="line">        <span class="string">ip_hash;</span></span><br><span class="line">        <span class="string">server</span> <span class="string">srv1.example.com;</span></span><br><span class="line">        <span class="string">server</span> <span class="string">srv2.example.com;</span></span><br><span class="line">        <span class="string">server</span> <span class="string">srv3.example.com;</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="string">server</span> &#123;</span><br><span class="line">        <span class="string">location</span> <span class="string">/</span> &#123;</span><br><span class="line">            <span class="string">proxy_pass</span> <span class="string">http://myapp1;</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<div class="article-footer reveal fs14">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    </div>
+
+</article>
+
+<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/2024/06/23/MyBatis%E6%8B%A6%E6%88%AA%E5%99%A8/">MyBatis拦截器</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2024/05/25/RestTemplate/">RestTemplate拦截器</a></div></section></div>
+
+
+
+
+
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>本站由 <a href="/">@anonymity</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar">Stellar</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  const stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')){
+        src = stellar.config.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.version = '1.21.0';
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.21.0';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+    root : '/',
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://gcore.jsdelivr.net/npm/jquery@3.6.2/dist/jquery.min.js'
+  };
+
+  if ('local_search') {
+    stellar.search = {};
+    stellar.search.service = 'local_search';
+    if (stellar.search.service == 'local_search') {
+      let service_obj = Object.assign({}, {"field":"all","path":"/search.json","content":true,"sort":"-date"});
+      stellar.search[stellar.search.service] = service_obj;
+    }
+  }
+
+  // stellar js
+  stellar.plugins.stellar = Object.assign({"sites":"/js/plugins/sites.js","friends":"/js/plugins/friends.js","ghinfo":"/js/plugins/ghinfo.js","timeline":"/js/plugins/timeline.js","linkcard":"/js/plugins/linkcard.js","fcircle":"/js/plugins/fcircle.js","weibo":"/js/plugins/weibo.js","memos":"/js/plugins/memos.js"});
+
+  stellar.plugins.marked = Object.assign("https://cdn.bootcdn.net/ajax/libs/marked/4.0.18/marked.min.js");
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@10.3/swiper-bundle.min.css","js":"https://unpkg.com/swiper@10.3/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://gcore.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://gcore.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://gcore.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img, .gallery img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti@0.9.2/umd/heti.min.css","js":"https://unpkg.com/heti@0.9.2/umd/heti-addon.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.copycode = Object.assign({"enable":true,"js":"/js/plugins/copycode.js","default_text":"Copy","success_text":"Copied"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+
+
+<!-- inject -->
+
+
+  </div>
+</body>
+</html>

@@ -76,7 +76,7 @@
 <div class="widgets">
 <widget class="widget-wrapper search"><div class="widget-body"><div class="search-wrapper" id="search"><form class="search-form"><input type="text" class="search-input" id="search-input" placeholder="站内搜索"><svg t="1670596976048" class="icon search-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2676" width="200" height="200"><path d="M938.2 832.6L723.8 618.1c-2.5-2.5-5.3-4.4-7.9-6.4 36.2-55.6 57.3-121.8 57.3-193.1C773.3 222.8 614.6 64 418.7 64S64 222.8 64 418.6c0 195.9 158.8 354.6 354.6 354.6 71.3 0 137.5-21.2 193.2-57.4 2 2.7 3.9 5.4 6.3 7.8L832.5 938c14.6 14.6 33.7 21.9 52.8 21.9 19.1 0 38.2-7.3 52.8-21.8 29.2-29.1 29.2-76.4 0.1-105.5M418.7 661.3C284.9 661.3 176 552.4 176 418.6 176 284.9 284.9 176 418.7 176c133.8 0 242.6 108.9 242.6 242.7 0 133.7-108.9 242.6-242.6 242.6" p-id="2677"></path></svg></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div></div></widget>
 
-<widget class="widget-wrapper recent"><div class="widget-header cap theme dis-select"><span class="name">最近更新</span></div><div class="widget-body related-posts fs14"><a class="item title" href="/2025/11/06/RAG/"><span class="title">RAG</span></a><a class="item title" href="/2022/12/22/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/"><span class="title">动态规划</span></a><a class="item title" href="/2022/10/23/%E9%98%9F%E5%88%97/"><span class="title">队列</span></a><a class="item title" href="/2022/10/23/%E7%AE%97%E6%B3%95-%E5%85%B6%E4%BB%96/"><span class="title">算法-其他</span></a><a class="item title" href="/2022/11/05/%E7%BA%BF%E7%A8%8B%E5%8D%8F%E4%BD%9C/"><span class="title">线程协作</span></a></div></widget>
+<widget class="widget-wrapper recent"><div class="widget-header cap theme dis-select"><span class="name">最近更新</span></div><div class="widget-body related-posts fs14"><a class="item title" href="/2024/06/23/MyBatis%E6%8B%A6%E6%88%AA%E5%99%A8/"><span class="title">MyBatis拦截器</span></a><a class="item title" href="/2024/06/23/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E8%BD%AE%E8%AF%A2%E7%AE%97%E6%B3%95/"><span class="title">负载均衡算法</span></a><a class="item title" href="/2025/11/06/RAG/"><span class="title">RAG</span></a><a class="item title" href="/2022/12/22/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/"><span class="title">动态规划</span></a><a class="item title" href="/2022/10/23/%E9%98%9F%E5%88%97/"><span class="title">队列</span></a></div></widget>
 
 
 </div>
@@ -97,7 +97,27 @@
   
 
 <div class="nav-wrap"><nav class="sub post cap"><a class="active" href="/">近期发布</a><a href="/archives">归档</a></nav></div>
-  <div class="post-list post"><a class="post-card post " href="/2020/05/11/Spring%E4%BA%8B%E5%8A%A1%E4%BC%A0%E6%92%AD%E6%9C%BA%E5%88%B6%E5%AE%9E%E6%88%98/">
+  <div class="post-list post"><a class="post-card post " href="/2020/07/20/SQL%E4%BC%98%E5%8C%96/">
+<article class="md-text"><h2 class="post-title">SQL诊断优化-持续更新</h2><div class="excerpt"><p>Explain诊断Explain各参数的含义如下：
+
+
+
+列名
+说明
+
+
+
+id
+执行编号，标识select所属的行，如果语句中没有子查询或者关联查询，只有唯一的select，执行编号显示1，否则，内层的select语句一般会顺序编号，对应于其在原始语句的位置
+
+
+select_key
+显示本行是简单或者复杂select，如果查询有任何复杂的子查询，则最外层标记为PRIMARY（DERIVE...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2020-07-20T13:18:50.000Z">2020-07-20</time></span></div></article>
+</a><a class="post-card post " href="/2020/07/10/String.valueOf%E6%85%8E%E7%94%A8/">
+<article class="md-text"><h2 class="post-title">String.valueOf慎用</h2><div class="excerpt"><p>Java API中String.valueOf(Object obj)方法，当传入的参数为一个引用，并且引用为null时，方法会返回字符串&quot;null&quot;，这样就会引发一些你意向不到的”血案”
+jdk1.8.0_181中String.valueOf(Object obj)源码：
+123456789101112/** * Returns the string represent...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2020-07-10T06:18:30.000Z">2020-07-10</time></span></div></article>
+</a><a class="post-card post " href="/2020/05/11/Spring%E4%BA%8B%E5%8A%A1%E4%BC%A0%E6%92%AD%E6%9C%BA%E5%88%B6%E5%AE%9E%E6%88%98/">
 <article class="md-text"><h2 class="post-title">Spring事务传播机制实战</h2><div class="excerpt"><p>背景前段时间项目中做了一次大升级，其中包括数据库分库，由于分了库，原来的单库事务就变成了跨库事务，所以用到了分布式事务，引入了阿里开源的seata；由于业务的特殊性，是属于定点执行任务，在某一时间集中处理业务，所以在压力测试时，seata-server端由于事务并发量大导致seata-server的表有死锁问题，一直重试。显然不可接受，所以决定暂时舍弃seata，还是采用Spring的事务来...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2020-05-11T11:18:36.000Z">2020-05-11</time></span></div></article>
 </a><a class="post-card post " href="/2020/05/09/%E4%B8%80%E6%AC%A1%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5%E7%BB%8F%E5%8E%86/">
 <article class="md-text"><h2 class="post-title">一次系统启动失败经历</h2><div class="excerpt"><p>最近遇到一个很头疼的问题，在一次合代码后，系统启不来了，确切的说，本地可以起来，生成容器镜像后启不来，报了一大堆创建Spring bean异常，本地能启动，镜像启不来，这是不是很怀疑人生，通过各种排除法手段合并代码、删除代码，但就是不行，第二天又重新倒腾了一下（merge），好了，也不知道为啥就好了。    
