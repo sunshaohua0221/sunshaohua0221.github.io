@@ -20,23 +20,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="theme-color" content="#f8f8f8">
   
-  <title>什么是AI Agent - Felix的技术笔记</title>
+  <title>什么是MCP - Felix的技术笔记</title>
 
   
-    <meta name="description" content="大模型大家都知道，比如我们常见的ChatGPT、DeepSeek等，但是，这些大模型都有一个关键的问题，那就是他们没办法用工具，比如我想要让大模型帮我查询一个接口，他是做不到的。那么，如果给大模型增加工具的调用能力，并且他知道该什么时候调用什么工具，这基本上就是一个Agent了。Agent翻译成中文是智能体，或者叫做助理更合适，比如说这就是个Agent：你对你的小爱同学说，我想吃肯德基，他就能分析">
+    <meta name="description" content="MCP和Function Calling一样，都是让大模型会用工具的一种手段。全称是Model Context Protocol，顾名思义，它是一种协议，只要每一个MCP Server（工具）都遵守这个协议，那么大模型就可以直接使用这些工具了，而不需要像function calling一样，要写一大堆的适配代码（提示词）。就像下面这张图一样，他就像一个USB的规范一样，只要大家都遵守，就能一起玩。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="什么是AI Agent">
-<meta property="og:url" content="https://sunshaohua0221.github.io/2025/11/06/%E4%BB%80%E4%B9%88%E6%98%AFAI%20Agent/index.html">
+<meta property="og:title" content="什么是MCP">
+<meta property="og:url" content="https://sunshaohua0221.github.io/2025/10/16/%E4%BB%80%E4%B9%88%E6%98%AFMCP/index.html">
 <meta property="og:site_name" content="Felix的技术笔记">
-<meta property="og:description" content="大模型大家都知道，比如我们常见的ChatGPT、DeepSeek等，但是，这些大模型都有一个关键的问题，那就是他们没办法用工具，比如我想要让大模型帮我查询一个接口，他是做不到的。那么，如果给大模型增加工具的调用能力，并且他知道该什么时候调用什么工具，这基本上就是一个Agent了。Agent翻译成中文是智能体，或者叫做助理更合适，比如说这就是个Agent：你对你的小爱同学说，我想吃肯德基，他就能分析">
+<meta property="og:description" content="MCP和Function Calling一样，都是让大模型会用工具的一种手段。全称是Model Context Protocol，顾名思义，它是一种协议，只要每一个MCP Server（工具）都遵守这个协议，那么大模型就可以直接使用这些工具了，而不需要像function calling一样，要写一大堆的适配代码（提示词）。就像下面这张图一样，他就像一个USB的规范一样，只要大家都遵守，就能一起玩。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://sunshaohua0221.github.io/2025/11/06/%E4%BB%80%E4%B9%88%E6%98%AFAI%20Agent/agent1.png">
-<meta property="article:published_time" content="2025-11-06T09:13:13.000Z">
-<meta property="article:modified_time" content="2025-11-06T09:13:13.000Z">
+<meta property="og:image" content="https://sunshaohua0221.github.io/2025/10/16/%E4%BB%80%E4%B9%88%E6%98%AFMCP/MCP1.png">
+<meta property="og:image" content="https://sunshaohua0221.github.io/2025/10/16/%E4%BB%80%E4%B9%88%E6%98%AFMCP/MCP2.png">
+<meta property="article:published_time" content="2025-10-16T07:47:01.000Z">
+<meta property="article:modified_time" content="2025-11-06T07:41:23.000Z">
 <meta property="article:author" content="ssh">
 <meta property="article:tag" content="技术、生活">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://sunshaohua0221.github.io/2025/11/06/%E4%BB%80%E4%B9%88%E6%98%AFAI%20Agent/agent1.png">
+<meta name="twitter:image" content="https://sunshaohua0221.github.io/2025/10/16/%E4%BB%80%E4%B9%88%E6%98%AFMCP/MCP1.png">
   
   
   
@@ -83,9 +84,7 @@
 <widget class="widget-wrapper search"><div class="widget-body"><div class="search-wrapper" id="search"><form class="search-form"><input type="text" class="search-input" id="search-input" data-filter="/blog/" placeholder="文章搜索"><svg t="1670596976048" class="icon search-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2676" width="200" height="200"><path d="M938.2 832.6L723.8 618.1c-2.5-2.5-5.3-4.4-7.9-6.4 36.2-55.6 57.3-121.8 57.3-193.1C773.3 222.8 614.6 64 418.7 64S64 222.8 64 418.6c0 195.9 158.8 354.6 354.6 354.6 71.3 0 137.5-21.2 193.2-57.4 2 2.7 3.9 5.4 6.3 7.8L832.5 938c14.6 14.6 33.7 21.9 52.8 21.9 19.1 0 38.2-7.3 52.8-21.8 29.2-29.1 29.2-76.4 0.1-105.5M418.7 661.3C284.9 661.3 176 552.4 176 418.6 176 284.9 284.9 176 418.7 176c133.8 0 242.6 108.9 242.6 242.7 0 133.7-108.9 242.6-242.6 242.6" p-id="2677"></path></svg></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div></div></widget>
 
 
-
-<widget class="widget-wrapper recent"><div class="widget-header cap theme dis-select"><span class="name">最近更新</span></div><div class="widget-body related-posts fs14"><a class="item title" href="/2024/12/21/%E6%9C%8D%E5%8A%A1%E7%AB%AF%E6%8E%A5%E5%8F%A3%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/"><span class="title">服务端接口性能优化</span></a><a class="item title" href="/2024/06/23/MyBatis%E6%8B%A6%E6%88%AA%E5%99%A8/"><span class="title">MyBatis拦截器</span></a><a class="item title" href="/2024/06/23/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E8%BD%AE%E8%AF%A2%E7%AE%97%E6%B3%95/"><span class="title">负载均衡算法</span></a><a class="item title" href="/2025/11/06/RAG/"><span class="title">RAG</span></a><a class="item title" href="/2022/12/22/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/"><span class="title">动态规划</span></a></div></widget>
-
+<widget class="widget-wrapper toc single" id="data-toc"><div class="widget-header cap dis-select"><span class="name">什么是MCP</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#MCP%E4%B8%AD%E7%9A%84%E6%A0%B8%E5%BF%83%E4%B8%89%E4%B8%AA%E7%BB%84%E4%BB%B6"><span class="toc-text">MCP中的核心三个组件</span></a></li></ol></div></div></widget>
 
 
 
@@ -102,28 +101,31 @@
 
 
 <div class="bread-nav fs12"><div class="left"><div id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" href="/">文章</a></div><div id="post-meta">
-    <span>发布于&nbsp;<time datetime="2025-11-06T09:13:13.000Z">2025-11-06</time></span>
+    <span>发布于&nbsp;<time datetime="2025-10-16T07:47:01.000Z">2025-10-16</time></span>
     
-    <span>更新于&nbsp;<time datetime="2025-11-06T09:13:13.000Z">2025-11-06</time></span>
+    <span>更新于&nbsp;<time datetime="2025-11-06T07:41:23.000Z">2025-11-06</time></span>
     </div></div></div>
 
 <article class='md-text content post'>
-<h1 class="article-title"><span>什么是AI Agent</span></h1>
-<p>大模型大家都知道，比如我们常见的ChatGPT、DeepSeek等，但是，这些大模型都有一个关键的问题，那就是他们没办法用工具，比如我想要让大模型帮我查询一个接口，他是做不到的。<br><br>那么，如果给大模型增加工具的调用能力，并且他知道该什么时候调用什么工具，这基本上就是一个Agent了。<br><br>Agent翻译成中文是智能体，或者叫做助理更合适，比如说这就是个Agent：你对你的小爱同学说，我想吃肯德基，他就能分析出你可能想吃什么，然后让你确认后，直接就帮你把肯德基点好了。<br><br>这个过程需要：</p>
-<ol>
-<li>小爱同学知道你想吃什么，了解你的口味。</li>
-<li>小爱同学知道点餐需要打开先软件，然后搜索，然后付款</li>
-<li>小爱同学可以帮你自动完成这些操作</li>
-</ol>
-<p>该怎么实现这样的功能呢？下面这张图就是非常出名的Agent的图：</p>
-<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="agent1.png"/></div></div>
+<h1 class="article-title"><span>什么是MCP</span></h1>
+<p>MCP和Function Calling一样，都是让大模型会用工具的一种手段。全称是<code>Model Context Protocol</code>，顾名思义，它是一种协议，只要每一个MCP Server（工具）都遵守这个协议，那么大模型就可以直接使用这些工具了，而不需要像function calling一样，要写一大堆的适配代码（提示词）。<br><br>就像下面这张图一样，他就像一个USB的规范一样，只要大家都遵守，就能一起玩。</p>
+<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="MCP1.png"/></div></div>
 
-<p>可以看到，这里面包括了Tools、Action、Planning以及Memory，Tools就是我们前面说过的工具，而Action就可以理解为是对工具的调用。<br><br>剩下的Memory这个好理解，就是需要有记忆的能力，包括了长期记忆和短期记忆，短期记忆可以理解为上下文记忆，就像你打开一个ChatGPT的对话窗口，这个就是个短期记忆，换个窗口记忆就清楚了。长期记忆一般是通过一些其他的方式，比如数据库做存储，在每次对话前先让模型读取这些信息，作为长期记忆。<br><br>还有一个Plan的功能，这其实是在Agent有了记忆，会了工具之后，还需要他知道什么时候该调用哪些工具，这就是所谓的规划的能力。<br><br>那么总结下，<code>Agent=LLM+Memory+Tools（使用+规划）</code><br><br>基于以上介绍，差不多就能总结出一个Agent具备的能力。主要包括了：</p>
-<ul>
-<li>感知（Perception）： Agent能够接收来自环境的输入信息，包括用户输入的问题，以及Memory。</li>
-<li>决策（Decision-making）： Agent根据感知到的信息和内部状态，选择合适（Planning）的行动（包包括Tools）。</li>
-<li>行动（Action）： Agent执行所选的行为，以实现特定目标。</li>
+<p>Anthropic 2024年年底推出的，就是那个研发了Claude模型的公司，他们制定的这个规范，后来因为大名鼎鼎的Cursor开始支持了，慢慢的就火起来了，后来OpenAI也不得不支持了。现在还是比较火的。<br><br>有了MCP之后，大模型就不再需要为每个数据源或工具单独开发接口，开发者只需遵循MCP规范，即可快速集成各种工具。</p>
+<h4 id="MCP中的核心三个组件"><a href="#MCP中的核心三个组件" class="headerlink" title="MCP中的核心三个组件"></a>MCP中的核心三个组件</h4><ul>
+<li>MCP Hosts：如Claude Desktop或IDE（比如Cursor），作为AI应用的入口，发起数据请求</li>
+<li>MCP Servers：轻量级服务，负责对接具体数据源或工具（如GitHub API、本地文件系统），提供标准化接口。（一般是别人开发好的，你要用的工具）</li>
+<li>MCP Clients：协议客户端，维护与服务器的连接并转发请求。<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="MCP2.png"/></div></div></li>
 </ul>
+<p>有了MCP之后，当用户提出一个问题时，就是大致下面的流程：</p>
+<ol>
+<li>客户端（Claude Desktop &#x2F; Cursor）将你的问题发送给大模型（如Claude）。</li>
+<li>Claude 分析可用的工具，并决定使用哪一个（或多个）。</li>
+<li>客户端通过 MCP Server 执行所选的工具。</li>
+<li>工具的执行结果被送回给 Claude。</li>
+<li>Claude 结合执行结果构造最终的 prompt 并生成自然语言的回应。</li>
+<li>回应最终展示给用户</li>
+</ol>
 
 
 
@@ -137,7 +139,7 @@
 
 </article>
 
-<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2025/11/06/%E4%BB%80%E4%B9%88%E6%98%AFMCP/">什么是MCP</a></div></section></div>
+<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/2025/10/20/%E4%BB%80%E4%B9%88%E6%98%AFAI%20Agent/">什么是AI Agent</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2025/10/15/%E4%BB%80%E4%B9%88%E6%98%AFFuncting%20Calling/">什么是Function Calling</a></div></section></div>
 
 
 
