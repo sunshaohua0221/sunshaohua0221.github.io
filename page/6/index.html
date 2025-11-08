@@ -26,7 +26,7 @@
     <meta name="description" content="学无止境,行以致远">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Felix的技术笔记">
-<meta property="og:url" content="https://sunshaohua0221.github.io/page/3/index.html">
+<meta property="og:url" content="https://sunshaohua0221.github.io/page/6/index.html">
 <meta property="og:site_name" content="Felix的技术笔记">
 <meta property="og:description" content="学无止境,行以致远">
 <meta property="og:locale" content="zh_CN">
@@ -97,77 +97,15 @@
   
 
 <div class="nav-wrap"><nav class="sub post cap"><a class="active" href="/">近期发布</a><a href="/archives">归档</a></nav></div>
-  <div class="post-list post"><a class="post-card post " href="/2023/11/10/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/">
-<article class="md-text"><h2 class="post-title">分布式事务</h2><div class="excerpt"><p>
-分布式事务：  在分布式系统中一次操作需要由多个服务协同完成，这种由不同的服务之间通过网络协同完成的事务
-
-分布式事务分类
-刚性事务
-
-
-强一致性
-XA模型
-满足CAP理论的CP
-
-
-柔性事务
-
-
-保证最终一致性，事务结束后在可接收的时间范围内，可能出现短暂的不一致，最终会达成一致性
-满足CAP理论的AP，满足BASE理论
-
-
-
-
-
-刚性事务（XA）
-柔性事务
-
-
-
-业务改造
-无
-有
-
-
-...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2023-11-10T02:27:11.000Z">2023-11-10</time></span></div></article>
-</a><a class="post-card post " href="/2023/07/06/maven-deploy-401/">
-<article class="md-text"><h2 class="post-title">maven中deploy命令报401的原因及解决方案</h2><div class="excerpt"><p>idea使用过程中有时候会出现deploy时候报401错误，如下图
-
-
-原因一、pom 文件李配置的私服仓库地址和settings.xml里配置的用户名和密码没有匹配上
-
-pom.xml里的仓库配置12345678910111213&lt;!--项目分发信息，在执行mvn deploy后表示要发布的位置。有了这些信息就可以把网站部署到远程服务器或者把构件jar等部署到远程仓库 --&gt;&...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2023-07-06T06:35:16.000Z">2023-07-06</time></span></div></article>
-</a><a class="post-card post " href="/2023/05/17/BASE/">
-<article class="md-text"><h2 class="post-title">BASE理论</h2><div class="excerpt"><p>
-摘自JavaGuide
-
-BASE简介BASE理论起源于2008年，由eBay的架构师Dan Pritchett在ACM上发表。BASE是Basically Available（基本可用）、Soft-state（软状态）和Eventually Consistent（最终一致性）三个短语的缩写。BASE理论是对CAP中一致性C和可用性A权衡的结果，其来源于对大规模互联网系统分布式实践的总结，...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2023-05-17T05:20:46.000Z">2023-05-17</time></span></div></article>
-</a><a class="post-card post " href="/2023/05/15/CAP/">
-<article class="md-text"><h2 class="post-title">CAP理论</h2><div class="excerpt"><p>CAP简介CAP（CAP  theorem）定理又被称作布鲁尔定理（Brewer’s theorem），是加州大学伯克利分校的计算机科学家埃里克·布鲁尔（Eric Brewer）在2000年的ACM  PODC上提出的一个猜想。2002年，麻省理工学院的赛斯·吉尔伯特（Seth Gilbert）和南希·林奇（Nancy Lynch）发表了布鲁尔猜想的证明，使之成为分布式计算领域公认的一个定理...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2023-05-15T13:10:56.000Z">2023-05-15</time></span></div></article>
-</a><a class="post-card post " href="/2022/12/22/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/">
-<article class="md-text"><h2 class="post-title">动态规划</h2><div class="excerpt"><p>
-不同路径
-12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061//一个机器人位于一个 m x n 网格的左上角 （起始点在下图中标记为 “Start” ）。//机器人每次只能向下或者向右移动一步。机器人试图达到网格的右...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2022-12-22T02:45:34.000Z">2022-12-22</time></span></div></article>
-</a><a class="post-card post " href="/2022/12/22/%E6%8E%92%E5%BA%8F/">
-<article class="md-text"><h2 class="post-title">排序</h2><div class="excerpt"><p>
-二分查找1234567891011121314151617181920212223242526272829303132public class BinarySearch &#123;    //左闭右闭区间    public int binarySearch(int[] nums, int target) &#123;        if (nums == null || nums.le...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2022-12-22T02:39:34.000Z">2022-12-22</time></span></div></article>
-</a><a class="post-card post " href="/2022/11/05/%E7%BA%BF%E7%A8%8B%E5%8D%8F%E4%BD%9C/">
-<article class="md-text"><h2 class="post-title">线程协作</h2><div class="excerpt"><p>
-10个线程模拟赛马，所有马就绪后才能开跑，所有马到达终点后裁判宣布赛马成绩1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859public class HorseRace &#123;    //记录赛马成绩    priva...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2022-11-05T02:39:34.000Z">2022-11-05</time></span></div></article>
-</a><a class="post-card post " href="/2022/10/23/%E5%AD%97%E7%AC%A6%E4%B8%B2/">
-<article class="md-text"><h2 class="post-title">字符串</h2><div class="excerpt"><p>
-替换数字123456789101112131415161718192021222324252627282930313233343536373839404142434445//给定一个字符串 s，它包含小写字母和数字字符，请编写一个函数，将字符串中的字母字符保持不变，而将每个数字字符替换为number。//例如，对于输入字符串 &quot;a1b2c3&quot;，函数应该将其转换为 &qu...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2022-10-23T02:39:34.000Z">2022-10-23</time></span></div></article>
-</a><a class="post-card post " href="/2022/10/23/%E6%A0%88/">
-<article class="md-text"><h2 class="post-title">栈</h2><div class="excerpt"><p>
-队列实现栈1234567891011121314151617181920212223242526272829303132333435363738394041424344public class QueueToStack&lt;E&gt; &#123;    private Queue&lt;E&gt; queue;    private Queue&lt;E&gt; tempQueue; ...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2022-10-23T02:39:34.000Z">2022-10-23</time></span></div></article>
-</a><a class="post-card post " href="/2022/10/23/%E7%AE%97%E6%B3%95-%E5%85%B6%E4%BB%96/">
-<article class="md-text"><h2 class="post-title">算法-其他</h2><div class="excerpt"><p>
-手写LRU缓存1234567891011121314151617181920212223242526272829303132333435public class LRUCache3&lt;K, V&gt; &#123;    private int capacity;    private Map&lt;K, V&gt; cache;    private LinkedList&lt;K&...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2022-10-23T02:39:34.000Z">2022-10-23</time></span></div></article>
+  <div class="post-list post"><a class="post-card post " href="/2020/04/09/APM-Skywalking/">
+<article class="md-text"><h2 class="post-title">APM-Skywalking</h2><div class="excerpt"><p>简介官网：http://skywalking.apache.org/zh/
+安装：https://github.com/apache/skywalking/blob/5.x/docs/README_ZH.md
+mysql版本安装：https://blog.csdn.net/sinat_30126855/article/details/100895591
+查看效果：http://blog.wu...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2020-04-09T13:35:18.000Z">2020-04-09</time></span></div></article>
 </a></div>
   
   <div class='paginator-wrap dis-select'>
-  <a class="extend prev" rel="prev" href="/page/2/"></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/4/"></a>
+  <a class="extend prev" rel="prev" href="/page/5/"></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><span class="extend next" rel="next"></span>
   </div>
 
 
