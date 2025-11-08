@@ -114,7 +114,7 @@ Transformer语言模型本质上是一个“填空预测器”，它是根据概
 训练数据存在缺陷
 训练数据本身可能包含错误信息、不完整数据、偏见信息，导致模型学到不真实...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2025-10-11T05:09:29.000Z">2025-10-11</time></span></div></article>
 </a><a class="post-card post " href="/2025/04/20/Redis%E5%92%8C%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%80%E8%87%B4%E6%80%A7%E9%97%AE%E9%A2%98/">
-<article class="md-text"><h2 class="post-title">Redis和数据库一致性问题</h2><div class="excerpt"><p>1.什么情况下会出现数据库和缓存不一致的问题？写写并发在并发场景中，如果两个线程，同时进行先写数据库，后更新缓存的操作，就可能会出现不一致：
+<article class="md-text"><h2 class="post-title">Redis和数据库一致性问题</h2><div class="excerpt"><p>什么情况下会出现数据库和缓存不一致的问题？写写并发在并发场景中，如果两个线程，同时进行先写数据库，后更新缓存的操作，就可能会出现不一致：
 
 
 
@@ -144,7 +144,9 @@ W
 
 
 W
-W...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2025-04-20T11:17:34.000Z">2025-04-20</time></span></div></article>
+W
+
+...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2025-04-20T11:17:34.000Z">2025-04-20</time></span></div></article>
 </a><a class="post-card post " href="/2025/03/16/Innodb%E4%BA%8B%E5%8A%A1%E6%9B%B4%E6%96%B0%E8%BF%87%E7%A8%8B/">
 <article class="md-text"><h2 class="post-title">Innodb事务更新过程</h2><div class="excerpt"><p>InnoDB事务更新过程
 在Buffer Pool中读取数据：当InnoDB需要更新一条记录时，首先会在Buffer Pool中查找该记录是否在内存中。如果没有在内存中，则从磁盘读取该页到Buffer Pool中。
