@@ -20,24 +20,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="theme-color" content="#f8f8f8">
   
-  <title>maven中deploy命令报401的原因及解决方案 - Felix的技术笔记</title>
+  <title>claude-code初体验 - Felix的技术笔记</title>
 
   
-    <meta name="description" content="idea使用过程中有时候会出现deploy时候报401错误，如下图   原因一、pom 文件李配置的私服仓库地址和settings.xml里配置的用户名和密码没有匹配上  pom.xml里的仓库配置12345678910111213&lt;!--项目分发信息，在执行mvn deploy后表示要发布的位置。有了这些信息就可以把网站部署到远程服务器或者把构件jar等部署到远程仓库 --&gt;&lt;">
+    <meta name="description" content="sudo npm install -g @anthropic-ai&#x2F;claude-code echo ‘export ANTHROPIC_BASE_URL&#x3D;”https:&#x2F;&#x2F;open.bigmodel.cn&#x2F;api&#x2F;authropic“‘ &gt;&gt; ~&#x2F;.bash_profileecho ‘export ANTHROPIC_AUTH_TOKEN&#x3D;”2">
 <meta property="og:type" content="article">
-<meta property="og:title" content="maven中deploy命令报401的原因及解决方案">
-<meta property="og:url" content="https://sunshaohua0221.github.io/2023/07/06/maven-deploy-401/index.html">
+<meta property="og:title" content="claude-code初体验">
+<meta property="og:url" content="https://sunshaohua0221.github.io/2025/10/20/claude-code/index.html">
 <meta property="og:site_name" content="Felix的技术笔记">
-<meta property="og:description" content="idea使用过程中有时候会出现deploy时候报401错误，如下图   原因一、pom 文件李配置的私服仓库地址和settings.xml里配置的用户名和密码没有匹配上  pom.xml里的仓库配置12345678910111213&lt;!--项目分发信息，在执行mvn deploy后表示要发布的位置。有了这些信息就可以把网站部署到远程服务器或者把构件jar等部署到远程仓库 --&gt;&lt;">
+<meta property="og:description" content="sudo npm install -g @anthropic-ai&#x2F;claude-code echo ‘export ANTHROPIC_BASE_URL&#x3D;”https:&#x2F;&#x2F;open.bigmodel.cn&#x2F;api&#x2F;authropic“‘ &gt;&gt; ~&#x2F;.bash_profileecho ‘export ANTHROPIC_AUTH_TOKEN&#x3D;”2">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://sunshaohua0221.github.io/2023/07/06/maven-deploy-401/error.png">
-<meta property="og:image" content="https://sunshaohua0221.github.io/2023/07/06/maven-deploy-401/ideaSettingsConfig.png">
-<meta property="article:published_time" content="2023-07-06T06:35:16.000Z">
-<meta property="article:modified_time" content="2023-12-26T06:52:07.000Z">
+<meta property="article:published_time" content="2025-10-20T02:27:55.000Z">
+<meta property="article:modified_time" content="2025-11-10T04:36:05.926Z">
 <meta property="article:author" content="ssh">
 <meta property="article:tag" content="技术、生活">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://sunshaohua0221.github.io/2023/07/06/maven-deploy-401/error.png">
   
   
   
@@ -84,9 +81,7 @@
 <widget class="widget-wrapper search"><div class="widget-body"><div class="search-wrapper" id="search"><form class="search-form"><input type="text" class="search-input" id="search-input" data-filter="/blog/" placeholder="文章搜索"><svg t="1670596976048" class="icon search-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2676" width="200" height="200"><path d="M938.2 832.6L723.8 618.1c-2.5-2.5-5.3-4.4-7.9-6.4 36.2-55.6 57.3-121.8 57.3-193.1C773.3 222.8 614.6 64 418.7 64S64 222.8 64 418.6c0 195.9 158.8 354.6 354.6 354.6 71.3 0 137.5-21.2 193.2-57.4 2 2.7 3.9 5.4 6.3 7.8L832.5 938c14.6 14.6 33.7 21.9 52.8 21.9 19.1 0 38.2-7.3 52.8-21.8 29.2-29.1 29.2-76.4 0.1-105.5M418.7 661.3C284.9 661.3 176 552.4 176 418.6 176 284.9 284.9 176 418.7 176c133.8 0 242.6 108.9 242.6 242.7 0 133.7-108.9 242.6-242.6 242.6" p-id="2677"></path></svg></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div></div></widget>
 
 
-
-<widget class="widget-wrapper recent"><div class="widget-header cap theme dis-select"><span class="name">最近更新</span></div><div class="widget-body related-posts fs14"><a class="item title" href="/2025/10/20/claude-code/"><span class="title">claude-code初体验</span></a><a class="item title" href="/2025/10/11/%E5%A4%A7%E6%A8%A1%E5%9E%8B/"><span class="title">大模型</span></a><a class="item title" href="/2025/04/20/Redis%E5%92%8C%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%80%E8%87%B4%E6%80%A7%E9%97%AE%E9%A2%98/"><span class="title">Redis和数据库一致性问题</span></a><a class="item title" href="/2024/12/21/%E6%9C%8D%E5%8A%A1%E7%AB%AF%E6%8E%A5%E5%8F%A3%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/"><span class="title">服务端接口性能优化</span></a><a class="item title" href="/2020/07/20/SQL%E4%BC%98%E5%8C%96/"><span class="title">SQL诊断和优化</span></a></div></widget>
-
+<widget class="widget-wrapper toc single" id="data-toc"><div class="widget-header cap dis-select"><span class="name">claude-code初体验</span></div><div class="widget-body fs14"><div class="doc-tree active"></div></div></widget>
 
 
 
@@ -103,25 +98,34 @@
 
 
 <div class="bread-nav fs12"><div class="left"><div id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" href="/">文章</a></div><div id="post-meta">
-    <span>发布于&nbsp;<time datetime="2023-07-06T06:35:16.000Z">2023-07-06</time></span>
+    <span>发布于&nbsp;<time datetime="2025-10-20T02:27:55.000Z">2025-10-20</time></span>
     
-    <span>更新于&nbsp;<time datetime="2023-12-26T06:52:07.000Z">2023-12-26</time></span>
+    <span>更新于&nbsp;<time datetime="2025-11-10T04:36:05.926Z">2025-11-10</time></span>
     </div></div></div>
 
 <article class='md-text content post'>
-<h1 class="article-title"><span>maven中deploy命令报401的原因及解决方案</span></h1>
-<p>idea使用过程中有时候会出现deploy时候报401错误，如下图</p>
-<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="error.png"/></div></div>
-
-<p><strong>原因一、pom 文件李配置的私服仓库地址和settings.xml里配置的用户名和密码没有匹配上</strong></p>
-<ol>
-<li>pom.xml里的仓库配置<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--项目分发信息，在执行mvn deploy后表示要发布的位置。有了这些信息就可以把网站部署到远程服务器或者把构件jar等部署到远程仓库 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">distributionManagement</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">repository</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">id</span>&gt;</span>releases<span class="tag">&lt;/<span class="name">id</span>&gt;</span><span class="comment">&lt;!-- 此处id和settings.xml的id保持一致 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>Release Deploy<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">url</span>&gt;</span>http://10.20.105.11:8081/repository/maven-releases/<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">repository</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">snapshotRepository</span>&gt;</span><span class="comment">&lt;!--构件的快照部署到哪里？如果没有配置该元素，默认部署到repository元素配置的仓库，参见distributionManagement/repository元素 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">id</span>&gt;</span>snapshots<span class="tag">&lt;/<span class="name">id</span>&gt;</span><span class="comment">&lt;!-- 此处id和settings.xml的id保持一致 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>Snapshot Deploy<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">url</span>&gt;</span>http://10.20.105.11:8081/repository/maven-snapshots/<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">snapshotRepository</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">distributionManagement</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
-<li>此时对应的setting.xml里的配置信息为<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">servers</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">server</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">id</span>&gt;</span>snapshots<span class="tag">&lt;/<span class="name">id</span>&gt;</span><span class="comment">&lt;!-- 此处id和上面pom.xml的id保持一致 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">username</span>&gt;</span>zhangsan<span class="tag">&lt;/<span class="name">username</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">password</span>&gt;</span>123456<span class="tag">&lt;/<span class="name">password</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">server</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">server</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">id</span>&gt;</span>releases<span class="tag">&lt;/<span class="name">id</span>&gt;</span><span class="comment">&lt;!-- 此处id和上面pom.xml的id保持一致 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">username</span>&gt;</span>zhangsan<span class="tag">&lt;/<span class="name">username</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">password</span>&gt;</span>123456<span class="tag">&lt;/<span class="name">password</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">server</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">servers</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
-<li>检查两者信息是否一致，就可以解决问题。如果还是报401问题，则可能是下面的原因。</li>
-</ol>
-<p><strong>原因二、idea中自定义的settings.xml配置没有生效</strong></p>
-<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="ideaSettingsConfig.png"/></div></div>
-
+<h1 class="article-title"><span>claude-code初体验</span></h1>
+<p>sudo npm install -g @anthropic-ai&#x2F;claude-code</p>
+<p>echo ‘export ANTHROPIC_BASE_URL&#x3D;”<a target="_blank" rel="noopener" href="https://open.bigmodel.cn/api/authropic">https://open.bigmodel.cn/api/authropic</a>“‘ &gt;&gt; ~&#x2F;.bash_profile<br>echo ‘export ANTHROPIC_AUTH_TOKEN&#x3D;”20142fd671f84340970f6d2f677d880f.8zpANQ4xAFR1vlV3”‘ &gt;&gt; ~&#x2F;.bash_profile<br>echo ‘export ANTHROPIC_API_KEY&#x3D;”20142fd671f84340970f6d2f677d880f.8zpANQ4xAFR1vlV3”‘ &gt;&gt; ~&#x2F;.bash_profile<br>echo ‘export ANTHROPIC_MODEL&#x3D;”glm-4.6”‘ &gt;&gt; ~&#x2F;.bash_profile<br>echo ‘export ANTHROPIC_MODEL&#x3D;”glm-4.6”‘ &gt;&gt; ~&#x2F;.zshrc</p>
+<p>export ANTHROPIC_AUTH_TOKEN&#x3D;”sk-29994807f7af48c0ba317940619e7781”<br>export ANTHROPIC_API_KEY&#x3D;”sk-29994807f7af48c0ba317940619e7781”</p>
+<p>配置智普：<a target="_blank" rel="noopener" href="https://docs.bigmodel.cn/cn/guide/develop/claude#claude-code">https://docs.bigmodel.cn/cn/guide/develop/claude#claude-code</a></p>
+<p>接入deepseek<br>sk-612e42b6492244e9a5b779994a29ec87</p>
+<p>echo ‘export ANTHROPIC_BASE_URL&#x3D;”<a target="_blank" rel="noopener" href="https://api.deepseek.com/anthropic">https://api.deepseek.com/anthropic</a>“‘ &gt;&gt; ~&#x2F;.bash_profile<br>echo ‘export ANTHROPIC_AUTH_TOKEN&#x3D;”sk-612e42b6492244e9a5b779994a29ec87”‘ &gt;&gt; ~&#x2F;.bash_profile<br>echo ‘export ANTHROPIC_MODEL&#x3D;”deepseek-chat”‘ &gt;&gt; ~&#x2F;.bash_profile<br>echo ‘export ANTHROPIC_SMALL_FAST_MODEL&#x3D;”deepseek-chat”‘ &gt;&gt; ~&#x2F;.bash_profile</p>
+<h1 id="用百炼-API-Key-替换-YOUR-DASHSCOPE-API-KEY"><a href="#用百炼-API-Key-替换-YOUR-DASHSCOPE-API-KEY" class="headerlink" title="用百炼 API Key 替换 YOUR_DASHSCOPE_API_KEY"></a>用百炼 API Key 替换 YOUR_DASHSCOPE_API_KEY</h1><p>echo ‘export ANTHROPIC_BASE_URL&#x3D;”<a target="_blank" rel="noopener" href="https://dashscope.aliyuncs.com/apps/anthropic">https://dashscope.aliyuncs.com/apps/anthropic</a>“‘ &gt;&gt; ~&#x2F;.bash_profile<br>echo ‘export ANTHROPIC_API_KEY&#x3D;”sk-29994807f7af48c0ba317940619e7781”‘ &gt;&gt; ~&#x2F;.bash_profile</p>
+<p>source ~&#x2F;.bash_profile</p>
+<p>echo $ANTHROPIC_BASE_URL<br>echo $ANTHROPIC_API_KEY</p>
+<p>启动时：执行claude –model &lt;模型名称&gt;指定模型。<br>claude –model qwen-plus</p>
+<p>或者设置环境变量：设置ANTHROPIC_MODEL&#x3D;&lt;模型名称&gt;。</p>
+<p>export ANTHROPIC_MODEL&#x3D;”qwen-plus”<br>export ANTHROPIC_SMALL_FAST_MODEL&#x3D;”qwen-flash”</p>
+<p>启动时跳过许可<br>claude –model qwen-plus –dangerously-skip-permissions<br>claude –model GLM-4.5-Flash –dangerously-skip-permissions<br>claude –dangerously-skip-permissions</p>
+<p>smithery  MCP工具大超市 <a target="_blank" rel="noopener" href="https://smithery.ai/">https://smithery.ai/</a></p>
+<p>搜索Jimeng 生成图片<br><a target="_blank" rel="noopener" href="https://server.smithery.ai/@ttkkasd/jimeng-mcp/mcp?api_key=b0e6d34c-a82a-4213-977e-3610e58c2c2a&profile=cultural-sole-CbeOoF">https://server.smithery.ai/@ttkkasd/jimeng-mcp/mcp?api_key=b0e6d34c-a82a-4213-977e-3610e58c2c2a&amp;profile=cultural-sole-CbeOoF</a><br>claude mcp add –transport http ttkkasd-jimeng-mcp “<a target="_blank" rel="noopener" href="https://server.smithery.ai/@ttkkasd/jimeng-mcp/mcp?api_key=b0e6d34c-a82a-4213-977e-3610e58c2c2a&profile=cultural-sole-CbeOoF">https://server.smithery.ai/@ttkkasd/jimeng-mcp/mcp?api_key=b0e6d34c-a82a-4213-977e-3610e58c2c2a&amp;profile=cultural-sole-CbeOoF</a>“<br>claude mcp add –transport http ttkkasd-jimeng-mcp “<a target="_blank" rel="noopener" href="https://server.smithery.ai/@ttkkasd/jimeng-mcp/mcp?api_key=b0e6d34c-a82a-4213-977e-3610e58c2c2a&profile=cultural-sole-CbeOoF">https://server.smithery.ai/@ttkkasd/jimeng-mcp/mcp?api_key=b0e6d34c-a82a-4213-977e-3610e58c2c2a&amp;profile=cultural-sole-CbeOoF</a>“</p>
+<p>飞书开发者平台-创建飞书应用<br>claude mcp add lark-mcp – npx -y @larksuiteoapi&#x2F;lark-mcp mcp -a cli_a99a838bd6bc101c -s EHL1bHaAgS2TNZjyBqbmkfomd3CKK57j –oauth<br>claude mcp add lark-mcp -s user – npx -y @larksuiteoapi&#x2F;lark-mcp mcp -a “cli_a99a838bd6bc101c” -s “EHL1bHaAgS2TNZjyBqbmkfomd3CKK57j” –oauth</p>
+<p>claude mcp add-json lark-mcp ‘{<br>“command”: “npx”,<br>“args”: [<br>“-y”,<br>“@larksuiteoapi&#x2F;lark-mcp”,<br>“mcp”,<br>“-a”, “cli_a99a838bd6bc101c”,<br>“-s”, “EHL1bHaAgS2TNZjyBqbmkfomd3CKK57j”,<br>“–oauth”<br>]<br>}’</p>
+<p>天气：claude mcp add –transport http hydavinci-weather-mcp “<a target="_blank" rel="noopener" href="https://server.smithery.ai/@hydavinci/weather_mcp/mcp?api_key=b0e6d34c-a82a-4213-977e-3610e58c2c2a&profile=cultural-sole-CbeOoF">https://server.smithery.ai/@hydavinci/weather_mcp/mcp?api_key=b0e6d34c-a82a-4213-977e-3610e58c2c2a&amp;profile=cultural-sole-CbeOoF</a>“</p>
+<p>爬取：claude mcp add –transport http smithery-ai-fetch “<a target="_blank" rel="noopener" href="https://server.smithery.ai/@smithery-ai/fetch/mcp?api_key=b0e6d34c-a82a-4213-977e-3610e58c2c2a&profile=cultural-sole-CbeOoF">https://server.smithery.ai/@smithery-ai/fetch/mcp?api_key=b0e6d34c-a82a-4213-977e-3610e58c2c2a&amp;profile=cultural-sole-CbeOoF</a>“</p>
+<p>claude mcp list</p>
+<p>生成agent<br>&#x2F;agent</p>
 
 
 
@@ -135,7 +139,7 @@
 
 </article>
 
-<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"><div class="note">较新文章</div><a href="/2023/11/10/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/">分布式事务</a></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2023/05/17/BASE/">BASE理论</a></div></section></div>
+<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2025/10/20/%E4%BB%80%E4%B9%88%E6%98%AFAI%20Agent/">什么是AI Agent</a></div></section></div>
 
 
 
