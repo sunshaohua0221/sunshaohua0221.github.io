@@ -76,7 +76,7 @@
 <div class="widgets">
 <widget class="widget-wrapper search"><div class="widget-body"><div class="search-wrapper" id="search"><form class="search-form"><input type="text" class="search-input" id="search-input" placeholder="站内搜索"><svg t="1670596976048" class="icon search-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2676" width="200" height="200"><path d="M938.2 832.6L723.8 618.1c-2.5-2.5-5.3-4.4-7.9-6.4 36.2-55.6 57.3-121.8 57.3-193.1C773.3 222.8 614.6 64 418.7 64S64 222.8 64 418.6c0 195.9 158.8 354.6 354.6 354.6 71.3 0 137.5-21.2 193.2-57.4 2 2.7 3.9 5.4 6.3 7.8L832.5 938c14.6 14.6 33.7 21.9 52.8 21.9 19.1 0 38.2-7.3 52.8-21.8 29.2-29.1 29.2-76.4 0.1-105.5M418.7 661.3C284.9 661.3 176 552.4 176 418.6 176 284.9 284.9 176 418.7 176c133.8 0 242.6 108.9 242.6 242.7 0 133.7-108.9 242.6-242.6 242.6" p-id="2677"></path></svg></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div></div></widget>
 
-<widget class="widget-wrapper recent"><div class="widget-header cap theme dis-select"><span class="name">最近更新</span></div><div class="widget-body related-posts fs14"><a class="item title" href="/2025/11/10/tokens/"><span class="title">Tokens是啥？为啥大模型要按Tokens收费？</span></a><a class="item title" href="/2025/11/09/claude-code/"><span class="title">claude-code初体验</span></a><a class="item title" href="/2025/10/11/%E5%A4%A7%E6%A8%A1%E5%9E%8B/"><span class="title">大模型</span></a><a class="item title" href="/2025/04/20/Redis%E5%92%8C%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%80%E8%87%B4%E6%80%A7%E9%97%AE%E9%A2%98/"><span class="title">Redis和数据库一致性问题</span></a><a class="item title" href="/2024/12/21/%E6%9C%8D%E5%8A%A1%E7%AB%AF%E6%8E%A5%E5%8F%A3%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/"><span class="title">服务端接口性能优化</span></a></div></widget>
+<widget class="widget-wrapper recent"><div class="widget-header cap theme dis-select"><span class="name">最近更新</span></div><div class="widget-body related-posts fs14"><a class="item title" href="/2025/10/11/RAG/"><span class="title">RAG</span></a><a class="item title" href="/2025/10/16/%E4%BB%80%E4%B9%88%E6%98%AFMCP/"><span class="title">什么是MCP</span></a><a class="item title" href="/2025/10/15/%E4%BB%80%E4%B9%88%E6%98%AFFuncting%20Calling/"><span class="title">什么是Function Calling</span></a><a class="item title" href="/2025/10/20/%E4%BB%80%E4%B9%88%E6%98%AFAI%20Agent/"><span class="title">什么是AI Agent</span></a><a class="item title" href="/2025/10/11/%E5%A4%A7%E6%A8%A1%E5%9E%8B/"><span class="title">大模型</span></a></div></widget>
 
 
 </div>
@@ -105,14 +105,18 @@
 <article class="md-text"><h2 class="post-title">claude-code初体验</h2><div class="excerpt"><p>Claude Code介绍ClaudeCode是由Anthropic开发的全新终端AI编程工具，旨在通过自然语言指令帮助开发者高效率地完成代码编写、调试和项目管理任务。它直接集成在开发者的工作环境（如终端）中，无需依赖额外服务器或复杂配置即可运行。
 在实际的使用过程中，Claude Code是一个比较通用的智能体，他输出的代码也比cursor简练很多，更像是一个熟悉整个项目的高级程序员，研究...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2025-11-09T04:09:33.000Z">2025-11-09</time></span></div></article>
 </a><a class="post-card post " href="/2025/10/20/%E4%BB%80%E4%B9%88%E6%98%AFAI%20Agent/">
-<article class="md-text"><h2 class="post-title">什么是AI Agent</h2><div class="excerpt"><p>大模型大家都知道，比如我们常见的ChatGPT、DeepSeek等，但是，这些大模型都有一个关键的问题，那就是他们没办法用工具，比如我想要让大模型帮我查询一个接口，他是做不到的。那么，如果给大模型增加工具的调用能力，并且他知道该什么时候调用什么工具，这基本上就是一个Agent了。Agent翻译成中文是智能体，或者叫做助理更合适，比如说这就是个Agent：你对你的小爱同学说，我想吃肯德基，他就...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2025-10-20T02:27:55.000Z">2025-10-20</time></span></div></article>
+<article class="md-text"><h2 class="post-title">什么是AI Agent</h2><div class="excerpt"><p>人工智能领域发展至今，大语言模型（LLM）如ChatGPT、DeepSeek等已经广为人知。然而，这些强大的大模型存在一个显著局限：它们无法主动使用外部工具。例如，如果你想让大模型直接帮你查询API接口、搜索实时信息或执行特定操作，普通的大模型是无法完成的。
+而AI Agent正是为解决这一局限而诞生的概念。简单来说，AI Agent就是赋予大模型工具调用能力，并使其能够自主决定何时调用何种...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2025-10-20T02:27:55.000Z">2025-10-20</time></span></div></article>
 </a><a class="post-card post " href="/2025/10/16/%E4%BB%80%E4%B9%88%E6%98%AFMCP/">
-<article class="md-text"><h2 class="post-title">什么是MCP</h2><div class="excerpt"><p>MCP和Function Calling一样，都是让大模型会用工具的一种手段。全称是Model Context Protocol，顾名思义，它是一种协议，只要每一个MCP Server（工具）都遵守这个协议，那么大模型就可以直接使用这些工具了，而不需要像function calling一样，要写一大堆的适配代码（提示词）。就像下面这张图一样，他就像一个USB的规范一样，只要大家都遵守，就能一...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2025-10-16T07:47:01.000Z">2025-10-16</time></span></div></article>
+<article class="md-text"><h2 class="post-title">什么是MCP</h2><div class="excerpt"><p>MCP（Model Context Protocol）是一种让大模型能够标准化使用外部工具的协议，与Function Calling类似，但其核心优势在于提供了统一的接口规范。通过MCP协议，只要工具服务（MCP Server）遵循这一标准，大模型就能直接调用这些工具，无需为每个工具单独编写复杂的适配代码和提示词。这就如同USB接口规范一样，统一标准让不同设备能够无缝协作。
+
+
+MCP由研发...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2025-10-16T07:47:01.000Z">2025-10-16</time></span></div></article>
 </a><a class="post-card post " href="/2025/10/15/%E4%BB%80%E4%B9%88%E6%98%AFFuncting%20Calling/">
-<article class="md-text"><h2 class="post-title">什么是Function Calling</h2><div class="excerpt"><p>Function Calling都是一种让大模型会使用工具的方案。如果一个大模型不会用工具，那就只能是一个简单的对话机器人，并且只能根据以往训练的数据进行对话。如果你想让给大模型能够帮你联网查询、帮你操作本地文件、帮你调外部服务，都需要让他会用工具，而Function Call，MCP、A2A都是可以让大模型更好的使用工具的技术方案。Function Call是Open AI提出的，最开始时...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2025-10-15T04:47:01.000Z">2025-10-15</time></span></div></article>
+<article class="md-text"><h2 class="post-title">什么是Function Calling</h2><div class="excerpt"><p>Function Calling是一种让大语言模型(LLM)能够使用外部工具技术方案。如果一个大模型不会使用工具，那么它就只能作为一个简单的对话机器人，并且只能基于训练时的数据进行回答。如果你希望大模型能够联网查询实时信息、操作本地文件、调用外部API服务等，就需要赋予它使用工具的能力。Function Calling、MCP(Model Control Program)和A2A(Agent...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2025-10-15T04:47:01.000Z">2025-10-15</time></span></div></article>
 </a><a class="post-card post " href="/2025/10/11/RAG/">
-<article class="md-text"><h2 class="post-title">RAG</h2><div class="excerpt"><p>RAG全称是：Retrieval-Augmented Generation，翻译成中文就是检索增强生成。说白了就是让大语言模型（ChatGPT）在“生成答案”之前，先去找资料（检索）来增强它的知识，再用这些资料来生成更准确的答案。
-为什么需要RAG因为对于很多大语言模型来说，他的知识是基于历史数据训练出来的，比如GPT-4是截止到2023年的数据，而在这之后发生的所有的新的事件，新的数据，他...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2025-10-11T12:19:56.000Z">2025-10-11</time></span></div></article>
+<article class="md-text"><h2 class="post-title">RAG</h2><div class="excerpt"><p>RAG全称是：Retrieval-Augmented Generation，翻译成中文就是检索增强生成。简单来说，RAG是一种结合了检索系统和生成模型的技术，它的核心思想是：让大语言模型（如ChatGPT、DeepSeek等）在生成答案之前，先从外部知识库中检索相关信息来增强其知识，然后基于这些检索到的资料生成更准确、更可靠的答案。
+为什么需要RAG大语言模型虽然强大，但存在以下几个关键局限...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2025-10-11T12:19:56.000Z">2025-10-11</time></span></div></article>
 </a><a class="post-card post " href="/2025/10/11/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E4%BA%A7%E7%94%9F%E5%B9%BB%E8%A7%89%E7%9A%84%E5%8E%9F%E5%9B%A0/">
 <article class="md-text"><h2 class="post-title">大模型产生幻觉的原因</h2><div class="excerpt"><p>大模型的“幻觉”指的是 AI 生成了看似合理但实际上错误或编造的信息。例如，它可能会编造不存在的事实、错误引用文献、甚至捏造公司或人物的信息。
 幻觉产生原因语言模型的“填空”机制
@@ -121,10 +125,8 @@ Transformer语言模型本质上是一个“填空预测器”，它是根据概
 训练数据存在缺陷
 训练数据本身可能包含错误信息、不完整数据、偏见信息，导致模型学到不真实...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2025-10-11T05:09:29.000Z">2025-10-11</time></span></div></article>
 </a><a class="post-card post " href="/2025/10/11/%E5%A4%A7%E6%A8%A1%E5%9E%8B/">
-<article class="md-text"><h2 class="post-title">大模型</h2><div class="excerpt"><p>所谓的大模型通常指基于深度学习的大规模人工智能模型，尤其是像 GPT-4这样的大语言模型（LLM, Large Language Model）
-相比于传统模型，大模型的&quot;大&quot;主要体现在就是参数规模大。传统深度学习模型的参数规模通常在百万级到千万级，而大模型的参数量达到了百亿级、千亿级，甚至万亿级。以 GPT-4 为例，参数规模可能达万亿级。
-
-如我们通常说的7B模型，指的...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2025-10-11T01:22:56.000Z">2025-10-11</time></span></div></article>
+<article class="md-text"><h2 class="post-title">大模型</h2><div class="excerpt"><p>什么是大模型所谓的大模型通常指基于深度学习的大规模人工智能模型，尤其是像 GPT-4这样的大语言模型（LLM, Large Language Model），大模型通过在海量数据上训练，能够理解和生成人类语言，并执行各种复杂任务。
+大模型的特点参数规模庞大相比于传统模型，大模型的&quot;大&quot;主要体现在就是参数规模大。传统深度学习模型的参数规模通常在百万级到千万级，而大模型的参数量...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2025-10-11T01:22:56.000Z">2025-10-11</time></span></div></article>
 </a><a class="post-card post " href="/2025/04/20/Redis%E5%92%8C%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%80%E8%87%B4%E6%80%A7%E9%97%AE%E9%A2%98/">
 <article class="md-text"><h2 class="post-title">Redis和数据库一致性问题</h2><div class="excerpt"><p>什么情况下会出现数据库和缓存不一致的问题？写写并发在并发场景中，如果两个线程，同时进行先写数据库，后更新缓存的操作，就可能会出现不一致：
 

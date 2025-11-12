@@ -23,17 +23,17 @@
   <title>什么是MCP - Felix的技术笔记</title>
 
   
-    <meta name="description" content="MCP和Function Calling一样，都是让大模型会用工具的一种手段。全称是Model Context Protocol，顾名思义，它是一种协议，只要每一个MCP Server（工具）都遵守这个协议，那么大模型就可以直接使用这些工具了，而不需要像function calling一样，要写一大堆的适配代码（提示词）。就像下面这张图一样，他就像一个USB的规范一样，只要大家都遵守，就能一起玩。">
+    <meta name="description" content="MCP（Model Context Protocol）是一种让大模型能够标准化使用外部工具的协议，与Function Calling类似，但其核心优势在于提供了统一的接口规范。通过MCP协议，只要工具服务（MCP Server）遵循这一标准，大模型就能直接调用这些工具，无需为每个工具单独编写复杂的适配代码和提示词。这就如同USB接口规范一样，统一标准让不同设备能够无缝协作。   MCP由研发Cla">
 <meta property="og:type" content="article">
 <meta property="og:title" content="什么是MCP">
 <meta property="og:url" content="https://sunshaohua0221.github.io/2025/10/16/%E4%BB%80%E4%B9%88%E6%98%AFMCP/index.html">
 <meta property="og:site_name" content="Felix的技术笔记">
-<meta property="og:description" content="MCP和Function Calling一样，都是让大模型会用工具的一种手段。全称是Model Context Protocol，顾名思义，它是一种协议，只要每一个MCP Server（工具）都遵守这个协议，那么大模型就可以直接使用这些工具了，而不需要像function calling一样，要写一大堆的适配代码（提示词）。就像下面这张图一样，他就像一个USB的规范一样，只要大家都遵守，就能一起玩。">
+<meta property="og:description" content="MCP（Model Context Protocol）是一种让大模型能够标准化使用外部工具的协议，与Function Calling类似，但其核心优势在于提供了统一的接口规范。通过MCP协议，只要工具服务（MCP Server）遵循这一标准，大模型就能直接调用这些工具，无需为每个工具单独编写复杂的适配代码和提示词。这就如同USB接口规范一样，统一标准让不同设备能够无缝协作。   MCP由研发Cla">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://sunshaohua0221.github.io/2025/10/16/%E4%BB%80%E4%B9%88%E6%98%AFMCP/MCP1.png">
 <meta property="og:image" content="https://sunshaohua0221.github.io/2025/10/16/%E4%BB%80%E4%B9%88%E6%98%AFMCP/MCP2.png">
 <meta property="article:published_time" content="2025-10-16T07:47:01.000Z">
-<meta property="article:modified_time" content="2025-11-08T09:24:10.206Z">
+<meta property="article:modified_time" content="2025-11-12T00:29:32.986Z">
 <meta property="article:author" content="ssh">
 <meta property="article:tag" content="技术、生活">
 <meta name="twitter:card" content="summary">
@@ -103,29 +103,31 @@
 <div class="bread-nav fs12"><div class="left"><div id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" href="/">文章</a></div><div id="post-meta">
     <span>发布于&nbsp;<time datetime="2025-10-16T07:47:01.000Z">2025-10-16</time></span>
     
-    <span>更新于&nbsp;<time datetime="2025-11-08T09:24:10.206Z">2025-11-08</time></span>
+    <span>更新于&nbsp;<time datetime="2025-11-12T00:29:32.986Z">2025-11-12</time></span>
     </div></div></div>
 
 <article class='md-text content post'>
 <h1 class="article-title"><span>什么是MCP</span></h1>
-<p><code>MCP</code>和<code>Function Calling</code>一样，都是让大模型会用工具的一种手段。全称是<code>Model Context Protocol</code>，顾名思义，它是一种协议，只要每一个MCP Server（工具）都遵守这个协议，那么大模型就可以直接使用这些工具了，而不需要像function calling一样，要写一大堆的适配代码（提示词）。<br><br>就像下面这张图一样，他就像一个USB的规范一样，只要大家都遵守，就能一起玩。</p>
+<p>MCP（Model Context Protocol）是一种让大模型能够标准化使用外部工具的协议，与Function Calling类似，但其核心优势在于提供了统一的接口规范。<br><br>通过MCP协议，只要工具服务（MCP Server）遵循这一标准，大模型就能直接调用这些工具，无需为每个工具单独编写复杂的适配代码和提示词。这就如同USB接口规范一样，统一标准让不同设备能够无缝协作。</p>
 <div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="MCP1.png"/></div></div>
 
-<p>Anthropic 2024年年底推出的，就是那个研发了Claude模型的公司，他们制定的这个规范，后来因为大名鼎鼎的Cursor开始支持了，慢慢的就火起来了，后来OpenAI也不得不支持了。现在还是比较火的。<br><br>有了MCP之后，大模型就不再需要为每个数据源或工具单独开发接口，开发者只需遵循MCP规范，即可快速集成各种工具。</p>
+<p>MCP由研发Claude模型的Anthropic公司于2024年年底提出，在知名IDE Cursor率先支持后逐渐流行起来，甚至促使OpenAI也不得不跟进支持。目前，MCP已成为AI工具集成领域的重要标准之一。<br><br>MCP的出现极大简化了大模型与外部工具的集成流程，开发者只需遵循MCP规范实现服务，即可让大模型轻松调用各类数据源和工具，无需针对每个模型单独进行适配开发。</p>
 <h4 id="MCP中的核心三个组件"><a href="#MCP中的核心三个组件" class="headerlink" title="MCP中的核心三个组件"></a>MCP中的核心三个组件</h4><ul>
-<li>MCP Hosts：如Claude Desktop或IDE（比如Cursor），作为AI应用的入口，发起数据请求</li>
-<li>MCP Servers：轻量级服务，负责对接具体数据源或工具（如GitHub API、本地文件系统），提供标准化接口。（一般是别人开发好的，你要用的工具）</li>
-<li>MCP Clients：协议客户端，维护与服务器的连接并转发请求。<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="MCP2.png"/></div></div></li>
+<li><strong>MCP Hosts</strong>：AI应用的入口，如Claude Desktop或IDE（如Cursor），负责接收用户请求并发起数据处理流程</li>
+<li><strong>MCP Servers</strong>：轻量级服务组件，负责对接具体数据源或工具（如GitHub API、本地文件系统等），提供标准化的接口供大模型调用</li>
+<li><strong>MCP Clients</strong>：协议客户端实现，负责维护与服务器的连接，转发请求和响应数据<div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="MCP2.png"/></div></div></li>
 </ul>
 <p>有了MCP之后，当用户提出一个问题时，就是大致下面的流程：</p>
 <ol>
-<li>客户端（Claude Desktop &#x2F; Cursor）将你的问题发送给大模型（如Claude）。</li>
-<li>Claude 分析可用的工具，并决定使用哪一个（或多个）。</li>
-<li>客户端通过 MCP Server 执行所选的工具。</li>
-<li>工具的执行结果被送回给 Claude。</li>
-<li>Claude 结合执行结果构造最终的 prompt 并生成自然语言的回应。</li>
-<li>回应最终展示给用户</li>
+<li>MCP Host（如Claude Desktop或Cursor）接收用户问题，并将其发送给后端大模型（如Claude）</li>
+<li>大模型分析问题内容，基于可用工具列表决定需要调用的工具服务</li>
+<li>MCP Client通过标准化接口将调用请求转发至对应的MCP Server</li>
+<li>MCP Server执行具体操作（如查询数据库、调用API等），并将结果返回给客户端</li>
+<li>客户端将工具执行结果传回给大模型</li>
+<li>大模型结合问题上下文和工具执行结果，生成自然语言回复</li>
+<li>最终回复通过MCP Host展示给用户</li>
 </ol>
+<p>这种标准化的工具调用机制，使得AI系统能够更高效、更灵活地利用外部资源，显著扩展了大模型的能力边界。</p>
 
 
 
