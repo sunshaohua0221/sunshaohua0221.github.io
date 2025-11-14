@@ -76,7 +76,7 @@
 <div class="widgets">
 <widget class="widget-wrapper search"><div class="widget-body"><div class="search-wrapper" id="search"><form class="search-form"><input type="text" class="search-input" id="search-input" placeholder="站内搜索"><svg t="1670596976048" class="icon search-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2676" width="200" height="200"><path d="M938.2 832.6L723.8 618.1c-2.5-2.5-5.3-4.4-7.9-6.4 36.2-55.6 57.3-121.8 57.3-193.1C773.3 222.8 614.6 64 418.7 64S64 222.8 64 418.6c0 195.9 158.8 354.6 354.6 354.6 71.3 0 137.5-21.2 193.2-57.4 2 2.7 3.9 5.4 6.3 7.8L832.5 938c14.6 14.6 33.7 21.9 52.8 21.9 19.1 0 38.2-7.3 52.8-21.8 29.2-29.1 29.2-76.4 0.1-105.5M418.7 661.3C284.9 661.3 176 552.4 176 418.6 176 284.9 284.9 176 418.7 176c133.8 0 242.6 108.9 242.6 242.7 0 133.7-108.9 242.6-242.6 242.6" p-id="2677"></path></svg></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div></div></widget>
 
-<widget class="widget-wrapper recent"><div class="widget-header cap theme dis-select"><span class="name">最近更新</span></div><div class="widget-body related-posts fs14"><a class="item title" href="/2025/10/11/RAG/"><span class="title">RAG</span></a><a class="item title" href="/2025/10/16/%E4%BB%80%E4%B9%88%E6%98%AFMCP/"><span class="title">什么是MCP</span></a><a class="item title" href="/2025/10/15/%E4%BB%80%E4%B9%88%E6%98%AFFuncting%20Calling/"><span class="title">什么是Function Calling</span></a><a class="item title" href="/2025/10/20/%E4%BB%80%E4%B9%88%E6%98%AFAI%20Agent/"><span class="title">什么是AI Agent</span></a><a class="item title" href="/2025/10/11/%E5%A4%A7%E6%A8%A1%E5%9E%8B/"><span class="title">大模型</span></a></div></widget>
+<widget class="widget-wrapper recent"><div class="widget-header cap theme dis-select"><span class="name">最近更新</span></div><div class="widget-body related-posts fs14"><a class="item title" href="/2025/11/12/SPI%E6%9C%BA%E5%88%B6/"><span class="title">SPI类加载机制</span></a><a class="item title" href="/2025/10/11/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E4%BA%A7%E7%94%9F%E5%B9%BB%E8%A7%89%E7%9A%84%E5%8E%9F%E5%9B%A0/"><span class="title">大模型产生幻觉的原因</span></a><a class="item title" href="/2025/10/11/RAG/"><span class="title">RAG</span></a><a class="item title" href="/2025/10/16/%E4%BB%80%E4%B9%88%E6%98%AFMCP/"><span class="title">什么是MCP</span></a><a class="item title" href="/2025/10/15/%E4%BB%80%E4%B9%88%E6%98%AFFuncting%20Calling/"><span class="title">什么是Function Calling</span></a></div></widget>
 
 
 </div>
@@ -97,7 +97,10 @@
   
 
 <div class="nav-wrap"><nav class="sub post cap"><a class="active" href="/">近期发布</a><a href="/archives">归档</a></nav></div>
-  <div class="post-list post"><a class="post-card post " href="/2025/11/10/tokens/">
+  <div class="post-list post"><a class="post-card post " href="/2025/11/12/SPI%E6%9C%BA%E5%88%B6/">
+<article class="md-text"><h2 class="post-title">SPI类加载机制</h2><div class="excerpt"><p>1. SPI机制概述SPI（Service Provider Interface）是Java提供的一种服务发现机制，它能够让接口的定义与实现分离，使第三方可以提供接口的实现，并且在运行时动态地加载这些实现。这种机制使得系统的扩展性大大增强，符合”开闭原则”，即对扩展开放，对修改关闭。
+2. SPI的作用2.1 实现服务的解耦SPI机制的核心作用是实现服务接口与实现类之间的解耦。在传统的开发模...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2025-11-12T13:03:20.878Z">2025-11-12</time></span></div></article>
+</a><a class="post-card post " href="/2025/11/10/tokens/">
 <article class="md-text"><h2 class="post-title">Tokens是啥？为啥大模型要按Tokens收费？</h2><div class="excerpt"><p>Tokens是啥？简单说，就是模型的“语言积木”
 想象一下教一个还不会说话的孩子认识世界。你不会直接给他一整本《百科全书》，而是会先教他最基本的“积木”——比如单个的字母（A, B, C），或者常见的笔画（横、竖、撇、捺）。
 对于大语言模型来说，Token就是它理解和生成语言时所用的最基本“积木”。这个过程叫做 “Token化”（Tokenization） ，就是把我们输入的文字，拆分成模型...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2025-11-10T12:40:12.000Z">2025-11-10</time></span></div></article>
@@ -118,12 +121,9 @@ MCP由研发...</p></div><div class="meta cap"><span class="cap" id="post-meta">
 <article class="md-text"><h2 class="post-title">RAG</h2><div class="excerpt"><p>RAG全称是：Retrieval-Augmented Generation，翻译成中文就是检索增强生成。简单来说，RAG是一种结合了检索系统和生成模型的技术，它的核心思想是：让大语言模型（如ChatGPT、DeepSeek等）在生成答案之前，先从外部知识库中检索相关信息来增强其知识，然后基于这些检索到的资料生成更准确、更可靠的答案。
 为什么需要RAG大语言模型虽然强大，但存在以下几个关键局限...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2025-10-11T12:19:56.000Z">2025-10-11</time></span></div></article>
 </a><a class="post-card post " href="/2025/10/11/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E4%BA%A7%E7%94%9F%E5%B9%BB%E8%A7%89%E7%9A%84%E5%8E%9F%E5%9B%A0/">
-<article class="md-text"><h2 class="post-title">大模型产生幻觉的原因</h2><div class="excerpt"><p>大模型的“幻觉”指的是 AI 生成了看似合理但实际上错误或编造的信息。例如，它可能会编造不存在的事实、错误引用文献、甚至捏造公司或人物的信息。
-幻觉产生原因语言模型的“填空”机制
-Transformer语言模型本质上是一个“填空预测器”，它是根据概率预测来选择下一个输出的词，而不是在“思考”正确答案。
-
-训练数据存在缺陷
-训练数据本身可能包含错误信息、不完整数据、偏见信息，导致模型学到不真实...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2025-10-11T05:09:29.000Z">2025-10-11</time></span></div></article>
+<article class="md-text"><h2 class="post-title">大模型产生幻觉的原因</h2><div class="excerpt"><p>什么是幻觉？大模型的“幻觉”指的是 AI 生成了看似合理但实际上错误或编造的信息。例如，它可能会编造不存在的事实、错误引用文献、甚至捏造公司或人物的信息。这种现象在生成式 AI 中普遍存在，严重影响了 AI 输出的可靠性和可信度。
+幻觉的分类1. 事实性幻觉指模型生成的内容与客观事实不符，例如编造历史事件、不存在的人物或错误的统计数据。
+2. 引用性幻觉模型错误引用或编造文献、研究结果或他人...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2025-10-11T05:09:29.000Z">2025-10-11</time></span></div></article>
 </a><a class="post-card post " href="/2025/10/11/%E5%A4%A7%E6%A8%A1%E5%9E%8B/">
 <article class="md-text"><h2 class="post-title">大模型</h2><div class="excerpt"><p>什么是大模型所谓的大模型通常指基于深度学习的大规模人工智能模型，尤其是像 GPT-4这样的大语言模型（LLM, Large Language Model），大模型通过在海量数据上训练，能够理解和生成人类语言，并执行各种复杂任务。
 大模型的特点参数规模庞大相比于传统模型，大模型的&quot;大&quot;主要体现在就是参数规模大。传统深度学习模型的参数规模通常在百万级到千万级，而大模型的参数量...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2025-10-11T01:22:56.000Z">2025-10-11</time></span></div></article>
@@ -161,10 +161,6 @@ W
 W
 
 ...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2025-04-20T11:17:34.000Z">2025-04-20</time></span></div></article>
-</a><a class="post-card post " href="/2025/03/16/Innodb%E7%9A%84RR%E5%88%B0%E5%BA%95%E6%9C%89%E6%B2%A1%E6%9C%89%E8%A7%A3%E5%86%B3%E5%B9%BB%E8%AF%BB/">
-<article class="md-text"><h2 class="post-title">Innodb的RR到底有没有解决幻读</h2><div class="excerpt"><p>InnoDB中的REPEATABLE READ这种隔离级别通过间隙锁+MVCC解决了大部分的幻读问题，但是并不是所有的幻读都能解读，想要彻底解决幻读，需要使用Serializable的隔离级别。
-RR中，通过间隙锁解决了部分当前读的幻读问题，通过增加间隙锁将记录之间的间隙锁住，避免新的数据插入。
-RR中，通过MVCC机制的，解决了快照读的幻读问题，RR中的快照读只有第一次会进行数据查询，后面...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2025-03-16T11:17:34.000Z">2025-03-16</time></span></div></article>
 </a></div>
   
   <div class='paginator-wrap dis-select'>
