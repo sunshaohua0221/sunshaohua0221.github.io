@@ -20,14 +20,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="theme-color" content="#f8f8f8">
   
-  <title>Felix的技术笔记</title>
+  <title>Raymond的技术笔记</title>
 
   
     <meta name="description" content="学无止境,行以致远">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Felix的技术笔记">
+<meta property="og:title" content="Raymond的技术笔记">
 <meta property="og:url" content="https://sunshaohua0221.github.io/index.html">
-<meta property="og:site_name" content="Felix的技术笔记">
+<meta property="og:site_name" content="Raymond的技术笔记">
 <meta property="og:description" content="学无止境,行以致远">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:author" content="ssh">
@@ -67,7 +67,7 @@
 
   
 
-<header class="header"><div class="logo-wrap"><a class="title" href="/"><div class="main" ff="title">Felix的技术笔记</div><div class="sub cap">学无止境,行以致远</div></a></div>
+<header class="header"><div class="logo-wrap"><a class="title" href="/"><div class="main" ff="title">Raymond的技术笔记</div><div class="sub cap">学无止境,行以致远</div></a></div>
 
 <nav class="menu dis-select"></nav>
 </header>
@@ -87,7 +87,7 @@
       
   
 
-<header class="header mobile-only"><div class="logo-wrap"><a class="title" href="/"><div class="main" ff="title">Felix的技术笔记</div><div class="sub cap">学无止境,行以致远</div></a></div></header>
+<header class="header mobile-only"><div class="logo-wrap"><a class="title" href="/"><div class="main" ff="title">Raymond的技术笔记</div><div class="sub cap">学无止境,行以致远</div></a></div></header>
 
 
 
@@ -97,7 +97,9 @@
   
 
 <div class="nav-wrap"><nav class="sub post cap"><a class="active" href="/">近期发布</a><a href="/archives">归档</a></nav></div>
-  <div class="post-list post"><a class="post-card post " href="/2025/11/12/SPI%E6%9C%BA%E5%88%B6/">
+  <div class="post-list post"><a class="post-card post " href="/2025/12/03/%E5%AE%9E%E6%97%B6%E5%8D%8F%E4%BD%9CTODO%E5%88%97%E8%A1%A8%E5%BA%94%E7%94%A8%E7%B3%BB%E7%BB%9F%E8%AE%BE%E8%AE%A1/">
+<article class="md-text"><h2 class="post-title">2025-12-03</h2><div class="excerpt"><p>实时协作TODO列表应用系统设计文档1. 高级系统架构图1234567891011121314151617181920212223242526272829303132333435363738394041424344454647┌─────────────────────────────────────────────────────────────────────────────────┐│...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2025-12-03T09:55:01.904Z">2025-12-03</time></span></div></article>
+</a><a class="post-card post " href="/2025/11/12/SPI%E6%9C%BA%E5%88%B6/">
 <article class="md-text"><h2 class="post-title">SPI类加载机制</h2><div class="excerpt"><p>1. SPI机制概述SPI（Service Provider Interface）是Java提供的一种服务发现机制，它能够让接口的定义与实现分离，使第三方可以提供接口的实现，并且在运行时动态地加载这些实现。这种机制使得系统的扩展性大大增强，符合”开闭原则”，即对扩展开放，对修改关闭。
 2. SPI的作用2.1 实现服务的解耦SPI机制的核心作用是实现服务接口与实现类之间的解耦。在传统的开发模...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2025-11-12T13:03:20.878Z">2025-11-12</time></span></div></article>
 </a><a class="post-card post " href="/2025/11/10/tokens/">
@@ -127,40 +129,6 @@ MCP由研发...</p></div><div class="meta cap"><span class="cap" id="post-meta">
 </a><a class="post-card post " href="/2025/10/11/%E5%A4%A7%E6%A8%A1%E5%9E%8B/">
 <article class="md-text"><h2 class="post-title">大模型</h2><div class="excerpt"><p>什么是大模型所谓的大模型通常指基于深度学习的大规模人工智能模型，尤其是像 GPT-4这样的大语言模型（LLM, Large Language Model），大模型通过在海量数据上训练，能够理解和生成人类语言，并执行各种复杂任务。
 大模型的特点参数规模庞大相比于传统模型，大模型的&quot;大&quot;主要体现在就是参数规模大。传统深度学习模型的参数规模通常在百万级到千万级，而大模型的参数量...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2025-10-11T01:22:56.000Z">2025-10-11</time></span></div></article>
-</a><a class="post-card post " href="/2025/04/20/Redis%E5%92%8C%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%80%E8%87%B4%E6%80%A7%E9%97%AE%E9%A2%98/">
-<article class="md-text"><h2 class="post-title">Redis和数据库一致性问题</h2><div class="excerpt"><p>什么情况下会出现数据库和缓存不一致的问题？写写并发在并发场景中，如果两个线程，同时进行先写数据库，后更新缓存的操作，就可能会出现不一致：
-
-
-
-W
-W
-
-
-
-写数据库，更新成20
-
-
-
-
-写数据库，更新成10
-
-
-
-写缓存，更新成10
-
-
-写缓存，更新成20（数据不一致）
-
-
-
-如果在并发场景中，如果两个线程，同时进行先更新缓存，后写数据库的操作，同理，也可能会出现不一致：
-
-
-
-W
-W
-
-...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2025-04-20T11:17:34.000Z">2025-04-20</time></span></div></article>
 </a></div>
   
   <div class='paginator-wrap dis-select'>

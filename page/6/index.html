@@ -20,14 +20,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="theme-color" content="#f8f8f8">
   
-  <title>Felix的技术笔记</title>
+  <title>Raymond的技术笔记</title>
 
   
     <meta name="description" content="学无止境,行以致远">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Felix的技术笔记">
+<meta property="og:title" content="Raymond的技术笔记">
 <meta property="og:url" content="https://sunshaohua0221.github.io/page/6/index.html">
-<meta property="og:site_name" content="Felix的技术笔记">
+<meta property="og:site_name" content="Raymond的技术笔记">
 <meta property="og:description" content="学无止境,行以致远">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:author" content="ssh">
@@ -67,7 +67,7 @@
 
   
 
-<header class="header"><div class="logo-wrap"><a class="title" href="/"><div class="main" ff="title">Felix的技术笔记</div><div class="sub cap">学无止境,行以致远</div></a></div>
+<header class="header"><div class="logo-wrap"><a class="title" href="/"><div class="main" ff="title">Raymond的技术笔记</div><div class="sub cap">学无止境,行以致远</div></a></div>
 
 <nav class="menu dis-select"></nav>
 </header>
@@ -87,7 +87,7 @@
       
   
 
-<header class="header mobile-only"><div class="logo-wrap"><a class="title" href="/"><div class="main" ff="title">Felix的技术笔记</div><div class="sub cap">学无止境,行以致远</div></a></div></header>
+<header class="header mobile-only"><div class="logo-wrap"><a class="title" href="/"><div class="main" ff="title">Raymond的技术笔记</div><div class="sub cap">学无止境,行以致远</div></a></div></header>
 
 
 
@@ -97,7 +97,10 @@
   
 
 <div class="nav-wrap"><nav class="sub post cap"><a class="active" href="/">近期发布</a><a href="/archives">归档</a></nav></div>
-  <div class="post-list post"><a class="post-card post " href="/2020/04/10/Sharding-JDBC/">
+  <div class="post-list post"><a class="post-card post " href="/2020/05/09/%E4%B8%80%E6%AC%A1%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5%E7%BB%8F%E5%8E%86/">
+<article class="md-text"><h2 class="post-title">一次系统启动失败经历</h2><div class="excerpt"><p>最近遇到一个很头疼的问题，在一次合代码后，系统启不来了，确切的说，本地可以起来，生成容器镜像后启不来，报了一大堆创建Spring bean异常，本地能启动，镜像启不来，这是不是很怀疑人生，通过各种排除法手段合并代码、删除代码，但就是不行，第二天又重新倒腾了一下（merge），好了，也不知道为啥就好了。    
+接着又有新需求了，从master上拉新的分支，吭哧吭哧干完了，编译、打包、生成镜像...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2020-05-09T02:11:22.000Z">2020-05-09</time></span></div></article>
+</a><a class="post-card post " href="/2020/04/10/Sharding-JDBC/">
 <article class="md-text"><h2 class="post-title">Sharding JDBC生产问题</h2><div class="excerpt"><p>最近项目中在使用数据库中间件，采用ShardingSphere中的Sharding-JDBC，总结下最近出现的问题
 ShardingSphere官网
 分布式主键重复问题问题描述告警双写失败，库中新增metering和last_billing_record违反唯一主键约束
