@@ -76,7 +76,7 @@
 <div class="widgets">
 <widget class="widget-wrapper search"><div class="widget-body"><div class="search-wrapper" id="search"><form class="search-form"><input type="text" class="search-input" id="search-input" placeholder="站内搜索"><svg t="1670596976048" class="icon search-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2676" width="200" height="200"><path d="M938.2 832.6L723.8 618.1c-2.5-2.5-5.3-4.4-7.9-6.4 36.2-55.6 57.3-121.8 57.3-193.1C773.3 222.8 614.6 64 418.7 64S64 222.8 64 418.6c0 195.9 158.8 354.6 354.6 354.6 71.3 0 137.5-21.2 193.2-57.4 2 2.7 3.9 5.4 6.3 7.8L832.5 938c14.6 14.6 33.7 21.9 52.8 21.9 19.1 0 38.2-7.3 52.8-21.8 29.2-29.1 29.2-76.4 0.1-105.5M418.7 661.3C284.9 661.3 176 552.4 176 418.6 176 284.9 284.9 176 418.7 176c133.8 0 242.6 108.9 242.6 242.7 0 133.7-108.9 242.6-242.6 242.6" p-id="2677"></path></svg></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div></div></widget>
 
-<widget class="widget-wrapper recent"><div class="widget-header cap theme dis-select"><span class="name">最近更新</span></div><div class="widget-body related-posts fs14"><a class="item title" href="/2023/11/10/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/"><span class="title">分布式事务</span></a><a class="item title" href="/2025/11/12/SPI%E6%9C%BA%E5%88%B6/"><span class="title">SPI类加载机制</span></a><a class="item title" href="/2025/10/11/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E4%BA%A7%E7%94%9F%E5%B9%BB%E8%A7%89%E7%9A%84%E5%8E%9F%E5%9B%A0/"><span class="title">大模型产生幻觉的原因</span></a><a class="item title" href="/2025/10/11/RAG/"><span class="title">RAG</span></a><a class="item title" href="/2025/10/16/%E4%BB%80%E4%B9%88%E6%98%AFMCP/"><span class="title">什么是MCP</span></a></div></widget>
+<widget class="widget-wrapper recent"><div class="widget-header cap theme dis-select"><span class="name">最近更新</span></div><div class="widget-body related-posts fs14"><a class="item title" href="/2025/11/23/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/"><span class="title">分布式事务</span></a><a class="item title" href="/2025/11/14/SPI%E6%9C%BA%E5%88%B6/"><span class="title">SPI类加载机制</span></a><a class="item title" href="/2025/11/12/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E4%BA%A7%E7%94%9F%E5%B9%BB%E8%A7%89%E7%9A%84%E5%8E%9F%E5%9B%A0/"><span class="title">大模型产生幻觉的原因</span></a><a class="item title" href="/2025/11/12/RAG/"><span class="title">RAG</span></a><a class="item title" href="/2025/11/12/%E4%BB%80%E4%B9%88%E6%98%AFMCP/"><span class="title">什么是MCP</span></a></div></widget>
 
 
 </div>
@@ -97,88 +97,41 @@
   
 
 <div class="nav-wrap"><nav class="sub post cap"><a class="active" href="/">近期发布</a><a href="/archives">归档</a></nav></div>
-  <div class="post-list post"><a class="post-card post " href="/2024/03/20/kafka%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93/">
-<article class="md-text"><h2 class="post-title">kafka常见问题总结</h2><div class="excerpt"><p>kafka消息模型队列模型：早期的消息模型
-使用队列（Queue）作为消息通信载体，满足生产者与消费者模式，一条消息只能被一个消费者使用，未被消费的消息在队列中保留直到被消费或超时。 比如：我们生产者发送 100 条消息的话，两个消费者来消费一般情况下两个消费者会按照消息发送的顺序各自消费一半（也就是你一个我一个的消费）
-队列模型存在的问题：假如我们存在这样一种情况：我们需要将生产者产生的消...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2024-03-20T13:08:49.000Z">2024-03-20</time></span></div></article>
-</a><a class="post-card post " href="/2024/03/05/nacos%E6%97%A5%E5%BF%97%E4%B8%8D%E6%89%93%E5%8D%B0/">
+  <div class="post-list post"><a class="post-card post " href="/2025/11/07/%E5%AD%97%E7%AC%A6%E4%B8%B2/">
+<article class="md-text"><h2 class="post-title">字符串</h2><div class="excerpt"><p>
+替换数字123456789101112131415161718192021222324252627282930313233343536373839404142434445//给定一个字符串 s，它包含小写字母和数字字符，请编写一个函数，将字符串中的字母字符保持不变，而将每个数字字符替换为number。//例如，对于输入字符串 &quot;a1b2c3&quot;，函数应该将其转换为 &qu...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2025-11-06T22:56:47.000Z">2025-11-07</time></span></div></article>
+</a><a class="post-card post " href="/2025/11/06/%E6%A0%88/">
+<article class="md-text"><h2 class="post-title">栈</h2><div class="excerpt"><p>
+队列实现栈1234567891011121314151617181920212223242526272829303132333435363738394041424344public class QueueToStack&lt;E&gt; &#123;    private Queue&lt;E&gt; queue;    private Queue&lt;E&gt; tempQueue; ...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2025-11-06T13:22:06.000Z">2025-11-06</time></span></div></article>
+</a><a class="post-card post " href="/2025/11/06/%E6%8E%92%E5%BA%8F/">
+<article class="md-text"><h2 class="post-title">排序</h2><div class="excerpt"><p>
+二分查找1234567891011121314151617181920212223242526272829303132public class BinarySearch &#123;    //左闭右闭区间    public int binarySearch(int[] nums, int target) &#123;        if (nums == null || nums.le...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2025-11-06T13:17:31.000Z">2025-11-06</time></span></div></article>
+</a><a class="post-card post " href="/2025/11/06/%E9%93%BE%E8%A1%A8/">
+<article class="md-text"><h2 class="post-title">链表</h2><div class="excerpt"><p>定义链表
+12345678910111213public class ListNode &#123;    int val;    ListNode next;    ListNode(int val)&#123;        this.val = val;    &#125;    ListNode()&#123;    &#125;&#125;
+
+1234567891011121314...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2025-11-06T13:14:50.000Z">2025-11-06</time></span></div></article>
+</a><a class="post-card post " href="/2025/11/06/%E4%BA%8C%E5%8F%89%E6%A0%91/">
+<article class="md-text"><h2 class="post-title">二叉树</h2><div class="excerpt"><p>定义树
+1234567891011public class TreeNode &#123;    int val;    TreeNode left;    TreeNode right;    public TreeNode (int val, TreeNode left, TreeNode right) &#123;        this.val = val;        this....</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2025-11-06T13:07:59.000Z">2025-11-06</time></span></div></article>
+</a><a class="post-card post " href="/2025/11/06/%E5%8D%95%E4%BE%8B/">
+<article class="md-text"><h2 class="post-title">单例</h2><div class="excerpt"><p>单例的实现方式
+饿汉，类初始化的时候就把单例对象创建出来了123456789public class Singleton &#123;    private Singleton()&#123;&#125;    private static final Singleton instance = new Singleton();    public static Singleton getIn...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2025-11-06T12:19:01.000Z">2025-11-06</time></span></div></article>
+</a><a class="post-card post " href="/2025/11/06/Jackson/">
+<article class="md-text"><h2 class="post-title">Jackson</h2><div class="excerpt"><p>Jackson 简介Jackson 是一个用于在Java对象和 json 数据之间进行转换的框架。它支持众多 json 数据格式，诸如 JSON-LD、SMILE 等。Jackson是一个流式处理 JSON 的工具，它很容易与其它 JSON 处理工具进行集成，同时在序列化和反序列化性能方面也表现得相当优异。
+核心包
+jackson-databind：提供了通用的数据绑定功能（将Java对象与...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2025-11-05T23:23:57.000Z">2025-11-06</time></span></div></article>
+</a><a class="post-card post " href="/2025/11/06/nacos%E6%97%A5%E5%BF%97%E4%B8%8D%E6%89%93%E5%8D%B0/">
 <article class="md-text"><h2 class="post-title">nacos日志不打印</h2><div class="excerpt"><p>背景项目使用log4j2作为日志框架, 配置一切正常, 程序启动日志的打印也没有问题, 但是引入了nacos作为注册中心后, 日志在打印了一句WARN No Root logger was configured, creating default ERROR-level Root logger with Console appender 后日志都不打印了。
-原因在项目的启动过程中, naco...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2024-03-05T09:27:59.000Z">2024-03-05</time></span></div></article>
-</a><a class="post-card post " href="/2024/02/15/%E5%B9%82%E7%AD%89/">
-<article class="md-text"><h2 class="post-title">幂等</h2><div class="excerpt"><p>什么是幂等幂等是一个数学与计算机科学概念
-
-在数学中，幂等用函数表达式就是：f(x) &#x3D; f(f(x))。比如求绝对值的函数就是幂等的，abs(x) &#x3D; abs(abs(x))。
-在计算机科学中，幂等表示一次或多次请求某一个资源应该具有同样的副作用，或者说，多次请求所产生的影响与一次请求所产生的影响效果相同。
-
-为什么需要幂等当前互联网的系统几乎都是解耦隔离的，会存在各个...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2024-02-15T06:14:23.000Z">2024-02-15</time></span></div></article>
-</a><a class="post-card post " href="/2024/01/01/%E9%99%90%E6%B5%81/">
-<article class="md-text"><h2 class="post-title">限流</h2><div class="excerpt"><p>面对越来越多的高并发场景，限流显的由为重要，限流有多种实现的方式，下面介绍下通过Redis的限流方式
-常见的4种限流算法计数器算法在指定周期内累加访问次数，当访问次数达到设定的阀值时，触发限流策略，当进行下一个时间周期时进行访问次数清零，如果所示，我们要求3s内的请求不要超过150次
-
-但是，貌似看似很完美的流量统计其实存在一个非常严重的临界问题，如果第2-3秒内产生了150次请求，而3-4...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2024-01-01T03:27:00.000Z">2024-01-01</time></span></div></article>
-</a><a class="post-card post " href="/2023/12/31/redis-rehash/">
-<article class="md-text"><h2 class="post-title">Redis rehash</h2><div class="excerpt"><p>Redis键值对结构
-
-HashTableRedis中有一个全局哈希表，该哈希表中保存所有的键值对，对于Hash表查找的操作的复杂度为O(1)。
-
-Bucket哈希表中每一个元素称为哈希桶（Bucket），哈希桶中保存了键值对数据。
-
-Entry用来保存键值对数据，保存的是Key、Value的指针值，通过对应的指针对Key、Value进行查找。
-
-
-什么是rehashredis在项目中时常用...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2023-12-31T12:33:52.000Z">2023-12-31</time></span></div></article>
-</a><a class="post-card post " href="/2023/11/10/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/">
-<article class="md-text"><h2 class="post-title">分布式事务</h2><div class="excerpt"><p>
-分布式事务：  在分布式系统中一次操作需要由多个服务协同完成，这种由不同的服务之间通过网络协同完成的事务
-
-分布式事务分类
-刚性事务
-
-
-强一致性
-XA模型
-满足CAP理论的CP
-
-
-柔性事务
-
-
-保证最终一致性，事务结束后在可接收的时间范围内，可能出现短暂的不一致，最终会达成一致性
-满足CAP理论的AP，满足BASE理论
-
-
-
-
-
-刚性事务（XA）
-柔性事务
-
-
-
-业务改造
-无
-有
-
-
-...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2023-11-10T02:27:11.000Z">2023-11-10</time></span></div></article>
-</a><a class="post-card post " href="/2023/07/06/maven-deploy-401/">
-<article class="md-text"><h2 class="post-title">maven中deploy命令报401的原因及解决方案</h2><div class="excerpt"><p>idea使用过程中有时候会出现deploy时候报401错误，如下图
-
-
-原因一、pom 文件李配置的私服仓库地址和settings.xml里配置的用户名和密码没有匹配上
-
-pom.xml里的仓库配置12345678910111213&lt;!--项目分发信息，在执行mvn deploy后表示要发布的位置。有了这些信息就可以把网站部署到远程服务器或者把构件jar等部署到远程仓库 --&gt;&...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2023-07-06T06:35:16.000Z">2023-07-06</time></span></div></article>
-</a><a class="post-card post " href="/2023/05/17/BASE/">
-<article class="md-text"><h2 class="post-title">BASE理论</h2><div class="excerpt"><p>
-摘自JavaGuide
-
-BASE简介BASE理论起源于2008年，由eBay的架构师Dan Pritchett在ACM上发表。BASE是Basically Available（基本可用）、Soft-state（软状态）和Eventually Consistent（最终一致性）三个短语的缩写。BASE理论是对CAP中一致性C和可用性A权衡的结果，其来源于对大规模互联网系统分布式实践的总结，...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2023-05-17T05:20:46.000Z">2023-05-17</time></span></div></article>
-</a><a class="post-card post " href="/2023/05/15/CAP/">
-<article class="md-text"><h2 class="post-title">CAP理论</h2><div class="excerpt"><p>CAP简介CAP（CAP  theorem）定理又被称作布鲁尔定理（Brewer’s theorem），是加州大学伯克利分校的计算机科学家埃里克·布鲁尔（Eric Brewer）在2000年的ACM  PODC上提出的一个猜想。2002年，麻省理工学院的赛斯·吉尔伯特（Seth Gilbert）和南希·林奇（Nancy Lynch）发表了布鲁尔猜想的证明，使之成为分布式计算领域公认的一个定理...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2023-05-15T13:10:56.000Z">2023-05-15</time></span></div></article>
-</a><a class="post-card post " href="/2022/12/22/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/">
-<article class="md-text"><h2 class="post-title">动态规划</h2><div class="excerpt"><p>
-不同路径
-12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061//一个机器人位于一个 m x n 网格的左上角 （起始点在下图中标记为 “Start” ）。//机器人每次只能向下或者向右移动一步。机器人试图达到网格的右...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2022-12-22T02:45:34.000Z">2022-12-22</time></span></div></article>
+原因在项目的启动过程中, naco...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2025-11-05T23:14:56.000Z">2025-11-06</time></span></div></article>
+</a><a class="post-card post " href="/2025/11/04/Innodb%E4%BA%8B%E5%8A%A1%E6%9B%B4%E6%96%B0%E8%BF%87%E7%A8%8B/">
+<article class="md-text"><h2 class="post-title">Innodb事务更新过程</h2><div class="excerpt"><p>InnoDB事务更新过程
+在Buffer Pool中读取数据：当InnoDB需要更新一条记录时，首先会在Buffer Pool中查找该记录是否在内存中。如果没有在内存中，则从磁盘读取该页到Buffer Pool中。
+记录UndoLog：在修改操作前，InnoDB会在Undo Log中记录修改前的数据。Undo Log是用来保证事务原子性和一致性的一种机制，用于在发生事务回滚等情况时，将修改操...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2025-11-04T10:48:58.000Z">2025-11-04</time></span></div></article>
+</a><a class="post-card post " href="/2025/11/04/Innodb%E7%9A%84RR%E5%88%B0%E5%BA%95%E6%9C%89%E6%B2%A1%E6%9C%89%E8%A7%A3%E5%86%B3%E5%B9%BB%E8%AF%BB/">
+<article class="md-text"><h2 class="post-title">Innodb的RR到底有没有解决幻读</h2><div class="excerpt"><p>InnoDB中的REPEATABLE READ这种隔离级别通过间隙锁+MVCC解决了大部分的幻读问题，但是并不是所有的幻读都能解读，想要彻底解决幻读，需要使用Serializable的隔离级别。
+RR中，通过间隙锁解决了部分当前读的幻读问题，通过增加间隙锁将记录之间的间隙锁住，避免新的数据插入。
+RR中，通过MVCC机制的，解决了快照读的幻读问题，RR中的快照读只有第一次会进行数据查询，后面...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2025-11-04T10:48:58.000Z">2025-11-04</time></span></div></article>
 </a></div>
   
   <div class='paginator-wrap dis-select'>

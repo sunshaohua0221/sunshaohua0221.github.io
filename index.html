@@ -76,7 +76,7 @@
 <div class="widgets">
 <widget class="widget-wrapper search"><div class="widget-body"><div class="search-wrapper" id="search"><form class="search-form"><input type="text" class="search-input" id="search-input" placeholder="站内搜索"><svg t="1670596976048" class="icon search-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2676" width="200" height="200"><path d="M938.2 832.6L723.8 618.1c-2.5-2.5-5.3-4.4-7.9-6.4 36.2-55.6 57.3-121.8 57.3-193.1C773.3 222.8 614.6 64 418.7 64S64 222.8 64 418.6c0 195.9 158.8 354.6 354.6 354.6 71.3 0 137.5-21.2 193.2-57.4 2 2.7 3.9 5.4 6.3 7.8L832.5 938c14.6 14.6 33.7 21.9 52.8 21.9 19.1 0 38.2-7.3 52.8-21.8 29.2-29.1 29.2-76.4 0.1-105.5M418.7 661.3C284.9 661.3 176 552.4 176 418.6 176 284.9 284.9 176 418.7 176c133.8 0 242.6 108.9 242.6 242.7 0 133.7-108.9 242.6-242.6 242.6" p-id="2677"></path></svg></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div></div></widget>
 
-<widget class="widget-wrapper recent"><div class="widget-header cap theme dis-select"><span class="name">最近更新</span></div><div class="widget-body related-posts fs14"><a class="item title" href="/2023/11/10/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/"><span class="title">分布式事务</span></a><a class="item title" href="/2025/11/12/SPI%E6%9C%BA%E5%88%B6/"><span class="title">SPI类加载机制</span></a><a class="item title" href="/2025/10/11/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E4%BA%A7%E7%94%9F%E5%B9%BB%E8%A7%89%E7%9A%84%E5%8E%9F%E5%9B%A0/"><span class="title">大模型产生幻觉的原因</span></a><a class="item title" href="/2025/10/11/RAG/"><span class="title">RAG</span></a><a class="item title" href="/2025/10/16/%E4%BB%80%E4%B9%88%E6%98%AFMCP/"><span class="title">什么是MCP</span></a></div></widget>
+<widget class="widget-wrapper recent"><div class="widget-header cap theme dis-select"><span class="name">最近更新</span></div><div class="widget-body related-posts fs14"><a class="item title" href="/2025/11/23/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/"><span class="title">分布式事务</span></a><a class="item title" href="/2025/11/14/SPI%E6%9C%BA%E5%88%B6/"><span class="title">SPI类加载机制</span></a><a class="item title" href="/2025/11/12/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E4%BA%A7%E7%94%9F%E5%B9%BB%E8%A7%89%E7%9A%84%E5%8E%9F%E5%9B%A0/"><span class="title">大模型产生幻觉的原因</span></a><a class="item title" href="/2025/11/12/RAG/"><span class="title">RAG</span></a><a class="item title" href="/2025/11/12/%E4%BB%80%E4%B9%88%E6%98%AFMCP/"><span class="title">什么是MCP</span></a></div></widget>
 
 
 </div>
@@ -97,70 +97,70 @@
   
 
 <div class="nav-wrap"><nav class="sub post cap"><a class="active" href="/">近期发布</a><a href="/archives">归档</a></nav></div>
-  <div class="post-list post"><a class="post-card post " href="/2025/11/12/SPI%E6%9C%BA%E5%88%B6/">
+  <div class="post-list post"><a class="post-card post " href="/2025/11/23/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/">
+<article class="md-text"><h2 class="post-title">分布式事务</h2><div class="excerpt"><p>
+分布式事务：  在分布式系统中一次操作需要由多个服务协同完成，这种由不同的服务之间通过网络协同完成的事务
+
+分布式事务分类
+刚性事务
+
+
+强一致性
+XA模型
+满足CAP理论的CP
+
+
+柔性事务
+
+
+保证最终一致性，事务结束后在可接收的时间范围内，可能出现短暂的不一致，最终会达成一致性
+满足CAP理论的AP，满足BASE理论
+
+
+
+
+
+刚性事务（XA）
+柔性事务
+
+
+
+业务改造
+无
+有
+
+
+...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2025-11-23T04:03:24.000Z">2025-11-23</time></span></div></article>
+</a><a class="post-card post " href="/2025/11/14/SPI%E6%9C%BA%E5%88%B6/">
 <article class="md-text"><h2 class="post-title">SPI类加载机制</h2><div class="excerpt"><p>1. SPI机制概述SPI（Service Provider Interface）是Java提供的一种服务发现机制，它能够让接口的定义与实现分离，使第三方可以提供接口的实现，并且在运行时动态地加载这些实现。这种机制使得系统的扩展性大大增强，符合”开闭原则”，即对扩展开放，对修改关闭。
-2. SPI的作用2.1 实现服务的解耦SPI机制的核心作用是实现服务接口与实现类之间的解耦。在传统的开发模...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2025-11-12T13:03:20.878Z">2025-11-12</time></span></div></article>
-</a><a class="post-card post " href="/2025/11/10/tokens/">
-<article class="md-text"><h2 class="post-title">Tokens是啥？为啥大模型要按Tokens收费？</h2><div class="excerpt"><p>Tokens是啥？简单说，就是模型的“语言积木”
-想象一下教一个还不会说话的孩子认识世界。你不会直接给他一整本《百科全书》，而是会先教他最基本的“积木”——比如单个的字母（A, B, C），或者常见的笔画（横、竖、撇、捺）。
-对于大语言模型来说，Token就是它理解和生成语言时所用的最基本“积木”。这个过程叫做 “Token化”（Tokenization） ，就是把我们输入的文字，拆分成模型...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2025-11-10T12:40:12.000Z">2025-11-10</time></span></div></article>
-</a><a class="post-card post " href="/2025/11/09/claude-code/">
-<article class="md-text"><h2 class="post-title">claude-code初体验</h2><div class="excerpt"><p>Claude Code介绍ClaudeCode是由Anthropic开发的全新终端AI编程工具，旨在通过自然语言指令帮助开发者高效率地完成代码编写、调试和项目管理任务。它直接集成在开发者的工作环境（如终端）中，无需依赖额外服务器或复杂配置即可运行。
-在实际的使用过程中，Claude Code是一个比较通用的智能体，他输出的代码也比cursor简练很多，更像是一个熟悉整个项目的高级程序员，研究...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2025-11-09T04:09:33.000Z">2025-11-09</time></span></div></article>
-</a><a class="post-card post " href="/2025/10/20/%E4%BB%80%E4%B9%88%E6%98%AFAI%20Agent/">
-<article class="md-text"><h2 class="post-title">什么是AI Agent</h2><div class="excerpt"><p>人工智能领域发展至今，大语言模型（LLM）如ChatGPT、DeepSeek等已经广为人知。然而，这些强大的大模型存在一个显著局限：它们无法主动使用外部工具。例如，如果你想让大模型直接帮你查询API接口、搜索实时信息或执行特定操作，普通的大模型是无法完成的。
-而AI Agent正是为解决这一局限而诞生的概念。简单来说，AI Agent就是赋予大模型工具调用能力，并使其能够自主决定何时调用何种...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2025-10-20T02:27:55.000Z">2025-10-20</time></span></div></article>
-</a><a class="post-card post " href="/2025/10/16/%E4%BB%80%E4%B9%88%E6%98%AFMCP/">
+2. SPI的作用2.1 实现服务的解耦SPI机制的核心作用是实现服务接口与实现类之间的解耦。在传统的开发模...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2025-11-14T04:27:09.000Z">2025-11-14</time></span></div></article>
+</a><a class="post-card post " href="/2025/11/12/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E4%BA%A7%E7%94%9F%E5%B9%BB%E8%A7%89%E7%9A%84%E5%8E%9F%E5%9B%A0/">
+<article class="md-text"><h2 class="post-title">大模型产生幻觉的原因</h2><div class="excerpt"><p>什么是幻觉？大模型的“幻觉”指的是 AI 生成了看似合理但实际上错误或编造的信息。例如，它可能会编造不存在的事实、错误引用文献、甚至捏造公司或人物的信息。这种现象在生成式 AI 中普遍存在，严重影响了 AI 输出的可靠性和可信度。
+幻觉的分类1. 事实性幻觉指模型生成的内容与客观事实不符，例如编造历史事件、不存在的人物或错误的统计数据。
+2. 引用性幻觉模型错误引用或编造文献、研究结果或他人...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2025-11-12T12:58:43.000Z">2025-11-12</time></span></div></article>
+</a><a class="post-card post " href="/2025/11/12/RAG/">
+<article class="md-text"><h2 class="post-title">RAG</h2><div class="excerpt"><p>RAG全称是：Retrieval-Augmented Generation，翻译成中文就是检索增强生成。简单来说，RAG是一种结合了检索系统和生成模型的技术，它的核心思想是：让大语言模型（如ChatGPT、DeepSeek等）在生成答案之前，先从外部知识库中检索相关信息来增强其知识，然后基于这些检索到的资料生成更准确、更可靠的答案。
+为什么需要RAG大语言模型虽然强大，但存在以下几个关键局限...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2025-11-12T00:29:50.000Z">2025-11-12</time></span></div></article>
+</a><a class="post-card post " href="/2025/11/12/%E4%BB%80%E4%B9%88%E6%98%AFMCP/">
 <article class="md-text"><h2 class="post-title">什么是MCP</h2><div class="excerpt"><p>MCP（Model Context Protocol）是一种让大模型能够标准化使用外部工具的协议，与Function Calling类似，但其核心优势在于提供了统一的接口规范。通过MCP协议，只要工具服务（MCP Server）遵循这一标准，大模型就能直接调用这些工具，无需为每个工具单独编写复杂的适配代码和提示词。这就如同USB接口规范一样，统一标准让不同设备能够无缝协作。
 
 
-MCP由研发...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2025-10-16T07:47:01.000Z">2025-10-16</time></span></div></article>
-</a><a class="post-card post " href="/2025/10/15/%E4%BB%80%E4%B9%88%E6%98%AFFuncting%20Calling/">
-<article class="md-text"><h2 class="post-title">什么是Function Calling</h2><div class="excerpt"><p>Function Calling是一种让大语言模型(LLM)能够使用外部工具技术方案。如果一个大模型不会使用工具，那么它就只能作为一个简单的对话机器人，并且只能基于训练时的数据进行回答。如果你希望大模型能够联网查询实时信息、操作本地文件、调用外部API服务等，就需要赋予它使用工具的能力。Function Calling、MCP(Model Control Program)和A2A(Agent...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2025-10-15T04:47:01.000Z">2025-10-15</time></span></div></article>
-</a><a class="post-card post " href="/2025/10/11/RAG/">
-<article class="md-text"><h2 class="post-title">RAG</h2><div class="excerpt"><p>RAG全称是：Retrieval-Augmented Generation，翻译成中文就是检索增强生成。简单来说，RAG是一种结合了检索系统和生成模型的技术，它的核心思想是：让大语言模型（如ChatGPT、DeepSeek等）在生成答案之前，先从外部知识库中检索相关信息来增强其知识，然后基于这些检索到的资料生成更准确、更可靠的答案。
-为什么需要RAG大语言模型虽然强大，但存在以下几个关键局限...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2025-10-11T12:19:56.000Z">2025-10-11</time></span></div></article>
-</a><a class="post-card post " href="/2025/10/11/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E4%BA%A7%E7%94%9F%E5%B9%BB%E8%A7%89%E7%9A%84%E5%8E%9F%E5%9B%A0/">
-<article class="md-text"><h2 class="post-title">大模型产生幻觉的原因</h2><div class="excerpt"><p>什么是幻觉？大模型的“幻觉”指的是 AI 生成了看似合理但实际上错误或编造的信息。例如，它可能会编造不存在的事实、错误引用文献、甚至捏造公司或人物的信息。这种现象在生成式 AI 中普遍存在，严重影响了 AI 输出的可靠性和可信度。
-幻觉的分类1. 事实性幻觉指模型生成的内容与客观事实不符，例如编造历史事件、不存在的人物或错误的统计数据。
-2. 引用性幻觉模型错误引用或编造文献、研究结果或他人...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2025-10-11T05:09:29.000Z">2025-10-11</time></span></div></article>
-</a><a class="post-card post " href="/2025/10/11/%E5%A4%A7%E6%A8%A1%E5%9E%8B/">
+MCP由研发...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2025-11-12T00:29:32.000Z">2025-11-12</time></span></div></article>
+</a><a class="post-card post " href="/2025/11/12/%E4%BB%80%E4%B9%88%E6%98%AFFuncting%20Calling/">
+<article class="md-text"><h2 class="post-title">什么是Function Calling</h2><div class="excerpt"><p>Function Calling是一种让大语言模型(LLM)能够使用外部工具技术方案。如果一个大模型不会使用工具，那么它就只能作为一个简单的对话机器人，并且只能基于训练时的数据进行回答。如果你希望大模型能够联网查询实时信息、操作本地文件、调用外部API服务等，就需要赋予它使用工具的能力。Function Calling、MCP(Model Control Program)和A2A(Agent...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2025-11-12T00:29:07.000Z">2025-11-12</time></span></div></article>
+</a><a class="post-card post " href="/2025/11/12/%E4%BB%80%E4%B9%88%E6%98%AFAI%20Agent/">
+<article class="md-text"><h2 class="post-title">什么是AI Agent</h2><div class="excerpt"><p>人工智能领域发展至今，大语言模型（LLM）如ChatGPT、DeepSeek等已经广为人知。然而，这些强大的大模型存在一个显著局限：它们无法主动使用外部工具。例如，如果你想让大模型直接帮你查询API接口、搜索实时信息或执行特定操作，普通的大模型是无法完成的。
+而AI Agent正是为解决这一局限而诞生的概念。简单来说，AI Agent就是赋予大模型工具调用能力，并使其能够自主决定何时调用何种...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2025-11-12T00:28:51.000Z">2025-11-12</time></span></div></article>
+</a><a class="post-card post " href="/2025/11/12/%E5%A4%A7%E6%A8%A1%E5%9E%8B/">
 <article class="md-text"><h2 class="post-title">大模型</h2><div class="excerpt"><p>什么是大模型所谓的大模型通常指基于深度学习的大规模人工智能模型，尤其是像 GPT-4这样的大语言模型（LLM, Large Language Model），大模型通过在海量数据上训练，能够理解和生成人类语言，并执行各种复杂任务。
-大模型的特点参数规模庞大相比于传统模型，大模型的&quot;大&quot;主要体现在就是参数规模大。传统深度学习模型的参数规模通常在百万级到千万级，而大模型的参数量...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2025-10-11T01:22:56.000Z">2025-10-11</time></span></div></article>
-</a><a class="post-card post " href="/2025/04/20/Redis%E5%92%8C%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%80%E8%87%B4%E6%80%A7%E9%97%AE%E9%A2%98/">
-<article class="md-text"><h2 class="post-title">Redis和数据库一致性问题</h2><div class="excerpt"><p>什么情况下会出现数据库和缓存不一致的问题？写写并发在并发场景中，如果两个线程，同时进行先写数据库，后更新缓存的操作，就可能会出现不一致：
-
-
-
-W
-W
-
-
-
-写数据库，更新成20
-
-
-
-
-写数据库，更新成10
-
-
-
-写缓存，更新成10
-
-
-写缓存，更新成20（数据不一致）
-
-
-
-如果在并发场景中，如果两个线程，同时进行先更新缓存，后写数据库的操作，同理，也可能会出现不一致：
-
-
-
-W
-W
-
-...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2025-04-20T11:17:34.000Z">2025-04-20</time></span></div></article>
+大模型的特点参数规模庞大相比于传统模型，大模型的&quot;大&quot;主要体现在就是参数规模大。传统深度学习模型的参数规模通常在百万级到千万级，而大模型的参数量...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2025-11-11T23:40:41.000Z">2025-11-12</time></span></div></article>
+</a><a class="post-card post " href="/2025/11/10/tokens/">
+<article class="md-text"><h2 class="post-title">Tokens是啥？为啥大模型要按Tokens收费？</h2><div class="excerpt"><p>Tokens是啥？简单说，就是模型的“语言积木”
+想象一下教一个还不会说话的孩子认识世界。你不会直接给他一整本《百科全书》，而是会先教他最基本的“积木”——比如单个的字母（A, B, C），或者常见的笔画（横、竖、撇、捺）。
+对于大语言模型来说，Token就是它理解和生成语言时所用的最基本“积木”。这个过程叫做 “Token化”（Tokenization） ，就是把我们输入的文字，拆分成模型...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2025-11-10T12:52:48.000Z">2025-11-10</time></span></div></article>
+</a><a class="post-card post " href="/2025/11/10/claude-code/">
+<article class="md-text"><h2 class="post-title">claude-code初体验</h2><div class="excerpt"><p>Claude Code介绍ClaudeCode是由Anthropic开发的全新终端AI编程工具，旨在通过自然语言指令帮助开发者高效率地完成代码编写、调试和项目管理任务。它直接集成在开发者的工作环境（如终端）中，无需依赖额外服务器或复杂配置即可运行。
+在实际的使用过程中，Claude Code是一个比较通用的智能体，他输出的代码也比cursor简练很多，更像是一个熟悉整个项目的高级程序员，研究...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2025-11-10T04:55:13.000Z">2025-11-10</time></span></div></article>
 </a></div>
   
   <div class='paginator-wrap dis-select'>
