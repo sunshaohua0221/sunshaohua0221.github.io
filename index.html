@@ -76,7 +76,7 @@
 <div class="widgets">
 <widget class="widget-wrapper search"><div class="widget-body"><div class="search-wrapper" id="search"><form class="search-form"><input type="text" class="search-input" id="search-input" placeholder="站内搜索"><svg t="1670596976048" class="icon search-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2676" width="200" height="200"><path d="M938.2 832.6L723.8 618.1c-2.5-2.5-5.3-4.4-7.9-6.4 36.2-55.6 57.3-121.8 57.3-193.1C773.3 222.8 614.6 64 418.7 64S64 222.8 64 418.6c0 195.9 158.8 354.6 354.6 354.6 71.3 0 137.5-21.2 193.2-57.4 2 2.7 3.9 5.4 6.3 7.8L832.5 938c14.6 14.6 33.7 21.9 52.8 21.9 19.1 0 38.2-7.3 52.8-21.8 29.2-29.1 29.2-76.4 0.1-105.5M418.7 661.3C284.9 661.3 176 552.4 176 418.6 176 284.9 284.9 176 418.7 176c133.8 0 242.6 108.9 242.6 242.7 0 133.7-108.9 242.6-242.6 242.6" p-id="2677"></path></svg></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div></div></widget>
 
-<widget class="widget-wrapper recent"><div class="widget-header cap theme dis-select"><span class="name">最近更新</span></div><div class="widget-body related-posts fs14"><a class="item title" href="/2025/11/23/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/"><span class="title">分布式事务</span></a><a class="item title" href="/2025/11/14/SPI%E6%9C%BA%E5%88%B6/"><span class="title">SPI类加载机制</span></a><a class="item title" href="/2025/11/12/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E4%BA%A7%E7%94%9F%E5%B9%BB%E8%A7%89%E7%9A%84%E5%8E%9F%E5%9B%A0/"><span class="title">大模型产生幻觉的原因</span></a><a class="item title" href="/2025/11/12/RAG/"><span class="title">RAG</span></a><a class="item title" href="/2025/11/12/%E4%BB%80%E4%B9%88%E6%98%AFMCP/"><span class="title">什么是MCP</span></a></div></widget>
+<widget class="widget-wrapper recent"><div class="widget-header cap theme dis-select"><span class="name">最近更新</span></div><div class="widget-body related-posts fs14"><a class="item title" href="/2026/04/02/claude%20code%20router/"><span class="title">claude code router</span></a><a class="item title" href="/2025/11/23/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/"><span class="title">分布式事务</span></a><a class="item title" href="/2025/11/14/SPI%E6%9C%BA%E5%88%B6/"><span class="title">SPI类加载机制</span></a><a class="item title" href="/2025/11/12/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E4%BA%A7%E7%94%9F%E5%B9%BB%E8%A7%89%E7%9A%84%E5%8E%9F%E5%9B%A0/"><span class="title">大模型产生幻觉的原因</span></a><a class="item title" href="/2025/11/12/RAG/"><span class="title">RAG</span></a></div></widget>
 
 
 </div>
@@ -97,7 +97,16 @@
   
 
 <div class="nav-wrap"><nav class="sub post cap"><a class="active" href="/">近期发布</a><a href="/archives">归档</a></nav></div>
-  <div class="post-list post"><a class="post-card post " href="/2025/11/23/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/">
+  <div class="post-list post"><a class="post-card post " href="/2026/04/02/claude%20code%20router/">
+<article class="md-text"><h2 class="post-title">claude code router</h2><div class="excerpt"><p>1. 介绍claude-code-router 的思路是：
+
+继续使用官方 Claude Code（CLI能力、工作流、工具链都不变）
+在模型层通过路由转发，把请求桥接到你自定义的模型服务（例如 Codex&#x2F;OpenAI 兼容接口）
+
+也就是你说的“官方能力不变，模型路由劫持到自定义模型”。
+
+2. 安装1npm install -g @musistudio/claude-code...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2026-04-02T06:48:17.887Z">2026-04-02</time></span></div></article>
+</a><a class="post-card post " href="/2025/11/23/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/">
 <article class="md-text"><h2 class="post-title">分布式事务</h2><div class="excerpt"><p>
 分布式事务：  在分布式系统中一次操作需要由多个服务协同完成，这种由不同的服务之间通过网络协同完成的事务
 
@@ -158,9 +167,6 @@ MCP由研发...</p></div><div class="meta cap"><span class="cap" id="post-meta">
 <article class="md-text"><h2 class="post-title">Tokens是啥？为啥大模型要按Tokens收费？</h2><div class="excerpt"><p>Tokens是啥？简单说，就是模型的“语言积木”
 想象一下教一个还不会说话的孩子认识世界。你不会直接给他一整本《百科全书》，而是会先教他最基本的“积木”——比如单个的字母（A, B, C），或者常见的笔画（横、竖、撇、捺）。
 对于大语言模型来说，Token就是它理解和生成语言时所用的最基本“积木”。这个过程叫做 “Token化”（Tokenization） ，就是把我们输入的文字，拆分成模型...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2025-11-10T12:52:48.000Z">2025-11-10</time></span></div></article>
-</a><a class="post-card post " href="/2025/11/10/claude-code/">
-<article class="md-text"><h2 class="post-title">claude-code初体验</h2><div class="excerpt"><p>Claude Code介绍ClaudeCode是由Anthropic开发的全新终端AI编程工具，旨在通过自然语言指令帮助开发者高效率地完成代码编写、调试和项目管理任务。它直接集成在开发者的工作环境（如终端）中，无需依赖额外服务器或复杂配置即可运行。
-在实际的使用过程中，Claude Code是一个比较通用的智能体，他输出的代码也比cursor简练很多，更像是一个熟悉整个项目的高级程序员，研究...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2025-11-10T04:55:13.000Z">2025-11-10</time></span></div></article>
 </a></div>
   
   <div class='paginator-wrap dis-select'>
