@@ -20,18 +20,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="theme-color" content="#f8f8f8">
   
-  <title>draw.io官方skill工具说明 - 重构日志</title>
+  <title>draw.io官方skill工具 - 重构日志</title>
 
   
-    <meta name="description" content="如果你希望让 Claude Code 或类似 AI 编码工具直接生成可编辑的 draw.io 图，而不是只吐一段 Mermaid 或截图，那么 draw.io skill 是一个很实用的补充工具。 目前常见的 draw.io 相关 skill 或工具方案，主要有下面三类：    选项 特点 安装方式    jgraph&#x2F;drawio-mcp (skill-cli) 官方出品，生成原生 .drawi">
+    <meta name="description" content="如果你希望让 Claude Code 或类似 AI 编码工具直接生成可编辑的 draw.io 图，而不是只吐一段 Mermaid 或截图，那么 draw.io skill 是一个很实用的补充工具。 如果你想在 Claude 里直接安装社区版 draw.io 插件，也可以在当前会话里输入下面两行斜杠命令： 12&#x2F;plugin marketplace add little-hands&#x2F;claude-d">
 <meta property="og:type" content="article">
-<meta property="og:title" content="draw.io官方skill工具说明">
+<meta property="og:title" content="draw.io官方skill工具">
 <meta property="og:url" content="https://sunshaohua0221.github.io/2026/04/25/draw.io%E5%AE%98%E6%96%B9skill%E5%B7%A5%E5%85%B7%E8%AF%B4%E6%98%8E/index.html">
 <meta property="og:site_name" content="重构日志">
-<meta property="og:description" content="如果你希望让 Claude Code 或类似 AI 编码工具直接生成可编辑的 draw.io 图，而不是只吐一段 Mermaid 或截图，那么 draw.io skill 是一个很实用的补充工具。 目前常见的 draw.io 相关 skill 或工具方案，主要有下面三类：    选项 特点 安装方式    jgraph&#x2F;drawio-mcp (skill-cli) 官方出品，生成原生 .drawi">
+<meta property="og:description" content="如果你希望让 Claude Code 或类似 AI 编码工具直接生成可编辑的 draw.io 图，而不是只吐一段 Mermaid 或截图，那么 draw.io skill 是一个很实用的补充工具。 如果你想在 Claude 里直接安装社区版 draw.io 插件，也可以在当前会话里输入下面两行斜杠命令： 12&#x2F;plugin marketplace add little-hands&#x2F;claude-d">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2026-04-25T04:55:37.483Z">
-<meta property="article:modified_time" content="2026-04-25T05:02:49.511Z">
+<meta property="article:modified_time" content="2026-04-25T08:55:36.387Z">
 <meta property="article:author" content="ssh">
 <meta property="article:tag" content="技术、生活">
 <meta name="twitter:card" content="summary">
@@ -81,7 +81,7 @@
 <widget class="widget-wrapper search"><div class="widget-body"><div class="search-wrapper" id="search"><form class="search-form"><input type="text" class="search-input" id="search-input" data-filter="/blog/" placeholder="文章搜索"><svg t="1670596976048" class="icon search-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2676" width="200" height="200"><path d="M938.2 832.6L723.8 618.1c-2.5-2.5-5.3-4.4-7.9-6.4 36.2-55.6 57.3-121.8 57.3-193.1C773.3 222.8 614.6 64 418.7 64S64 222.8 64 418.6c0 195.9 158.8 354.6 354.6 354.6 71.3 0 137.5-21.2 193.2-57.4 2 2.7 3.9 5.4 6.3 7.8L832.5 938c14.6 14.6 33.7 21.9 52.8 21.9 19.1 0 38.2-7.3 52.8-21.8 29.2-29.1 29.2-76.4 0.1-105.5M418.7 661.3C284.9 661.3 176 552.4 176 418.6 176 284.9 284.9 176 418.7 176c133.8 0 242.6 108.9 242.6 242.7 0 133.7-108.9 242.6-242.6 242.6" p-id="2677"></path></svg></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div></div></widget>
 
 
-<widget class="widget-wrapper toc single" id="data-toc"><div class="widget-header cap dis-select"><span class="name">draw.io官方skill工具说明</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%8E%A8%E8%8D%90%E9%80%89%E6%8B%A9"><span class="toc-text">1. 推荐选择</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Claude-%E9%87%8C%E7%9A%84%E5%AE%89%E8%A3%85%E8%A1%A5%E5%85%85"><span class="toc-text">2. Claude 里的安装补充</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%AE%89%E8%A3%85%E5%AE%8C%E6%88%90%E5%90%8E%E8%BF%98%E8%A6%81%E5%81%9A%E7%9A%84%E4%BA%8B"><span class="toc-text">3. 安装完成后还要做的事</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-%E7%A1%AE%E8%AE%A4-draw-io-Desktop-%E5%B7%B2%E5%AE%89%E8%A3%85"><span class="toc-text">3.1 确认 draw.io Desktop 已安装</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-%E6%8A%8A%E7%95%8C%E9%9D%A2%E5%88%87%E5%88%B0-Light"><span class="toc-text">3.2 把界面切到 Light</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-3-%E6%89%93%E5%BC%80-Autosave"><span class="toc-text">3.3 打开 Autosave</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E6%80%8E%E4%B9%88%E7%94%A8"><span class="toc-text">4. 怎么用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-1-%E9%BB%98%E8%AE%A4%E7%94%9F%E6%88%90-drawio"><span class="toc-text">4.1 默认生成 .drawio</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-%E5%AF%BC%E5%87%BA-PNG"><span class="toc-text">4.2 导出 PNG</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-3-%E5%AF%BC%E5%87%BA-SVG-%E6%88%96-PDF"><span class="toc-text">4.3 导出 SVG 或 PDF</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E9%80%82%E5%90%88%E7%94%BB%E4%BB%80%E4%B9%88%E5%9B%BE"><span class="toc-text">5. 适合画什么图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E6%8F%90%E7%A4%BA%E8%AF%8D%E6%80%8E%E4%B9%88%E5%86%99%E6%9B%B4%E7%A8%B3"><span class="toc-text">6. 提示词怎么写更稳</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-%E6%80%BB%E7%BB%93"><span class="toc-text">7. 总结</span></a></li></ol></div></div></widget>
+<widget class="widget-wrapper toc single" id="data-toc"><div class="widget-header cap dis-select"><span class="name">draw.io官方skill工具</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%AE%89%E8%A3%85%E5%AE%8C%E6%88%90%E5%90%8E%E8%BF%98%E8%A6%81%E5%81%9A%E7%9A%84%E4%BA%8B"><span class="toc-text">2. 安装完成后还要做的事</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-%E7%A1%AE%E8%AE%A4-draw-io-Desktop-%E5%B7%B2%E5%AE%89%E8%A3%85"><span class="toc-text">2.1 确认 draw.io Desktop 已安装</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-%E6%8A%8A%E7%95%8C%E9%9D%A2%E5%88%87%E5%88%B0-Light"><span class="toc-text">2.2 把界面切到 Light</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-%E6%89%93%E5%BC%80-Autosave"><span class="toc-text">2.3 打开 Autosave</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E6%80%8E%E4%B9%88%E7%94%A8"><span class="toc-text">3. 怎么用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-%E9%BB%98%E8%AE%A4%E7%94%9F%E6%88%90-drawio"><span class="toc-text">3.1 默认生成 .drawio</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-%E5%AF%BC%E5%87%BA-PNG"><span class="toc-text">3.2 导出 PNG</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-3-%E5%AF%BC%E5%87%BA-SVG-%E6%88%96-PDF"><span class="toc-text">3.3 导出 SVG 或 PDF</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E9%80%82%E5%90%88%E7%94%BB%E4%BB%80%E4%B9%88%E5%9B%BE"><span class="toc-text">4. 适合画什么图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E4%B8%80%E4%B8%AA%E6%9B%B4%E5%AE%9E%E7%94%A8%E7%9A%84%E4%BD%BF%E7%94%A8%E5%BB%BA%E8%AE%AE"><span class="toc-text">5. 一个更实用的使用建议</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E6%80%BB%E7%BB%93"><span class="toc-text">6. 总结</span></a></li></ol></div></div></widget>
 
 
 
@@ -100,91 +100,49 @@
 <div class="bread-nav fs12"><div class="left"><div id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" href="/">文章</a></div><div id="post-meta">
     <span>发布于&nbsp;<time datetime="2026-04-25T04:55:37.483Z">2026-04-25</time></span>
     
-    <span>更新于&nbsp;<time datetime="2026-04-25T05:02:49.511Z">2026-04-25</time></span>
+    <span>更新于&nbsp;<time datetime="2026-04-25T08:55:36.387Z">2026-04-25</time></span>
     </div></div></div>
 
 <article class='md-text content post'>
-<h1 class="article-title"><span>draw.io官方skill工具说明</span></h1>
+<h1 class="article-title"><span>draw.io官方skill工具</span></h1>
 <p>如果你希望让 <code>Claude Code</code> 或类似 AI 编码工具直接生成可编辑的 <code>draw.io</code> 图，而不是只吐一段 Mermaid 或截图，那么 <code>draw.io skill</code> 是一个很实用的补充工具。</p>
-<p>目前常见的 <code>draw.io</code> 相关 skill 或工具方案，主要有下面三类：</p>
-<table>
-<thead>
-<tr>
-<th>选项</th>
-<th>特点</th>
-<th>安装方式</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>jgraph/drawio-mcp (skill-cli)</code></td>
-<td>官方出品，生成原生 <code>.drawio</code>，支持导出 <code>PNG/SVG/PDF</code>，导出文件可内嵌 XML，后续还能继续编辑</td>
-<td>手动复制 <code>SKILL.md</code></td>
-</tr>
-<tr>
-<td><code>little-hands/claude-drawio-skill</code></td>
-<td>社区方案，偏现成插件式体验，支持流程图、ER 图、时序图等</td>
-<td>插件市场安装</td>
-</tr>
-<tr>
-<td><code>ekusiadadus/draw-mcp</code></td>
-<td>偏严格校验和规范控制，适合对图质量要求比较高的场景</td>
-<td>插件市场安装</td>
-</tr>
-</tbody></table>
-<h3 id="1-推荐选择"><a href="#1-推荐选择" class="headerlink" title="1. 推荐选择"></a>1. 推荐选择</h3><p>如果只是追求稳定、简单、可控，更推荐官方的 <code>jgraph/drawio-mcp</code>。</p>
-<p>原因很直接：</p>
-<ul>
-<li>官方维护，长期来看更稳</li>
-<li>不依赖插件市场</li>
-<li>直接生成原生 <code>.drawio</code> 文件</li>
-<li>需要导出图片时，也能走 draw.io Desktop 自带 CLI</li>
-</ul>
-<p>它的使用方式也比较朴素，但正因为朴素，所以稳定：</p>
-<ul>
-<li>默认输出 <code>.drawio</code></li>
-<li>需要图片时再导出</li>
-<li><code>PNG/SVG/PDF</code> 可以内嵌 diagram XML</li>
-<li>导出的文件后面还能重新用 draw.io 打开编辑</li>
-</ul>
-<p>如果你的目标是“先让 AI 生成初稿，再自己在 draw.io 里继续微调”，那官方方案基本就是最合适的一种。</p>
-<h3 id="2-Claude-里的安装补充"><a href="#2-Claude-里的安装补充" class="headerlink" title="2. Claude 里的安装补充"></a>2. Claude 里的安装补充</h3><p>如果你想在 <code>Claude</code> 里直接安装社区版 <code>draw.io</code> 插件，也可以在当前会话里输入下面两行斜杠命令：</p>
+<p>如果你想在 <code>Claude</code> 里直接安装社区版 <code>draw.io</code> 插件，也可以在当前会话里输入下面两行斜杠命令：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/plugin marketplace add little-hands/claude-drawio-skill</span><br><span class="line">/plugin install draw-io@claude-drawio-skill</span><br></pre></td></tr></table></figure>
 
-<p>这两条命令需要你自己在 <code>Claude</code> 会话里执行，我无法代替你执行斜杠命令。</p>
-<p>不过从可维护性和长期稳定性来看，还是更建议优先使用官方方案。</p>
-<h3 id="3-安装完成后还要做的事"><a href="#3-安装完成后还要做的事" class="headerlink" title="3. 安装完成后还要做的事"></a>3. 安装完成后还要做的事</h3><p>很多人装完 skill 之后觉得不好用，问题往往并不在 skill 本身，而是在本地没有把 <code>draw.io Desktop</code> 配好。</p>
+
+<h3 id="2-安装完成后还要做的事"><a href="#2-安装完成后还要做的事" class="headerlink" title="2. 安装完成后还要做的事"></a>2. 安装完成后还要做的事</h3><p>这一步很关键，很多人装完 skill 之后发现生成流程不顺，问题并不在 skill 本身，而在本地没有把 <code>draw.io Desktop</code> 配好。</p>
 <p>安装完成后，建议顺手做下面几件事：</p>
-<h4 id="3-1-确认-draw-io-Desktop-已安装"><a href="#3-1-确认-draw-io-Desktop-已安装" class="headerlink" title="3.1 确认 draw.io Desktop 已安装"></a>3.1 确认 draw.io Desktop 已安装</h4><p>如果还没安装，先去官网下载安装：</p>
+<h4 id="2-1-确认-draw-io-Desktop-已安装"><a href="#2-1-确认-draw-io-Desktop-已安装" class="headerlink" title="2.1 确认 draw.io Desktop 已安装"></a>2.1 确认 draw.io Desktop 已安装</h4><p>如果还没安装，先去官网下载安装：</p>
 <p><a target="_blank" rel="noopener" href="https://www.drawio.com/">https://www.drawio.com/</a></p>
 <p>官方 skill 在导出 <code>PNG</code>、<code>SVG</code>、<code>PDF</code> 时，会依赖 draw.io Desktop 自带的 CLI。没有桌面版，通常就只能生成 <code>.drawio</code> 文件，不能直接导出图片。</p>
-<h4 id="3-2-把界面切到-Light"><a href="#3-2-把界面切到-Light" class="headerlink" title="3.2 把界面切到 Light"></a>3.2 把界面切到 Light</h4><p>打开 <code>draw.io Desktop</code>，进入：</p>
+<h4 id="2-2-把界面切到-Light"><a href="#2-2-把界面切到-Light" class="headerlink" title="2.2 把界面切到 Light"></a>2.2 把界面切到 Light</h4><p>打开 <code>draw.io Desktop</code>，进入：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Extras -&gt; Appearance -&gt; Light</span><br></pre></td></tr></table></figure>
 
 <p>这一步主要是为了避免暗色模式下部分颜色出现反转或显示不符合预期。尤其是你用 AI 反复生成、再人工微调时，浅色主题通常更稳。</p>
-<h4 id="3-3-打开-Autosave"><a href="#3-3-打开-Autosave" class="headerlink" title="3.3 打开 Autosave"></a>3.3 打开 Autosave</h4><p>继续在 draw.io Desktop 里打开：</p>
+<h4 id="2-3-打开-Autosave"><a href="#2-3-打开-Autosave" class="headerlink" title="2.3 打开 Autosave"></a>2.3 打开 Autosave</h4><p>继续在 draw.io Desktop 里打开：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Extras -&gt; Autosave</span><br></pre></td></tr></table></figure>
 
 <p>打开之后，当 <code>Claude</code> 或其他工具直接修改 <code>.drawio</code> 文件时，桌面应用通常会自动刷新，你不用手工反复关闭再打开文件。</p>
-<h3 id="4-怎么用"><a href="#4-怎么用" class="headerlink" title="4. 怎么用"></a>4. 怎么用</h3><p>官方 <code>drawio</code> skill 的基本思路很简单：</p>
+<h3 id="3-怎么用"><a href="#3-怎么用" class="headerlink" title="3. 怎么用"></a>3. 怎么用</h3><p>官方 <code>drawio</code> skill 的基本思路很简单：</p>
 <ol>
 <li>你提出一个画图需求</li>
 <li>AI 生成 draw.io 原生 XML</li>
 <li>写入 <code>.drawio</code> 文件</li>
 <li>如果你明确要求导出格式，再调用 draw.io CLI 输出图片或 PDF</li>
 </ol>
-<h4 id="4-1-默认生成-drawio"><a href="#4-1-默认生成-drawio" class="headerlink" title="4.1 默认生成 .drawio"></a>4.1 默认生成 <code>.drawio</code></h4><p>例如：</p>
+<h4 id="3-1-默认生成-drawio"><a href="#3-1-默认生成-drawio" class="headerlink" title="3.1 默认生成 .drawio"></a>3.1 默认生成 <code>.drawio</code></h4><p>例如：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/drawio create a login flowchart</span><br></pre></td></tr></table></figure>
 
 <p>或者直接自然语言：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">帮我画一个用户登录流程图，包含短信验证码、密码登录、风控校验和登录成功后的跳转逻辑</span><br></pre></td></tr></table></figure>
 
-<p>如果没有明确指定格式，默认更适合直接生成 <code>.drawio</code>，后面继续编辑会更方便。</p>
-<h4 id="4-2-导出-PNG"><a href="#4-2-导出-PNG" class="headerlink" title="4.2 导出 PNG"></a>4.2 导出 PNG</h4><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/drawio png architecture for order service</span><br></pre></td></tr></table></figure>
+<p>如果没有明确指定格式，默认更适合生成 <code>.drawio</code>，方便后面继续编辑。</p>
+<h4 id="3-2-导出-PNG"><a href="#3-2-导出-PNG" class="headerlink" title="3.2 导出 PNG"></a>3.2 导出 PNG</h4><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/drawio png architecture for order service</span><br></pre></td></tr></table></figure>
 
 <p>或者：</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">帮我画一个订单系统架构图，并导出成 PNG</span><br></pre></td></tr></table></figure>
 
-<h4 id="4-3-导出-SVG-或-PDF"><a href="#4-3-导出-SVG-或-PDF" class="headerlink" title="4.3 导出 SVG 或 PDF"></a>4.3 导出 SVG 或 PDF</h4><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/drawio svg: user center architecture</span><br></pre></td></tr></table></figure>
+<h4 id="3-3-导出-SVG-或-PDF"><a href="#3-3-导出-SVG-或-PDF" class="headerlink" title="3.3 导出 SVG 或 PDF"></a>3.3 导出 SVG 或 PDF</h4><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/drawio svg: user center architecture</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/drawio pdf payment process diagram</span><br></pre></td></tr></table></figure>
 
@@ -195,7 +153,7 @@
 <li><code>payment-process.drawio.pdf</code></li>
 </ul>
 <p>这种双后缀命名的好处是很明确：它本质上还是 draw.io 图导出的产物，而且通常带着内嵌 XML，可再次编辑。</p>
-<h3 id="5-适合画什么图"><a href="#5-适合画什么图" class="headerlink" title="5. 适合画什么图"></a>5. 适合画什么图</h3><p>这种方案比较适合下面这些常见开发文档场景：</p>
+<h3 id="4-适合画什么图"><a href="#4-适合画什么图" class="headerlink" title="4. 适合画什么图"></a>4. 适合画什么图</h3><p>官方 skill 比较适合下面这些常见开发文档场景：</p>
 <ul>
 <li>系统架构图</li>
 <li>微服务关系图</li>
@@ -207,7 +165,7 @@
 <li>页面草图和线框图</li>
 </ul>
 <p>如果你本来就经常在文档里补这些图，那么这个 skill 的价值会很明显，因为它能把“描述需求 -&gt; 生成初稿 -&gt; 人工微调”这条链路缩短很多。</p>
-<h3 id="6-提示词怎么写更稳"><a href="#6-提示词怎么写更稳" class="headerlink" title="6. 提示词怎么写更稳"></a>6. 提示词怎么写更稳</h3><p>不要一上来就说“帮我画个架构图”，最好把下面这些信息说清楚：</p>
+<h3 id="5-一个更实用的使用建议"><a href="#5-一个更实用的使用建议" class="headerlink" title="5. 一个更实用的使用建议"></a>5. 一个更实用的使用建议</h3><p>不要一上来就说“帮我画个架构图”，最好把下面这些信息说清楚：</p>
 <ul>
 <li>画的是什么系统</li>
 <li>主要模块有哪些</li>
@@ -219,15 +177,19 @@
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">帮我画一个电商订单系统的 draw.io 架构图：</span><br><span class="line">1. 包含 gateway、user-service、order-service、product-service、payment-service</span><br><span class="line">2. 中间有 Kafka</span><br><span class="line">3. 每个服务各自有数据库</span><br><span class="line">4. 订单服务依赖库存服务</span><br><span class="line">5. 导出成 SVG</span><br></pre></td></tr></table></figure>
 
 <p>这种提示会比一句模糊的“帮我画图”稳定很多。</p>
-<p>如果是复杂图，建议先让 AI 生成 <code>.drawio</code> 初稿，自己确认结构和命名没问题之后，再让它导出 <code>PNG</code> 或 <code>SVG</code>。这样比一开始就追求最终成图更可控。</p>
-<h3 id="7-总结"><a href="#7-总结" class="headerlink" title="7. 总结"></a>7. 总结</h3><p>如果你的目标是让 AI 直接生成真正可编辑的 <code>draw.io</code> 图，而不是只输出一张临时示意图，那么官方的 <code>jgraph/drawio-mcp</code> 方案依然是更稳妥的选择。它的核心价值不在于“帮你自动画完所有图”，而在于把“描述需求 -&gt; 生成初稿 -&gt; 人工微调 -&gt; 导出图片”这条链路打通。</p>
-<p>实际使用时，除了 skill 本身，本地 <code>draw.io Desktop</code> 的配置也很关键，尤其是：</p>
+<h3 id="6-总结"><a href="#6-总结" class="headerlink" title="6. 总结"></a>6. 总结</h3><p>如果你的目标是让 AI 帮你生成真正可编辑的 <code>draw.io</code> 图，而不是临时演示图，那么官方 <code>jgraph/drawio-mcp</code> 的 <code>skill-cli</code> 方案基本就是当前最稳的一种选择。</p>
+<p>安装方法也不复杂，本质上就是两步：</p>
+<ol>
+<li>从官方仓库拿到 <code>skill-cli/drawio/SKILL.md</code></li>
+<li>复制到 <code>~/.claude/skills/drawio/SKILL.md</code></li>
+</ol>
+<p>然后再把 <code>draw.io Desktop</code> 配好，尤其是：</p>
 <ul>
 <li>安装桌面版</li>
 <li>打开 <code>Light</code> 主题</li>
 <li>打开 <code>Autosave</code></li>
 </ul>
-<p>把这几步配好之后，无论是画架构图、流程图，还是补系统设计文档，整体体验都会比手工从零拖图高效很多。</p>
+<p>这三步做完之后，整体体验会顺很多。后面无论是画架构图、流程图，还是做系统设计文档，都会比手工从零拖图省事不少。</p>
 
 
 
