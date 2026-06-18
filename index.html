@@ -76,7 +76,7 @@
 <div class="widgets">
 <widget class="widget-wrapper search"><div class="widget-body"><div class="search-wrapper" id="search"><form class="search-form"><input type="text" class="search-input" id="search-input" placeholder="站内搜索"><svg t="1670596976048" class="icon search-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2676" width="200" height="200"><path d="M938.2 832.6L723.8 618.1c-2.5-2.5-5.3-4.4-7.9-6.4 36.2-55.6 57.3-121.8 57.3-193.1C773.3 222.8 614.6 64 418.7 64S64 222.8 64 418.6c0 195.9 158.8 354.6 354.6 354.6 71.3 0 137.5-21.2 193.2-57.4 2 2.7 3.9 5.4 6.3 7.8L832.5 938c14.6 14.6 33.7 21.9 52.8 21.9 19.1 0 38.2-7.3 52.8-21.8 29.2-29.1 29.2-76.4 0.1-105.5M418.7 661.3C284.9 661.3 176 552.4 176 418.6 176 284.9 284.9 176 418.7 176c133.8 0 242.6 108.9 242.6 242.7 0 133.7-108.9 242.6-242.6 242.6" p-id="2677"></path></svg></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div></div></widget>
 
-<widget class="widget-wrapper recent"><div class="widget-header cap theme dis-select"><span class="name">最近更新</span></div><div class="widget-body related-posts fs14"><a class="item title" href="/2026/04/26/andrej-karpathy-skills%E5%B7%A5%E5%85%B7%E8%AF%B4%E6%98%8E/"><span class="title">andrej-karpathy-skills工具说明</span></a><a class="item title" href="/2026/04/25/IntelliJ%20AI%E6%8F%92%E4%BB%B6CC%20GUI%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E/"><span class="title">IntelliJ插件CC GUI使用</span></a><a class="item title" href="/2026/04/25/draw.io%E5%AE%98%E6%96%B9skill%E5%B7%A5%E5%85%B7%E8%AF%B4%E6%98%8E/"><span class="title">draw.io官方skill工具</span></a><a class="item title" href="/2026/04/02/claude%20code%20router/"><span class="title">Claude Code Router</span></a><a class="item title" href="/2026/04/17/claude-code-%E9%AB%98%E6%95%88%E4%BD%BF%E7%94%A8/"><span class="title">Claude Code 高效使用：命令、会话与工具组合</span></a></div></widget>
+<widget class="widget-wrapper recent"><div class="widget-header cap theme dis-select"><span class="name">最近更新</span></div><div class="widget-body related-posts fs14"><a class="item title" href="/2026/06/18/CompletableFuture-Feign-ClassNotFound%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/"><span class="title">CompletableFuture-Feign-ClassNotFound问题排查</span></a><a class="item title" href="/2026/04/26/andrej-karpathy-skills%E5%B7%A5%E5%85%B7%E8%AF%B4%E6%98%8E/"><span class="title">andrej-karpathy-skills工具说明</span></a><a class="item title" href="/2026/04/25/IntelliJ%20AI%E6%8F%92%E4%BB%B6CC%20GUI%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E/"><span class="title">IntelliJ插件CC GUI使用</span></a><a class="item title" href="/2026/04/25/draw.io%E5%AE%98%E6%96%B9skill%E5%B7%A5%E5%85%B7%E8%AF%B4%E6%98%8E/"><span class="title">draw.io官方skill工具</span></a><a class="item title" href="/2026/04/02/claude%20code%20router/"><span class="title">Claude Code Router</span></a></div></widget>
 
 
 </div>
@@ -97,7 +97,11 @@
   
 
 <div class="nav-wrap"><nav class="sub post cap"><a class="active" href="/">近期发布</a><a href="/archives">归档</a></nav></div>
-  <div class="post-list post"><a class="post-card post " href="/2026/04/26/andrej-karpathy-skills%E5%B7%A5%E5%85%B7%E8%AF%B4%E6%98%8E/">
+  <div class="post-list post"><a class="post-card post " href="/2026/06/18/CompletableFuture-Feign-ClassNotFound%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/">
+<article class="md-text"><h2 class="post-title">CompletableFuture-Feign-ClassNotFound问题排查</h2><div class="excerpt"><p>最近在一次业务开发中，需要将用户行为记录的逻辑改为异步执行，于是很自然地使用了 CompletableFuture.runAsync() 来包装 Feign 接口调用。本地测试一切正常，但部署到开发环境后，却频繁出现 ClassNotFoundException。
+1. 问题现象代码本身很简单：
+123CompletableFuture.runAsync(() -&gt; &#123;   ...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2026-06-18T02:00:00.000Z">2026-06-18</time></span></div></article>
+</a><a class="post-card post " href="/2026/04/26/andrej-karpathy-skills%E5%B7%A5%E5%85%B7%E8%AF%B4%E6%98%8E/">
 <article class="md-text"><h2 class="post-title">andrej-karpathy-skills工具说明</h2><div class="excerpt"><p>最近我比较常用的一个 skill 是 forrestchang/andrej-karpathy-skills。
 它不是那种“给 AI 增加新工具能力”的 skill，更像是一套给编码 Agent 加行为约束的规则。对我来说，它最大的价值不是让 AI 更强，而是让它少乱猜、少过度设计、少顺手乱改。
 项目地址：
@@ -172,11 +176,6 @@ XA模型
 </a><a class="post-card post " href="/2025/11/12/RAG/">
 <article class="md-text"><h2 class="post-title">RAG</h2><div class="excerpt"><p>RAG全称是：Retrieval-Augmented Generation，翻译成中文就是检索增强生成。简单来说，RAG是一种结合了检索系统和生成模型的技术，它的核心思想是：让大语言模型（如ChatGPT、DeepSeek等）在生成答案之前，先从外部知识库中检索相关信息来增强其知识，然后基于这些检索到的资料生成更准确、更可靠的答案。
 为什么需要RAG大语言模型虽然强大，但存在以下几个关键局限...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2025-11-12T00:29:50.000Z">2025-11-12</time></span></div></article>
-</a><a class="post-card post " href="/2025/11/12/%E4%BB%80%E4%B9%88%E6%98%AFMCP/">
-<article class="md-text"><h2 class="post-title">什么是MCP</h2><div class="excerpt"><p>MCP（Model Context Protocol）是一种让大模型能够标准化使用外部工具的协议，与Function Calling类似，但其核心优势在于提供了统一的接口规范。通过MCP协议，只要工具服务（MCP Server）遵循这一标准，大模型就能直接调用这些工具，无需为每个工具单独编写复杂的适配代码和提示词。这就如同USB接口规范一样，统一标准让不同设备能够无缝协作。
-
-
-MCP由研发...</p></div><div class="meta cap"><span class="cap" id="post-meta">发布于&nbsp;<time datetime="2025-11-12T00:29:32.000Z">2025-11-12</time></span></div></article>
 </a></div>
   
   <div class='paginator-wrap dis-select'>
