@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+  <meta name="generator" content="Hexo 7.0.0">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.21.0">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://gcore.jsdelivr.net'>
+  <link rel="preconnect" href="https://gcore.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  
+  <title>GitNexus 多 Repo Workspace 使用指南 - 重构日志</title>
+
+  
+    <meta name="description" content="最近在一个由「多个 repo 组成一条业务线」的工作区里做开发，让 AI 工具帮忙读代码、分析影响面时，最大的两个痛点逐渐凸显：  搜索不够精准：AI 工具默认的 grep&#x2F;glob 搜索方式在搜代码时容易遗漏，尤其是做影响面分析时，常常漏掉跨 repo 的调用关系。 费 token：动不动就把整仓代码塞给模型，token 消耗飞快。  GitNexus 正好补上这块短板。它是一套零服务">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GitNexus 多 Repo Workspace 使用指南">
+<meta property="og:url" content="https://sunshaohua0221.github.io/2026/08/02/GitNexus-%E5%A4%9ARepo-Workspace%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/index.html">
+<meta property="og:site_name" content="重构日志">
+<meta property="og:description" content="最近在一个由「多个 repo 组成一条业务线」的工作区里做开发，让 AI 工具帮忙读代码、分析影响面时，最大的两个痛点逐渐凸显：  搜索不够精准：AI 工具默认的 grep&#x2F;glob 搜索方式在搜代码时容易遗漏，尤其是做影响面分析时，常常漏掉跨 repo 的调用关系。 费 token：动不动就把整仓代码塞给模型，token 消耗飞快。  GitNexus 正好补上这块短板。它是一套零服务">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-08-02T03:16:53.896Z">
+<meta property="article:modified_time" content="2026-08-02T03:21:19.839Z">
+<meta property="article:author" content="ssh">
+<meta property="article:tag" content="技术、生活">
+<meta name="twitter:card" content="summary">
+  
+  
+  
+  <meta name="keywords" content="技术、生活">
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+
+  
+
+  
+
+
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='post'>
+    
+
+  
+
+<header class="header"><div class="logo-wrap"><a class="title" href="/"><div class="main" ff="title">重构日志</div><div class="sub cap">学无止境,行以致远</div></a></div>
+
+<nav class="menu dis-select"></nav>
+</header>
+
+
+<div class="widgets">
+<widget class="widget-wrapper search"><div class="widget-body"><div class="search-wrapper" id="search"><form class="search-form"><input type="text" class="search-input" id="search-input" data-filter="/blog/" placeholder="文章搜索"><svg t="1670596976048" class="icon search-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2676" width="200" height="200"><path d="M938.2 832.6L723.8 618.1c-2.5-2.5-5.3-4.4-7.9-6.4 36.2-55.6 57.3-121.8 57.3-193.1C773.3 222.8 614.6 64 418.7 64S64 222.8 64 418.6c0 195.9 158.8 354.6 354.6 354.6 71.3 0 137.5-21.2 193.2-57.4 2 2.7 3.9 5.4 6.3 7.8L832.5 938c14.6 14.6 33.7 21.9 52.8 21.9 19.1 0 38.2-7.3 52.8-21.8 29.2-29.1 29.2-76.4 0.1-105.5M418.7 661.3C284.9 661.3 176 552.4 176 418.6 176 284.9 284.9 176 418.7 176c133.8 0 242.6 108.9 242.6 242.7 0 133.7-108.9 242.6-242.6 242.6" p-id="2677"></path></svg></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div></div></widget>
+
+
+<widget class="widget-wrapper toc single" id="data-toc"><div class="widget-header cap dis-select"><span class="name">GitNexus 多 Repo Workspace 使用指南</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E9%80%82%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-text">1. 适用场景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%AE%89%E8%A3%85-GitNexus"><span class="toc-text">2. 安装 GitNexus</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E9%85%8D%E7%BD%AE-MCP-%E7%BC%96%E8%BE%91%E5%99%A8%E9%9B%86%E6%88%90"><span class="toc-text">3. 配置 MCP &#x2F; 编辑器集成</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E4%B8%BA%E6%AF%8F%E4%B8%AA-repo-%E9%85%8D%E7%BD%AE-Git-%E6%8E%92%E9%99%A4"><span class="toc-text">4. 为每个 repo 配置 Git 排除</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E7%B4%A2%E5%BC%95-repo"><span class="toc-text">5. 索引 repo</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#5-1-%E6%99%AE%E9%80%9A%E7%B4%A2%E5%BC%95%E5%B9%B6%E7%94%9F%E6%88%90-GitNexus-%E4%B8%8A%E4%B8%8B%E6%96%87%E6%96%87%E4%BB%B6"><span class="toc-text">5.1 普通索引并生成 GitNexus 上下文文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-2-%E5%8F%AA%E5%BB%BA%E7%B4%A2%E5%BC%95%EF%BC%8C%E4%B8%8D%E6%94%B9-repo-%E4%B8%8A%E4%B8%8B%E6%96%87%E6%96%87%E4%BB%B6"><span class="toc-text">5.2 只建索引，不改 repo 上下文文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-3-%E6%89%B9%E9%87%8F%E7%B4%A2%E5%BC%95%E6%89%80%E6%9C%89-user-repo"><span class="toc-text">5.3 批量索引所有 user-* repo</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E5%88%9B%E5%BB%BA%E5%92%8C%E5%90%8C%E6%AD%A5-group"><span class="toc-text">6. 创建和同步 group</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-%E6%97%A5%E5%B8%B8%E4%BD%BF%E7%94%A8"><span class="toc-text">7. 日常使用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#7-1-group-%E7%B2%97%E6%90%9C"><span class="toc-text">7.1 group 粗搜</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-2-subgroup-%E7%B2%BE%E6%90%9C"><span class="toc-text">7.2 subgroup 精搜</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-3-%E5%8D%95-repo-%E6%9F%A5%E8%AF%A2"><span class="toc-text">7.3 单 repo 查询</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-4-symbol-%E4%B8%8A%E4%B8%8B%E6%96%87"><span class="toc-text">7.4 symbol 上下文</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-5-%E5%BD%B1%E5%93%8D%E9%9D%A2%E5%88%86%E6%9E%90"><span class="toc-text">7.5 影响面分析</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-6-Web-%E5%9B%BE%E5%BD%A2%E7%95%8C%E9%9D%A2"><span class="toc-text">7.6 Web 图形界面</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-%E6%90%9C%E7%B4%A2%E7%AD%96%E7%95%A5%E5%BB%BA%E8%AE%AE"><span class="toc-text">8. 搜索策略建议</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#8-1-%E6%80%BB%E4%BD%93%E6%B5%81%E7%A8%8B"><span class="toc-text">8.1 总体流程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#8-2-%E4%B8%AD%E6%96%87%E9%9C%80%E6%B1%82%E8%A6%81%E5%85%88%E6%94%B9%E5%86%99%E6%88%90%E8%8B%B1%E6%96%87-query"><span class="toc-text">8.2 中文需求要先改写成英文 query</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#8-3-%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E7%94%A8-native-search"><span class="toc-text">8.3 什么时候用 native search</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#8-4-%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E7%94%A8-GitNexus"><span class="toc-text">8.4 什么时候用 GitNexus</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-Embeddings-%E5%BB%BA%E8%AE%AE"><span class="toc-text">9. Embeddings 建议</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10-%E7%BB%B4%E6%8A%A4%E6%B5%81%E7%A8%8B"><span class="toc-text">10. 维护流程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#10-1-repo-%E6%9C%89%E4%BB%A3%E7%A0%81%E6%9B%B4%E6%96%B0%E5%90%8E"><span class="toc-text">10.1 repo 有代码更新后</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#10-2-%E6%A3%80%E6%9F%A5%E7%8A%B6%E6%80%81"><span class="toc-text">10.2 检查状态</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#10-3-%E4%BF%AE%E5%A4%8D-FTS"><span class="toc-text">10.3 修复 FTS</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#10-4-%E6%B8%85%E7%90%86%E7%B4%A2%E5%BC%95"><span class="toc-text">10.4 清理索引</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#11-%E6%8E%A5%E5%85%A5%E7%8A%B6%E6%80%81%E7%A4%BA%E4%BE%8B%EF%BC%88%E4%BB%A5-user-%E4%B8%9A%E5%8A%A1%E7%BA%BF%E4%B8%BA%E4%BE%8B%EF%BC%89"><span class="toc-text">11. 接入状态示例（以 user 业务线为例）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#12-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="toc-text">12. 常见问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#13-%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%E6%80%BB%E7%BB%93"><span class="toc-text">13. 最佳实践总结</span></a></li></ol></div></div></widget>
+
+
+
+
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+
+
+<div class="bread-nav fs12"><div class="left"><div id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" href="/">文章</a></div><div id="post-meta">
+    <span>发布于&nbsp;<time datetime="2026-08-02T03:16:53.896Z">2026-08-02</time></span>
+    
+    <span>更新于&nbsp;<time datetime="2026-08-02T03:21:19.839Z">2026-08-02</time></span>
+    </div></div></div>
+
+<article class='md-text content post'>
+<h1 class="article-title"><span>GitNexus 多 Repo Workspace 使用指南</span></h1>
+<p>最近在一个由「多个 repo 组成一条业务线」的工作区里做开发，让 AI 工具帮忙读代码、分析影响面时，最大的两个痛点逐渐凸显：</p>
+<ol>
+<li><strong>搜索不够精准</strong>：AI 工具默认的 grep&#x2F;glob 搜索方式在搜代码时容易遗漏，尤其是做影响面分析时，常常漏掉跨 repo 的调用关系。</li>
+<li><strong>费 token</strong>：动不动就把整仓代码塞给模型，token 消耗飞快。</li>
+</ol>
+<p><a target="_blank" rel="noopener" href="https://github.com/abhigyanpatwari/GitNexus">GitNexus</a> 正好补上这块短板。它是一套<strong>零服务端（Zero-Server）的代码智能引擎</strong>，完全跑在本地&#x2F;浏览器侧：丢进一个 git 仓库（GitHub &#x2F; GitLab &#x2F; Azure &#x2F; Local）或 ZIP 包，就能得到一张可交互的知识图谱，并内置 Graph RAG Agent。它会把整个代码库索引成知识图谱——每一个依赖、调用链、聚类和执行流——再通过智能 MCP 工具暴露出来，让 AI Agent 不再「搜不到代码」。</p>
+<blockquote>
+<p>选用 GitNexus 的两大收益：<strong>节约 token</strong>；<strong>提升 AI 搜索代码的精准度</strong>，尤其是影响面分析这类容易遗漏的场景。</p>
+</blockquote>
+<p>本文以 <code>/Users/dev/multi-repo-workspace</code> 这类多 repo 工作区为例（下文统一用「用户中心业务线」做演示），记录如何在一条业务线中完整接入 GitNexus，覆盖安装、索引、Git 排除、group 设置、MCP&#x2F;Web 使用到日常维护的全流程。</p>
+<h3 id="1-适用场景"><a href="#1-适用场景" class="headerlink" title="1. 适用场景"></a>1. 适用场景</h3><p>适用于「一个业务线由多个 repo 组成」的工作区。例如用户中心业务线：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">/Users/dev/multi-repo-workspace/</span><br><span class="line">├── user-common</span><br><span class="line">├── user-api-server</span><br><span class="line">├── user-worker</span><br><span class="line">├── user-admin</span><br><span class="line">├── user-gateway</span><br><span class="line">└── ...</span><br></pre></td></tr></table></figure>
+
+<p>如果用的是 Harness，它会读取 <code>.harness/harness-workflow/config.yaml</code> 中的 <code>knowledge_domain</code> 作为 GitNexus 的 group 名。例如：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">knowledge_domain:</span> <span class="string">user</span></span><br></pre></td></tr></table></figure>
+
+<p>对应的 GitNexus group 就是：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">user</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>多 repo 业务线统一用 <code>knowledge_domain</code> 作为 GitNexus group 名，是后续所有跨 repo 搜索的基础。</p>
+</blockquote>
+<h3 id="2-安装-GitNexus"><a href="#2-安装-GitNexus" class="headerlink" title="2. 安装 GitNexus"></a>2. 安装 GitNexus</h3><p>推荐<strong>全局安装</strong>，避免 MCP 每次通过 npx 冷启动：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g gitnexus</span><br></pre></td></tr></table></figure>
+
+<p>验证安装与运行环境：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gitnexus --version</span><br><span class="line">gitnexus doctor</span><br></pre></td></tr></table></figure>
+
+<p>预期看到：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Graph store: available</span><br><span class="line">Full-text search: available</span><br><span class="line">Local embeddings: supported  # 如果本机支持</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-配置-MCP-编辑器集成"><a href="#3-配置-MCP-编辑器集成" class="headerlink" title="3. 配置 MCP &#x2F; 编辑器集成"></a>3. 配置 MCP &#x2F; 编辑器集成</h3><p>MCP &#x2F; 编辑器集成<strong>只需要在本机（当前开发环境）配置一次</strong>，不需要每个 repo 单独配置。推荐使用 GitNexus 官方的一次性 setup，让它自动检测并配置已安装的编辑器 &#x2F; Agent 工具：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gitnexus setup</span><br></pre></td></tr></table></figure>
+
+<p>如果只想让某个支持 MCP 的工具手动接入，通用 MCP server 命令是：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gitnexus mcp</span><br></pre></td></tr></table></figure>
+
+<p>可选：如果想限制 MCP 为只读，可在手动启动 MCP 时使用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GITNEXUS_MCP_READ_ONLY=1 gitnexus mcp</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-为每个-repo-配置-Git-排除"><a href="#4-为每个-repo-配置-Git-排除" class="headerlink" title="4. 为每个 repo 配置 Git 排除"></a>4. 为每个 repo 配置 Git 排除</h3><p>GitNexus 会生成本地索引和 agent 上下文文件。为避免误提交，建议在每个业务 repo 的 <code>.git/info/exclude</code> 中加入以下内容（当然也可以直接提交进 Git repo 里共用）：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># GitNexus local generated/index files</span><br><span class="line">.gitnexus/</span><br><span class="line">.claude/skills/gitnexus/</span><br><span class="line">.claude/skills/generated/</span><br><span class="line">AGENTS.md</span><br><span class="line">CLAUDE.md</span><br></pre></td></tr></table></figure>
+
+<p>批量配置所有 <code>user-*</code> repo：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">python3 - &lt;&lt;<span class="string">&#x27;PY&#x27;</span></span><br><span class="line">from pathlib import Path</span><br><span class="line"></span><br><span class="line">root = Path(<span class="string">&#x27;/Users/dev/multi-repo-workspace&#x27;</span>)</span><br><span class="line">repos = [p <span class="keyword">for</span> p <span class="keyword">in</span> sorted(root.iterdir())</span><br><span class="line">         <span class="keyword">if</span> p.is_dir() and p.name.startswith(<span class="string">&#x27;user-&#x27;</span>) and (p / <span class="string">&#x27;.git&#x27;</span>).exists()]</span><br><span class="line"></span><br><span class="line">patterns = [</span><br><span class="line">    <span class="string">&#x27;.gitnexus/&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;.claude/skills/gitnexus/&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;.claude/skills/generated/&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;AGENTS.md&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;CLAUDE.md&#x27;</span>,</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> repo <span class="keyword">in</span> repos:</span><br><span class="line">    exclude = repo / <span class="string">&#x27;.git/info/exclude&#x27;</span></span><br><span class="line">    text = exclude.read_text() <span class="keyword">if</span> exclude.exists() <span class="keyword">else</span> <span class="string">&#x27;&#x27;</span></span><br><span class="line">    lines = <span class="built_in">set</span>(text.splitlines())</span><br><span class="line">    add = [p <span class="keyword">for</span> p <span class="keyword">in</span> patterns <span class="keyword">if</span> p not <span class="keyword">in</span> lines]</span><br><span class="line">    <span class="keyword">if</span> add:</span><br><span class="line">        with exclude.open(<span class="string">&#x27;a&#x27;</span>) as f:</span><br><span class="line">            <span class="keyword">if</span> text and not text.endswith(<span class="string">&#x27;\n&#x27;</span>):</span><br><span class="line">                f.write(<span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line">            f.write(<span class="string">&#x27;\n# GitNexus local generated/context files\n&#x27;</span>)</span><br><span class="line">            <span class="keyword">for</span> pat <span class="keyword">in</span> add:</span><br><span class="line">                f.write(pat + <span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line">    <span class="built_in">print</span>(repo.name, <span class="string">&#x27;added&#x27;</span> <span class="keyword">if</span> add <span class="keyword">else</span> <span class="string">&#x27;already-ok&#x27;</span>)</span><br><span class="line">PY</span><br></pre></td></tr></table></figure>
+
+<p><strong>已跟踪文件的注意事项</strong>：<code>.git/info/exclude</code> 只对未跟踪文件生效。若某些 repo 中 <code>AGENTS.md</code> 已被 git 跟踪，GitNexus 修改后仍会出现在 <code>git status</code> 中。如确实希望本地忽略已跟踪文件变化，可对单个 repo 执行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git update-index --skip-worktree AGENTS.md</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>⚠️ 谨慎使用：以后远端更新该文件时，可能需要手动处理。</p>
+</blockquote>
+<h3 id="5-索引-repo"><a href="#5-索引-repo" class="headerlink" title="5. 索引 repo"></a>5. 索引 repo</h3><h4 id="5-1-普通索引并生成-GitNexus-上下文文件"><a href="#5-1-普通索引并生成-GitNexus-上下文文件" class="headerlink" title="5.1 普通索引并生成 GitNexus 上下文文件"></a>5.1 普通索引并生成 GitNexus 上下文文件</h4><p>对每个 repo 执行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">gitnexus analyze /Users/dev/multi-repo-workspace/user-api-server \</span><br><span class="line">  --worker-timeout 120 \</span><br><span class="line">  --workers 2 \</span><br><span class="line">  --name user-api-server</span><br></pre></td></tr></table></figure>
+
+<p>说明：</p>
+<ul>
+<li>会生成 <code>.gitnexus/</code> 索引。</li>
+<li>会生成或更新 <code>AGENTS.md</code>、<code>CLAUDE.md</code>、<code>.claude/skills/gitnexus/</code>。这些文件会给 AI 编码工具一些规则，让涉及代码搜索的场景都优先走 GitNexus——推荐按这种方式，这样日常编码工作都会自动走 GitNexus。</li>
+<li>适合希望 repo 自带 GitNexus agent 指引的场景。</li>
+</ul>
+<h4 id="5-2-只建索引，不改-repo-上下文文件"><a href="#5-2-只建索引，不改-repo-上下文文件" class="headerlink" title="5.2 只建索引，不改 repo 上下文文件"></a>5.2 只建索引，不改 repo 上下文文件</h4><p>如果不希望 GitNexus 修改业务 repo 文件，可使用 <code>--index-only</code>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">gitnexus analyze /Users/dev/multi-repo-workspace/user-api-server \</span><br><span class="line">  --index-only \</span><br><span class="line">  --worker-timeout 120 \</span><br><span class="line">  --workers 2 \</span><br><span class="line">  --name user-api-server</span><br></pre></td></tr></table></figure>
+
+<p>说明：</p>
+<ul>
+<li>只生成 <code>.gitnexus/</code> 和注册全局 registry。</li>
+<li>不改 <code>AGENTS.md</code> &#x2F; <code>CLAUDE.md</code> &#x2F; <code>.claude/skills</code>。</li>
+</ul>
+<h4 id="5-3-批量索引所有-user-repo"><a href="#5-3-批量索引所有-user-repo" class="headerlink" title="5.3 批量索引所有 user-* repo"></a>5.3 批量索引所有 user-* repo</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">python3 - &lt;&lt;<span class="string">&#x27;PY&#x27;</span></span><br><span class="line">from pathlib import Path</span><br><span class="line">import subprocess, time, json, sys</span><br><span class="line"></span><br><span class="line">root = Path(<span class="string">&#x27;/Users/dev/multi-repo-workspace&#x27;</span>)</span><br><span class="line">repos = [p <span class="keyword">for</span> p <span class="keyword">in</span> sorted(root.iterdir())</span><br><span class="line">         <span class="keyword">if</span> p.is_dir() and p.name.startswith(<span class="string">&#x27;user-&#x27;</span>) and (p / <span class="string">&#x27;.git&#x27;</span>).exists()]</span><br><span class="line"></span><br><span class="line">results = []</span><br><span class="line"><span class="keyword">for</span> repo <span class="keyword">in</span> repos:</span><br><span class="line">    name = repo.name</span><br><span class="line">    cmd = [</span><br><span class="line">        <span class="string">&#x27;gitnexus&#x27;</span>, <span class="string">&#x27;analyze&#x27;</span>, str(repo),</span><br><span class="line">        <span class="string">&#x27;--worker-timeout&#x27;</span>, <span class="string">&#x27;120&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;--workers&#x27;</span>, <span class="string">&#x27;2&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;--name&#x27;</span>, name,</span><br><span class="line">    ]</span><br><span class="line">    <span class="built_in">print</span>(f<span class="string">&#x27;\n=== analyze &#123;name&#125; ===&#x27;</span>, flush=True)</span><br><span class="line">    start = time.perf_counter()</span><br><span class="line">    proc = subprocess.run(cmd, text=True, capture_output=True)</span><br><span class="line">    elapsed = time.perf_counter() - start</span><br><span class="line">    <span class="built_in">print</span>(proc.stdout)</span><br><span class="line">    <span class="keyword">if</span> proc.stderr:</span><br><span class="line">        <span class="built_in">print</span>(proc.stderr, file=sys.stderr)</span><br><span class="line">    results.append(&#123;<span class="string">&#x27;repo&#x27;</span>: name, <span class="string">&#x27;returncode&#x27;</span>: proc.returncode, <span class="string">&#x27;seconds&#x27;</span>: round(elapsed, 2)&#125;)</span><br><span class="line">    <span class="keyword">if</span> proc.returncode != 0:</span><br><span class="line">        <span class="built_in">print</span>(json.dumps(results, indent=2))</span><br><span class="line">        raise SystemExit(proc.returncode)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(json.dumps(results, indent=2))</span><br><span class="line">PY</span><br></pre></td></tr></table></figure>
+
+<p>验证索引：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gitnexus list</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-创建和同步-group"><a href="#6-创建和同步-group" class="headerlink" title="6. 创建和同步 group"></a>6. 创建和同步 group</h3><p>创建 group：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gitnexus group create user</span><br></pre></td></tr></table></figure>
+
+<p>添加 repo 到 group。建议 <code>groupPath</code> 去掉 <code>user-</code> 前缀，便于 subgroup 查询：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">gitnexus group add user common user-common</span><br><span class="line">gitnexus group add user api-server user-api-server</span><br><span class="line">gitnexus group add user worker user-worker</span><br><span class="line">gitnexus group add user admin user-admin</span><br></pre></td></tr></table></figure>
+
+<p>批量添加所有 <code>user-*</code> repo：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">python3 - &lt;&lt;<span class="string">&#x27;PY&#x27;</span></span><br><span class="line">from pathlib import Path</span><br><span class="line">import subprocess</span><br><span class="line"></span><br><span class="line">root = Path(<span class="string">&#x27;/Users/dev/multi-repo-workspace&#x27;</span>)</span><br><span class="line">repos = [p.name <span class="keyword">for</span> p <span class="keyword">in</span> sorted(root.iterdir())</span><br><span class="line">         <span class="keyword">if</span> p.is_dir() and p.name.startswith(<span class="string">&#x27;user-&#x27;</span>) and (p / <span class="string">&#x27;.git&#x27;</span>).exists()]</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> repo <span class="keyword">in</span> repos:</span><br><span class="line">    group_path = repo[len(<span class="string">&#x27;user-&#x27;</span>):]</span><br><span class="line">    cmd = [<span class="string">&#x27;gitnexus&#x27;</span>, <span class="string">&#x27;group&#x27;</span>, <span class="string">&#x27;add&#x27;</span>, <span class="string">&#x27;user&#x27;</span>, group_path, repo]</span><br><span class="line">    proc = subprocess.run(cmd, text=True, capture_output=True)</span><br><span class="line">    <span class="built_in">print</span>(f<span class="string">&#x27;[&#123;proc.returncode&#125;] &#123;group_path&#125; -&gt; &#123;repo&#125;&#x27;</span>)</span><br><span class="line">    out = (proc.stdout + proc.stderr).strip()</span><br><span class="line">    <span class="keyword">if</span> out:</span><br><span class="line">        <span class="built_in">print</span>(out)</span><br><span class="line">PY</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意：上面脚本中的 <code>root</code> 应与你实际的多 repo 根目录一致（即第 1 节示例里的 <code>/Users/dev/multi-repo-workspace</code>）。</p>
+</blockquote>
+<p>同步 group 合同和跨 repo link：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gitnexus group <span class="built_in">sync</span> user</span><br></pre></td></tr></table></figure>
+
+<p>查看 group：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gitnexus group list user</span><br><span class="line">gitnexus group status user</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>预期：所有 repo 状态为 <code>OK</code>。</p>
+</blockquote>
+<h3 id="7-日常使用"><a href="#7-日常使用" class="headerlink" title="7. 日常使用"></a>7. 日常使用</h3><p>正常安装和索引后，工作空间 repo 下会自动加上 <code>AGENTS.md</code> &#x2F; <code>CLAUDE.md</code> 并自动使用，claude 等工具也会加上 hook 自动接入。日常编码通常会默认走 GitNexus 来搜索代码。以下是一些手动使用的例子（下面只是功能示例）。</p>
+<h4 id="7-1-group-粗搜"><a href="#7-1-group-粗搜" class="headerlink" title="7.1 group 粗搜"></a>7.1 group 粗搜</h4><p>适合跨 repo 初步发现：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gitnexus group query user <span class="string">&quot;user profile update cache invalidation&quot;</span> --<span class="built_in">limit</span> 10</span><br></pre></td></tr></table></figure>
+
+<h4 id="7-2-subgroup-精搜"><a href="#7-2-subgroup-精搜" class="headerlink" title="7.2 subgroup 精搜"></a>7.2 subgroup 精搜</h4><p>当知道业务模块或 repo 后，应尽快收敛到 subgroup，减少噪声：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">gitnexus group query user <span class="string">&quot;user profile update cache invalidation&quot;</span> \</span><br><span class="line">  --subgroup api-server \</span><br><span class="line">  --<span class="built_in">limit</span> 10</span><br></pre></td></tr></table></figure>
+
+<h4 id="7-3-单-repo-查询"><a href="#7-3-单-repo-查询" class="headerlink" title="7.3 单 repo 查询"></a>7.3 单 repo 查询</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gitnexus query -r user-api-server <span class="string">&quot;UserProfileModel nickname unique&quot;</span> -l 5</span><br></pre></td></tr></table></figure>
+
+<h4 id="7-4-symbol-上下文"><a href="#7-4-symbol-上下文" class="headerlink" title="7.4 symbol 上下文"></a>7.4 symbol 上下文</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gitnexus context -r user-api-server UserProfileModel -l 5</span><br></pre></td></tr></table></figure>
+
+<p>如果 symbol 重名，GitNexus 会返回多个 candidates。此时使用 UID 精确查询：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">gitnexus context -r user-api-server \</span><br><span class="line">  -u <span class="string">&#x27;Method:src/main/java/...:ClassName.methodName#1&#x27;</span> \</span><br><span class="line">  -l 8</span><br></pre></td></tr></table></figure>
+
+<h4 id="7-5-影响面分析"><a href="#7-5-影响面分析" class="headerlink" title="7.5 影响面分析"></a>7.5 影响面分析</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">gitnexus impact -r user-api-server getUserById \</span><br><span class="line">  --kind Method \</span><br><span class="line">  --depth 2 \</span><br><span class="line">  -l 20</span><br></pre></td></tr></table></figure>
+
+<p>跨 repo 影响面：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">gitnexus group impact user \</span><br><span class="line">  --target UserService \</span><br><span class="line">  --repo api-server</span><br></pre></td></tr></table></figure>
+
+<h4 id="7-6-Web-图形界面"><a href="#7-6-Web-图形界面" class="headerlink" title="7.6 Web 图形界面"></a>7.6 Web 图形界面</h4><p>启动：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gitnexus serve</span><br></pre></td></tr></table></figure>
+
+<p>打开：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost:4747</span><br></pre></td></tr></table></figure>
+
+<p>可用于查看：repo 列表、文件树、图谱视图、文件代码面板、节点关系。</p>
+<h3 id="8-搜索策略建议"><a href="#8-搜索策略建议" class="headerlink" title="8. 搜索策略建议"></a>8. 搜索策略建议</h3><h4 id="8-1-总体流程"><a href="#8-1-总体流程" class="headerlink" title="8.1 总体流程"></a>8.1 总体流程</h4><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">native local search first</span><br><span class="line">→ rewrite non-English intent into English domain/code search seeds</span><br><span class="line">→ GitNexus group query for broad discovery</span><br><span class="line">→ subgroup/repo scope as soon as module is clear</span><br><span class="line">→ context/impact for symbol and blast-radius analysis</span><br><span class="line">→ Read source files with file paths/line numbers</span><br><span class="line">→ stop widening once evidence is enough</span><br></pre></td></tr></table></figure>
+
+<h4 id="8-2-中文需求要先改写成英文-query"><a href="#8-2-中文需求要先改写成英文-query" class="headerlink" title="8.2 中文需求要先改写成英文 query"></a>8.2 中文需求要先改写成英文 query</h4><p>GitNexus 的本地 embedding、代码标识符、process summary 对英文技术词更友好。<strong>不要直接把中文需求丢给 GitNexus</strong>。示例对照：</p>
+<table>
+<thead>
+<tr>
+<th>中文意图</th>
+<th>推荐 query</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>用户修改昵称时如何校验唯一性</td>
+<td><code>update nickname validate uniqueness duplicate check</code></td>
+</tr>
+<tr>
+<td>创建订单后如何扣减库存</td>
+<td><code>create order deduct inventory stock decrement</code></td>
+</tr>
+<tr>
+<td>用户上传头像后如何生成缩略图</td>
+<td><code>upload avatar generate thumbnail resize image</code></td>
+</tr>
+<tr>
+<td>用户评论被删除后如何清理缓存</td>
+<td><code>delete comment clear cache invalidate</code></td>
+</tr>
+<tr>
+<td>消息推送失败时如何重试</td>
+<td><code>message push fail retry queue backoff</code></td>
+</tr>
+</tbody></table>
+<h4 id="8-3-什么时候用-native-search"><a href="#8-3-什么时候用-native-search" class="headerlink" title="8.3 什么时候用 native search"></a>8.3 什么时候用 native search</h4><p>优先 native search 的场景：</p>
+<ul>
+<li>已知精确文件名或路径。</li>
+<li>proto &#x2F; schema &#x2F; config 精确字段查询。</li>
+<li>只需要同目录 &#x2F; 同 package 的局部代码风格。</li>
+<li>GitNexus query 没有返回候选或返回明显噪声。</li>
+</ul>
+<h4 id="8-4-什么时候用-GitNexus"><a href="#8-4-什么时候用-GitNexus" class="headerlink" title="8.4 什么时候用 GitNexus"></a>8.4 什么时候用 GitNexus</h4><p>优先 GitNexus 的场景：</p>
+<ul>
+<li>跨 repo 业务线搜索。</li>
+<li>查找相似流程、复用组件、调用链。</li>
+<li>需要 context 看 callers &#x2F; callees。</li>
+<li>需要 impact 看影响面。</li>
+<li>设计阶段、任务执行前 reuse scan、设计评审、代码评审。</li>
+</ul>
+<h3 id="9-Embeddings-建议"><a href="#9-Embeddings-建议" class="headerlink" title="9. Embeddings 建议"></a>9. Embeddings 建议</h3><p>本机支持 local embeddings，但<strong>不建议对所有 repo 立即全量开启</strong>。推荐只对核心 repo 开启 embeddings 做语义查询增强：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">gitnexus analyze /Users/dev/multi-repo-workspace/user-api-server \</span><br><span class="line">  --embeddings \</span><br><span class="line">  --worker-timeout 120 \</span><br><span class="line">  --workers 2 \</span><br><span class="line">  --name user-api-server</span><br></pre></td></tr></table></figure>
+
+<p>适合开启 embeddings 的 repo：</p>
+<table>
+<thead>
+<tr>
+<th>Repo</th>
+<th>原因</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>user-api-server</td>
+<td>用户主流程、资料、权限、profile 读写</td>
+</tr>
+<tr>
+<td>user-worker</td>
+<td>异步任务、消息消费主流程</td>
+</tr>
+<tr>
+<td>user-common</td>
+<td>共享工具、基础组件</td>
+</tr>
+<tr>
+<td>user-admin</td>
+<td>后台管理、配置</td>
+</tr>
+<tr>
+<td>user-gateway</td>
+<td>外部 API &#x2F; gateway 入口</td>
+</tr>
+</tbody></table>
+<p>不建议全量开启的原因：</p>
+<ul>
+<li>索引耗时明显增加。</li>
+<li>宽泛 group query 的噪声不一定靠 embeddings 解决。</li>
+<li>精确 symbol &#x2F; API &#x2F; proto &#x2F; schema 场景更适合 graph &#x2F; FTS &#x2F; native search。</li>
+</ul>
+<h3 id="10-维护流程"><a href="#10-维护流程" class="headerlink" title="10. 维护流程"></a>10. 维护流程</h3><h4 id="10-1-repo-有代码更新后"><a href="#10-1-repo-有代码更新后" class="headerlink" title="10.1 repo 有代码更新后"></a>10.1 repo 有代码更新后</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">gitnexus analyze /Users/dev/multi-repo-workspace/user-api-server \</span><br><span class="line">  --worker-timeout 120 \</span><br><span class="line">  --workers 2 \</span><br><span class="line">  --name user-api-server</span><br><span class="line">gitnexus group <span class="built_in">sync</span> user</span><br></pre></td></tr></table></figure>
+
+<h4 id="10-2-检查状态"><a href="#10-2-检查状态" class="headerlink" title="10.2 检查状态"></a>10.2 检查状态</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gitnexus list</span><br><span class="line">gitnexus group status user</span><br></pre></td></tr></table></figure>
+
+<h4 id="10-3-修复-FTS"><a href="#10-3-修复-FTS" class="headerlink" title="10.3 修复 FTS"></a>10.3 修复 FTS</h4><p>如果搜索提示 FTS 索引缺失：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">gitnexus analyze /Users/dev/multi-repo-workspace/user-api-server \</span><br><span class="line">  --repair-fts \</span><br><span class="line">  --name user-api-server</span><br></pre></td></tr></table></figure>
+
+<h4 id="10-4-清理索引"><a href="#10-4-清理索引" class="headerlink" title="10.4 清理索引"></a>10.4 清理索引</h4><p>当前 repo：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gitnexus clean</span><br></pre></td></tr></table></figure>
+
+<p>指定 registry repo：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gitnexus remove user-api-server</span><br></pre></td></tr></table></figure>
+
+<h3 id="11-接入状态示例（以-user-业务线为例）"><a href="#11-接入状态示例（以-user-业务线为例）" class="headerlink" title="11. 接入状态示例（以 user 业务线为例）"></a>11. 接入状态示例（以 user 业务线为例）</h3><p>接入完成后，一个典型的 workspace 状态如下（实际数字以你自己的环境为准）：</p>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>状态</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>GitNexus 安装</td>
+<td>已安装（版本以 <code>gitnexus --version</code> 输出为准）</td>
+</tr>
+<tr>
+<td>MCP &#x2F; 编辑器集成</td>
+<td>已通过 <code>gitnexus setup</code> &#x2F; <code>gitnexus mcp</code> 方式接入当前开发环境</td>
+</tr>
+<tr>
+<td>user repo 索引</td>
+<td>多个 <code>user-*</code> repo 已索引</td>
+</tr>
+<tr>
+<td>GitNexus group</td>
+<td><code>user</code> 已创建</td>
+</tr>
+<tr>
+<td>group 成员</td>
+<td>多个 repo 已加入</td>
+</tr>
+<tr>
+<td>group sync</td>
+<td>已完成</td>
+</tr>
+<tr>
+<td>group status</td>
+<td>全部 <code>OK</code></td>
+</tr>
+<tr>
+<td>本地 Git 排除</td>
+<td>已在每个 repo <code>.git/info/exclude</code> 加入 GitNexus 生成文件</td>
+</tr>
+</tbody></table>
+<h3 id="12-常见问题"><a href="#12-常见问题" class="headerlink" title="12. 常见问题"></a>12. 常见问题</h3><p><strong>Q1：每个 repo 都要执行 <code>gitnexus setup</code> 吗？</strong><br>不需要。<code>gitnexus setup</code> 是本机 &#x2F; 编辑器级别的一次性配置，会自动检测并连接支持的编辑器 &#x2F; Agent 工具。每个 repo 需要的是 <code>gitnexus analyze</code>。如果某个工具需要手动配置，通用 server 命令是 <code>gitnexus mcp</code>。</p>
+<p><strong>Q2：为什么看不到 <code>.gitnexus/</code> 被提交？</strong><br>因为 <code>.gitnexus/</code> 是本地索引目录，已加入 <code>.git/info/exclude</code>，可以不提交。</p>
+<p><strong>Q3：为什么有些 repo 的 <code>AGENTS.md</code> 仍显示 modified？</strong><br>因为如果 <code>AGENTS.md</code> 已经被 git 跟踪，<code>.git/info/exclude</code> 不会隐藏它的变化。可选择保留本地修改不提交，或谨慎使用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git update-index --skip-worktree AGENTS.md</span><br></pre></td></tr></table></figure>
+
+<p><strong>Q4：GitNexus Web 代码面板显示「内存中没有代码内容」怎么办？</strong><br>先确认后端 API 是否能读文件。如果 API 正常，通常是 Web UI 前端状态问题。可尝试：</p>
+<ul>
+<li>刷新页面。</li>
+<li>点击其他文件后再点回来。</li>
+<li>避免点击目录节点后马上查看代码面板。</li>
+</ul>
+<blockquote>
+<p>本机已 patch <code>/api/file</code>，目录请求现在返回 <code>400 Path is a directory</code>，不再返回 <code>500</code>。</p>
+</blockquote>
+<h3 id="13-最佳实践总结"><a href="#13-最佳实践总结" class="headerlink" title="13. 最佳实践总结"></a>13. 最佳实践总结</h3><ol>
+<li>每个 repo 做 <code>analyze</code>，<code>gitnexus setup</code> 只做一次；手动接入 MCP 时使用通用命令 <code>gitnexus mcp</code>。</li>
+<li>多 repo 业务线用 <code>knowledge_domain</code> 作为 GitNexus group 名。</li>
+<li>repo 加 group 后记得 <code>gitnexus group sync</code>。</li>
+<li>GitNexus 用于候选发现、调用图、影响面分析。</li>
+<li><strong>任何结论必须回到源码 <code>file:line</code> 验证。</strong></li>
+<li>中文需求先改写成英文领域词和可能的代码词。</li>
+<li>先 group 粗搜，再 subgroup &#x2F; repo 精搜。</li>
+<li>Embeddings 优先给核心 repo，不建议一开始全量开启。</li>
+</ol>
+
+
+
+<div class="article-footer reveal fs14">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    </div>
+
+</article>
+
+<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2026/07/28/Shell%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E6%A8%AA%E6%9D%A0%E5%AF%BC%E8%87%B4%E7%81%B0%E5%BA%A6%E9%85%8D%E7%BD%AE%E4%B8%8D%E7%94%9F%E6%95%88%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/">Shell环境变量横杠导致灰度配置不生效问题排查</a></div></section></div>
+
+
+
+
+
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>本站由 <a href="/">@anonymity</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar">Stellar</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  const stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')){
+        src = stellar.config.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.version = '1.21.0';
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.21.0';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+    root : '/',
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://gcore.jsdelivr.net/npm/jquery@3.6.2/dist/jquery.min.js'
+  };
+
+  if ('local_search') {
+    stellar.search = {};
+    stellar.search.service = 'local_search';
+    if (stellar.search.service == 'local_search') {
+      let service_obj = Object.assign({}, {"field":"all","path":"/search.json","content":true,"sort":"-date"});
+      stellar.search[stellar.search.service] = service_obj;
+    }
+  }
+
+  // stellar js
+  stellar.plugins.stellar = Object.assign({"sites":"/js/plugins/sites.js","friends":"/js/plugins/friends.js","ghinfo":"/js/plugins/ghinfo.js","timeline":"/js/plugins/timeline.js","linkcard":"/js/plugins/linkcard.js","fcircle":"/js/plugins/fcircle.js","weibo":"/js/plugins/weibo.js","memos":"/js/plugins/memos.js"});
+
+  stellar.plugins.marked = Object.assign("https://cdn.bootcdn.net/ajax/libs/marked/4.0.18/marked.min.js");
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@10.3/swiper-bundle.min.css","js":"https://unpkg.com/swiper@10.3/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://gcore.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://gcore.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://gcore.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img, .gallery img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti@0.9.2/umd/heti.min.css","js":"https://unpkg.com/heti@0.9.2/umd/heti-addon.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.copycode = Object.assign({"enable":true,"js":"/js/plugins/copycode.js","default_text":"Copy","success_text":"Copied"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+
+
+<!-- inject -->
+
+
+  </div>
+</body>
+</html>
