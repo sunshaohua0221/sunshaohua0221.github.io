@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+  <meta name="generator" content="Hexo 7.0.0">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.21.0">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://gcore.jsdelivr.net'>
+  <link rel="preconnect" href="https://gcore.jsdelivr.net" crossorigin>
+  <link rel='dns-prefetch' href='//unpkg.com'>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  
+  <title>用自然语言生成技术流程图的 Agent Skill：fireworks-tech-graph - 重构日志</title>
+
+  
+    <meta name="description" content="写技术方案、做架构评审、给同事讲一个系统怎么跑——这些场景里最耗时的往往不是思考，而是「把图做出来」。要么打开 draw.io 一个个拖框，要么手写 Mermaid DSL 反复调试缩进，改一个箭头全图错位。最近试了一个 Agent Skill：**yizhiyanhua-ai&#x2F;fireworks-tech-graph**，思路很直接——用中英文描述系统，它直接吐出带几何校验的 SVG、高清 PN">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用自然语言生成技术流程图的 Agent Skill：fireworks-tech-graph">
+<meta property="og:url" content="https://sunshaohua0221.github.io/2026/08/07/fireworks-tech-graph-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%94%9F%E6%88%90%E6%8A%80%E6%9C%AF%E6%B5%81%E7%A8%8B%E5%9B%BE/index.html">
+<meta property="og:site_name" content="重构日志">
+<meta property="og:description" content="写技术方案、做架构评审、给同事讲一个系统怎么跑——这些场景里最耗时的往往不是思考，而是「把图做出来」。要么打开 draw.io 一个个拖框，要么手写 Mermaid DSL 反复调试缩进，改一个箭头全图错位。最近试了一个 Agent Skill：**yizhiyanhua-ai&#x2F;fireworks-tech-graph**，思路很直接——用中英文描述系统，它直接吐出带几何校验的 SVG、高清 PN">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-08-07T01:35:10.837Z">
+<meta property="article:modified_time" content="2026-08-07T01:40:20.377Z">
+<meta property="article:author" content="ssh">
+<meta property="article:tag" content="技术、生活">
+<meta name="twitter:card" content="summary">
+  
+  
+  
+  <meta name="keywords" content="技术、生活">
+
+  <!-- feed -->
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+
+  
+
+  
+
+
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='post'>
+    
+
+  
+
+<header class="header"><div class="logo-wrap"><a class="title" href="/"><div class="main" ff="title">重构日志</div><div class="sub cap">学无止境,行以致远</div></a></div>
+
+<nav class="menu dis-select"></nav>
+</header>
+
+
+<div class="widgets">
+<widget class="widget-wrapper search"><div class="widget-body"><div class="search-wrapper" id="search"><form class="search-form"><input type="text" class="search-input" id="search-input" data-filter="/blog/" placeholder="文章搜索"><svg t="1670596976048" class="icon search-icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2676" width="200" height="200"><path d="M938.2 832.6L723.8 618.1c-2.5-2.5-5.3-4.4-7.9-6.4 36.2-55.6 57.3-121.8 57.3-193.1C773.3 222.8 614.6 64 418.7 64S64 222.8 64 418.6c0 195.9 158.8 354.6 354.6 354.6 71.3 0 137.5-21.2 193.2-57.4 2 2.7 3.9 5.4 6.3 7.8L832.5 938c14.6 14.6 33.7 21.9 52.8 21.9 19.1 0 38.2-7.3 52.8-21.8 29.2-29.1 29.2-76.4 0.1-105.5M418.7 661.3C284.9 661.3 176 552.4 176 418.6 176 284.9 284.9 176 418.7 176c133.8 0 242.6 108.9 242.6 242.7 0 133.7-108.9 242.6-242.6 242.6" p-id="2677"></path></svg></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div></div></widget>
+
+
+<widget class="widget-wrapper toc single" id="data-toc"><div class="widget-header cap dis-select"><span class="name">用自然语言生成技术流程图的 Agent Skill：fireworks-tech-graph</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E5%AE%83"><span class="toc-text">1. 为什么需要它</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%AE%89%E8%A3%85%E6%96%B9%E5%BC%8F"><span class="toc-text">2. 安装方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E6%97%A5%E5%B8%B8%E6%80%8E%E4%B9%88%E7%94%A8"><span class="toc-text">3. 日常怎么用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E8%BE%93%E5%87%BA%E6%A0%BC%E5%BC%8F%E4%B8%8E%E8%83%BD%E5%8A%9B%E8%BE%B9%E7%95%8C"><span class="toc-text">4. 输出格式与能力边界</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E5%86%85%E7%BD%AE%E9%A3%8E%E6%A0%BC%E4%B8%8E%E9%A2%86%E5%9F%9F%E6%A8%A1%E5%BC%8F"><span class="toc-text">5. 内置风格与领域模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E7%BB%9F%E4%B8%80-CLI-%E4%B8%8E%E5%87%A0%E4%BD%95%E6%A0%A1%E9%AA%8C"><span class="toc-text">6. 统一 CLI 与几何校验</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-%E5%B0%8F%E7%BB%93%E4%B8%8E%E9%80%82%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-text">7. 小结与适用场景</span></a></li></ol></div></div></widget>
+
+
+
+
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+
+
+<div class="bread-nav fs12"><div class="left"><div id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" href="/">文章</a></div><div id="post-meta">
+    <span>发布于&nbsp;<time datetime="2026-08-07T01:35:10.837Z">2026-08-07</time></span>
+    
+    <span>更新于&nbsp;<time datetime="2026-08-07T01:40:20.377Z">2026-08-07</time></span>
+    </div></div></div>
+
+<article class='md-text content post'>
+<h1 class="article-title"><span>用自然语言生成技术流程图的 Agent Skill：fireworks-tech-graph</span></h1>
+<p>写技术方案、做架构评审、给同事讲一个系统怎么跑——这些场景里最耗时的往往不是思考，而是「把图做出来」。要么打开 draw.io 一个个拖框，要么手写 Mermaid DSL 反复调试缩进，改一个箭头全图错位。最近试了一个 Agent Skill：**<code>yizhiyanhua-ai/fireworks-tech-graph</code>**，思路很直接——用中英文描述系统，它直接吐出带几何校验的 SVG、高清 PNG、语义动图 GIF，以及可离线交互的 HTML。本文记录它的能力边界、怎么装、怎么用，以及和 Mermaid &#x2F; draw.io 到底差在哪。</p>
+<blockquote>
+<p>它的口号很直白：”Stop drawing diagrams by hand.”（别再手绘图表了）。实测下来，对 AI&#x2F;Agent 这类新兴系统的可视化尤其顺手。</p>
+</blockquote>
+<h3 id="1-为什么需要它"><a href="#1-为什么需要它" class="headerlink" title="1. 为什么需要它"></a>1. 为什么需要它</h3><p>先说痛点。我们常用的两件套各有硬伤：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Mermaid</th>
+<th>draw.io</th>
+<th>fireworks-tech-graph</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>自然语言输入</td>
+<td>✗</td>
+<td>✗</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>AI&#x2F;Agent 领域模式</td>
+<td>✗</td>
+<td>✗</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>多种视觉风格</td>
+<td>✗</td>
+<td>手动</td>
+<td>✅ 内置 12 种</td>
+</tr>
+<tr>
+<td>高清 PNG 导出</td>
+<td>✗</td>
+<td>手动</td>
+<td>✅ 自动 1920px</td>
+</tr>
+<tr>
+<td>语义箭头颜色</td>
+<td>✗</td>
+<td>手动</td>
+<td>✅ 自动</td>
+</tr>
+<tr>
+<td>不依赖在线工具</td>
+<td>✅</td>
+<td>✗</td>
+<td>✅</td>
+</tr>
+</tbody></table>
+<p>Mermaid 适合在 markdown 里快速画个草图，draw.io 适合手工精修，而 <strong>fireworks-tech-graph 优化的是「描述一个系统、立刻拿到成图」</strong> 这条路径——不用写 DSL 语法，也不用在点阵 GUI 里拖来拖去。</p>
+<p>它本质上是一个 <strong>Agent Skill</strong>，同一份代码无需改动即可跑在 <strong>Codex 和 Claude Code</strong> 里。当你在对话里说「画个图」，它会把你的自然语言转成一份版本化的 Diagram IR（JSON 中间表示），再经风格系统渲染成图。</p>
+<h3 id="2-安装方式"><a href="#2-安装方式" class="headerlink" title="2. 安装方式"></a>2. 安装方式</h3><p>推荐用官方 <code>skills</code> CLI 一键装到两个运行时：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">npx -y skills@1.5.17 add \</span><br><span class="line">  yizhiyanhua-ai/fireworks-tech-graph/skills/fireworks-tech-graph \</span><br><span class="line">  --agent codex claude-code -g -y --copy</span><br></pre></td></tr></table></figure>
+
+<p>这条命令会在 <code>~/.agents/skills/fireworks-tech-graph</code>（Codex）和 <code>~/.claude/skills/fireworks-tech-graph</code>（Claude Code）各放一份完整拷贝，包含 scripts、schemas、fixtures、templates、tests、references 和 metadata。</p>
+<p>如果你更想可编辑（方便改 SKILL.md 或脚本），直接 git clone 也行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Codex</span></span><br><span class="line"><span class="built_in">mkdir</span> -p ~/.agents/skills</span><br><span class="line">git <span class="built_in">clone</span> https://github.com/yizhiyanhua-ai/fireworks-tech-graph.git ~/.agents/skills/fireworks-tech-graph</span><br><span class="line"></span><br><span class="line"><span class="comment"># Claude Code</span></span><br><span class="line"><span class="built_in">mkdir</span> -p ~/.claude/skills</span><br><span class="line">git <span class="built_in">clone</span> https://github.com/yizhiyanhua-ai/fireworks-tech-graph.git ~/.claude/skills/fireworks-tech-graph</span><br></pre></td></tr></table></figure>
+
+<p>更新只需 <code>git pull</code> 对应目录。装完记得<strong>重启 Codex &#x2F; Claude Code</strong> 让它们发现新 skill；之后改 <code>SKILL.md</code> 会被自动识别，但改了打包的脚本或 references 后仍需重启才生效。</p>
+<blockquote>
+<p>环境要求：Python 3.9+ 必需；可选 Puppeteer 动效路径需要 Node.js 18+。原生 Windows 路径是 <code>%USERPROFILE%\.agents\skills</code> 和 <code>%USERPROFILE%\.claude\skills</code>。</p>
+</blockquote>
+<h3 id="3-日常怎么用"><a href="#3-日常怎么用" class="headerlink" title="3. 日常怎么用"></a>3. 日常怎么用</h3><p>触发是语义化的，说人话即可，例如：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">generate diagram / draw diagram / create chart / visualize</span><br><span class="line">architecture diagram / flowchart / sequence diagram / data flow</span><br><span class="line">Generate a GIF / animate this diagram / 把刚才的 SVG 转成 GIF / 让这张图动起来</span><br></pre></td></tr></table></figure>
+
+<p>最基础的用法，直接描述场景：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Draw a RAG pipeline flowchart</span><br><span class="line">Generate an Agentic Search architecture diagram</span><br></pre></td></tr></table></figure>
+
+<p>指定风格（内置 12 种，含 dark terminal、glassmorphism 等）：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Draw a microservices architecture diagram, style 2 (dark terminal)</span><br><span class="line">Draw a multi-agent collaboration diagram --style glassmorphism</span><br></pre></td></tr></table></figure>
+
+<p>指定输出路径：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Generate a Mem0 architecture diagram, output to ~/Desktop/</span><br><span class="line">Create a tool call flow diagram --output /tmp/diagrams/</span><br></pre></td></tr></table></figure>
+
+<p>下面是 README 里几个有代表性的实战 prompt：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># AI 系统</span><br><span class="line">Compare Agentic RAG vs standard RAG in a feature matrix, Notion clean style</span><br><span class="line">Generate a Mem0 memory architecture diagram with vector store, graph DB, KV store, and memory manager</span><br><span class="line">Draw a Multi-Agent diagram: Orchestrator dispatches 3 SubAgents (search / compute / code execution)</span><br><span class="line"></span><br><span class="line"># 基础设施</span><br><span class="line">Draw a microservices architecture: Client -&gt; API Gateway -&gt; [User / Order / Payment Service] -&gt; PostgreSQL + Redis</span><br><span class="line">Generate a data pipeline diagram: Kafka -&gt; Spark processing -&gt; write to S3 -&gt; Athena query</span><br><span class="line"></span><br><span class="line"># 时序 / 决策</span><br><span class="line">Draw an OAuth2 authorization code flow sequence diagram: User -&gt; Client -&gt; Auth Server -&gt; Resource Server</span><br><span class="line">Draw a pre-launch QA flowchart for an AI app: Code Review -&gt; Security Scan -&gt; Performance Test -&gt; Manual Approval -&gt; Deploy</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-输出格式与能力边界"><a href="#4-输出格式与能力边界" class="headerlink" title="4. 输出格式与能力边界"></a>4. 输出格式与能力边界</h3><p>它输出的<strong>不是 Mermaid &#x2F; PlantUML 文本</strong>，而是直接渲染好的图：</p>
+<ul>
+<li><strong>SVG</strong>：用于二次编辑，纯 inline SVG，不请求外部字体。</li>
+<li><strong>PNG</strong>：自动 1920px 高清，便于直接贴进文档&#x2F;PPT。</li>
+<li><strong>GIF</strong>：聚焦语义动效，<strong>唯一支持的动图格式</strong>，默认 960px、5.75s、20fps、共 115 帧。输入一个语义 SVG，产出一段紧凑、经过 probe 的 GIF。</li>
+<li><strong>离线交互 HTML</strong>：单文件导出，带平移&#x2F;缩放、主题切换、复制，以及 SVG&#x2F;PNG&#x2F;JPEG&#x2F;WebP（最高 4×）下载。</li>
+</ul>
+<blockquote>
+<p>关键边界：它<strong>不产出 Mermaid 或 PlantUML 文本</strong>。如果你要的是可版本化、可手改的 DSL 源码，那它不合适；它要的是「描述即成品图」。两者是不同定位，不是替代关系。</p>
+</blockquote>
+<p>图表类型覆盖面很广：基础 7 类（Architecture &#x2F; Data Flow &#x2F; Flowchart &#x2F; Agent Architecture &#x2F; Memory Architecture &#x2F; Sequence &#x2F; Comparison &#x2F; Mind Map）、<strong>完整 14 种 UML</strong>（类图、组件图、部署图、时序图、状态机图、活动图、ER 图……），以及一整套 AI&#x2F;Agent 领域模式。</p>
+<h3 id="5-内置风格与领域模式"><a href="#5-内置风格与领域模式" class="headerlink" title="5. 内置风格与领域模式"></a>5. 内置风格与领域模式</h3><p>风格系统是这个 skill 的精华——<strong>样式指南被编码进了生成器</strong>，而不只是文档描述。共 <strong>12 种视觉风格</strong>：11 个生成器支持 + 1 个 AI 编写的「Dark Luxury」。其中 4 个工程风格还带了<strong>可执行契约</strong>，专门服务 C4 评审、云部署、事件流、可靠性排查这类场景。</p>
+<p>内置的 AI&#x2F;Agent 领域模式可直接调用，不用自己描述布局：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">RAG Pipeline     → Query → Embed → VectorSearch → Retrieve → LLM → Response</span><br><span class="line">Agentic RAG      → 在 RAG 基础上 + Agent loop + Tool use</span><br><span class="line">Agentic Search   → Query → Planner → [Search/Calc/Code] → Synthesizer</span><br><span class="line">Mem0 Memory      → Input → Memory Manager → [VectorDB + GraphDB] → Context</span><br><span class="line">Multi-Agent      → Orchestrator → [SubAgent×N] → Aggregator → Output</span><br><span class="line">Tool Call Flow   → LLM → Tool Selector → Execution → Parser → LLM (loop)</span><br></pre></td></tr></table></figure>
+
+<p>语义形状也有约定：LLM 用双边框圆角矩形，Agent 用六边形；颜色 + 虚线编码「读&#x2F;写、异步、循环」等含义。这让图「一眼能读懂」，而不是一堆无差别的方框箭头。</p>
+<h3 id="6-统一-CLI-与几何校验"><a href="#6-统一-CLI-与几何校验" class="headerlink" title="6. 统一 CLI 与几何校验"></a>6. 统一 CLI 与几何校验</h3><p>除了在对话里用，它还提供统一 CLI <code>fireworks.py</code>，可校验、渲染、检查、导出、动图：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">SKILL_ROOT=<span class="string">&quot;<span class="variable">$&#123;CLAUDE_SKILL_DIR:-<span class="variable">$HOME</span>/.agents/skills/fireworks-tech-graph&#125;</span>&quot;</span></span><br><span class="line"></span><br><span class="line">python3 <span class="string">&quot;<span class="variable">$SKILL_ROOT</span>/scripts/fireworks.py&quot;</span> doctor</span><br><span class="line">python3 <span class="string">&quot;<span class="variable">$SKILL_ROOT</span>/scripts/fireworks.py&quot;</span> validate architecture <span class="string">&quot;<span class="variable">$SKILL_ROOT</span>/fixtures/api-flow-style7.json&quot;</span></span><br><span class="line">python3 <span class="string">&quot;<span class="variable">$SKILL_ROOT</span>/scripts/fireworks.py&quot;</span> render architecture <span class="string">&quot;<span class="variable">$SKILL_ROOT</span>/fixtures/api-flow-style7.json&quot;</span> diagram.svg --report layout.json</span><br><span class="line">python3 <span class="string">&quot;<span class="variable">$SKILL_ROOT</span>/scripts/fireworks.py&quot;</span> check diagram.svg</span><br><span class="line">python3 <span class="string">&quot;<span class="variable">$SKILL_ROOT</span>/scripts/fireworks.py&quot;</span> export-html diagram.svg diagram.html --title <span class="string">&quot;Agent Runtime Architecture&quot;</span></span><br><span class="line">python3 <span class="string">&quot;<span class="variable">$SKILL_ROOT</span>/scripts/fireworks.py&quot;</span> animate diagram.svg diagram.gif</span><br></pre></td></tr></table></figure>
+
+<p>它有一套叫 <strong>Loop Engineering（循环工程）</strong> 的机制保证出图质量：首帧只是候选，通过「合同 → IR → 风格 → 路由 → SVG → 校验 → 视觉回读 → 修订」的反馈闭环，最多两轮修正，最终产物会明确给出：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">validation: passed</span><br><span class="line">visual_review: passed</span><br></pre></td></tr></table></figure>
+
+<p>渲染器三选一，按质量和安装成本取舍：</p>
+<table>
+<thead>
+<tr>
+<th>Renderer</th>
+<th>质量</th>
+<th>安装成本</th>
+<th>适用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>cairosvg</td>
+<td>好</td>
+<td>一条 <code>pip install</code></td>
+<td>默认，最均衡</td>
+</tr>
+<tr>
+<td>rsvg-convert</td>
+<td>一般</td>
+<td>系统包</td>
+<td>无 Python、扁平简图</td>
+</tr>
+<tr>
+<td>puppeteer</td>
+<td>最好</td>
+<td>Node + Chromium</td>
+<td>需像素级&#x2F;浏览器渲染</td>
+</tr>
+</tbody></table>
+<p>几何上它强制<strong>零交叉、每条边最多 2 个弯、节点间距 ≥40px、容器留白 ≥20px、标签不压节点和连线</strong>——所以成图基本不会出现「箭头穿过框」的尴尬。</p>
+<h3 id="7-小结与适用场景"><a href="#7-小结与适用场景" class="headerlink" title="7. 小结与适用场景"></a>7. 小结与适用场景</h3><ol>
+<li><strong>它是「描述即出图」的成品工具</strong>，不是 DSL 编辑器。要可手改的 Mermaid 源码就别用它。</li>
+<li><strong>对 AI&#x2F;Agent 系统最香</strong>：RAG、Multi-Agent、Memory、Tool Call 等模式开箱即用，不用自己想布局。</li>
+<li><strong>装一次、双运行时通用</strong>：Codex 和 Claude Code 共用同一份 skill，git clone 还能符号链接共享。</li>
+<li><strong>CLI 适合进流程</strong>：<code>validate/render/check/animate</code> 可以接到 CI 或自动化脚本里，配合 <code>validation: passed</code> 门禁做质量卡点。</li>
+<li><strong>几何校验是真省心</strong>：过去手画或写 Mermaid 最常翻车的「线穿框、字压线」，被构图契约从源头防住了。</li>
+</ol>
+<p>如果你也受够了为一张架构图在 draw.io 里拖半小时，或者 Mermaid 缩进调到头秃，值得试试这个 skill——一句话描述，剩下的交给它。</p>
+
+
+
+<div class="article-footer reveal fs14">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    </div>
+
+</article>
+
+<div class="related-wrap reveal" id="read-next"><section class="body"><div class="item" id="prev"></div><div class="item" id="next"><div class="note">较早文章</div><a href="/2026/08/06/Lombok-%E6%B3%A8%E8%A7%A3%E4%BD%BF%E7%94%A8%E4%B8%AD%E9%81%87%E5%88%B0%E7%9A%84%E5%9D%91/">Lombok 注解使用中遇到的坑</a></div></section></div>
+
+
+
+
+
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="text"><p>本站由 <a href="/">@anonymity</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar">Stellar</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  const stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')){
+        src = stellar.config.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.version = '1.21.0';
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.21.0';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+    root : '/',
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://gcore.jsdelivr.net/npm/jquery@3.6.2/dist/jquery.min.js'
+  };
+
+  if ('local_search') {
+    stellar.search = {};
+    stellar.search.service = 'local_search';
+    if (stellar.search.service == 'local_search') {
+      let service_obj = Object.assign({}, {"field":"all","path":"/search.json","content":true,"sort":"-date"});
+      stellar.search[stellar.search.service] = service_obj;
+    }
+  }
+
+  // stellar js
+  stellar.plugins.stellar = Object.assign({"sites":"/js/plugins/sites.js","friends":"/js/plugins/friends.js","ghinfo":"/js/plugins/ghinfo.js","timeline":"/js/plugins/timeline.js","linkcard":"/js/plugins/linkcard.js","fcircle":"/js/plugins/fcircle.js","weibo":"/js/plugins/weibo.js","memos":"/js/plugins/memos.js"});
+
+  stellar.plugins.marked = Object.assign("https://cdn.bootcdn.net/ajax/libs/marked/4.0.18/marked.min.js");
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js","transition":"blur"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@10.3/swiper-bundle.min.css","js":"https://unpkg.com/swiper@10.3/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://gcore.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","instant_page":"https://gcore.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://gcore.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://gcore.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img, .gallery img"});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti@0.9.2/umd/heti.min.css","js":"https://unpkg.com/heti@0.9.2/umd/heti-addon.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.copycode = Object.assign({"enable":true,"js":"/js/plugins/copycode.js","default_text":"Copy","success_text":"Copied"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+
+
+<!-- inject -->
+
+
+  </div>
+</body>
+</html>
